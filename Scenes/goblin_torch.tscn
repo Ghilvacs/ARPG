@@ -1,18 +1,18 @@
 [gd_scene load_steps=50 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Texture2D" uid="uid://b0q2abkqxi5xa" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="1_6e1k8"]
-[ext_resource type="Script" path="res://Scripts/goblin_torch.gd" id="1_gd53l"]
-[ext_resource type="Shader" path="res://Scenes/player_damage.gdshader" id="2_8cdtg"]
-[ext_resource type="Script" path="res://Scenes/StateMachine.gd" id="3_i1p1t"]
+[ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_antxv"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_eh61e"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_x1pvp"]
-[ext_resource type="Script" path="res://Scripts/EnemyWander.gd" id="5_a63qm"]
-[ext_resource type="Script" path="res://Scripts/EnemyFollow.gd" id="5_y4rxn"]
-[ext_resource type="Script" path="res://Scripts/EnemyAttack.gd" id="7_s7q52"]
-[ext_resource type="Script" path="res://Scripts/EnemyDead.gd" id="9_g6iu8"]
+[ext_resource type="Script" path="res://Scripts/Enemy/StateMachine.gd" id="5_oq0u2"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyWander.gd" id="6_fgbm2"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyFollow.gd" id="7_xkp4o"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyAttack.gd" id="8_b8iwm"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="9_qacjp"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_uqbm7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qss17"]
-shader = ExtResource("2_8cdtg")
+shader = ExtResource("2_eh61e")
 shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
@@ -293,7 +293,7 @@ height = 72.0
 
 [node name="goblin_torch" type="CharacterBody2D" groups=["Enemy"]]
 motion_mode = 1
-script = ExtResource("1_gd53l")
+script = ExtResource("1_antxv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -311,24 +311,24 @@ position = Vector2(-2, -4)
 shape = SubResource("CapsuleShape2D_hqfg7")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("3_i1p1t")
+script = ExtResource("5_oq0u2")
 initial_state = NodePath("Wander")
 
 [node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
-script = ExtResource("5_a63qm")
+script = ExtResource("6_fgbm2")
 enemy = NodePath("../..")
 move_speed = 50.0
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
-script = ExtResource("5_y4rxn")
+script = ExtResource("7_xkp4o")
 enemy = NodePath("../..")
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
-script = ExtResource("7_s7q52")
+script = ExtResource("8_b8iwm")
 enemy = NodePath("../..")
 
 [node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
-script = ExtResource("9_g6iu8")
+script = ExtResource("9_qacjp")
 enemy = NodePath("../..")
 
 [node name="TorchArea" type="Area2D" parent="." groups=["GoblinTorch"]]

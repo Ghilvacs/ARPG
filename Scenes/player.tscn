@@ -1,13 +1,13 @@
 [gd_scene load_steps=53 format=3 uid="uid://dqus222up43m0"]
 
-[ext_resource type="Script" path="res://Scripts/player.gd" id="1_dj06k"]
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_gt1ej"]
 [ext_resource type="Texture2D" uid="uid://bq5o17cv0lfxx" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="1_hingg"]
-[ext_resource type="Shader" path="res://Scenes/player_damage.gdshader" id="2_hkjqv"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_jgc3b"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="3_wilmi"]
 [ext_resource type="Texture2D" uid="uid://ce7aevx27rvhx" path="res://Assets/line_of_sight.png" id="5_s040e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iu414"]
-shader = ExtResource("2_hkjqv")
+shader = ExtResource("2_jgc3b")
 shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
@@ -357,7 +357,7 @@ size = Vector2(56, 111)
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -30)
-script = ExtResource("1_dj06k")
+script = ExtResource("1_gt1ej")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_iu414")
