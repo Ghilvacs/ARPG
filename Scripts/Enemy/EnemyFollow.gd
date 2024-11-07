@@ -10,13 +10,13 @@ func enter() -> void:
 	
 func physics_update(delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
-	if direction.length() > 50:
+	if direction.length() > 60:
 		enemy.velocity = direction.normalized() * move_speed
 	else:
 		enemy.velocity = Vector2()
 	if direction.length() > 600 || player.current_health < 1:
 		Transitioned.emit(self, "Wander")
-	elif direction.length() < 50:
+	elif direction.length() < 80:
 		Transitioned.emit(self, "Attack")
 	if enemy.dead:
 		Transitioned.emit(self, "Dead")
