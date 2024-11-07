@@ -13,21 +13,26 @@ func enter() -> void:
 	
 func physics_update(delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
-	if direction.length() > 50 && direction.length() < 400:
+	if direction.length() > 60 && direction.length() < 400:
 		Transitioned.emit(self, "Follow")
 	elif  direction.length() > 400:
 		Transitioned.emit(self, "Wander")
 	elif player.current_health > 0:
-		enemy.animated_sprite.play("attack")
+		if enemy.global_position.y - player.global_position.y > 50:
+			enemy.animated_sprite.play("attack_up")
+		elif enemy.global_position.y - player.global_position.y < -30:
+			enemy.animated_sprite.play("attack_down")
+		else:
+			enemy.animated_sprite.play("attack")
+	
+	enemy.torch_attack_point.look_at(player.global_position)
 
 	if player.global_position.x > enemy.global_position.x:
 		enemy.animated_sprite.flip_h = false
-		enemy.get_node("TorchArea").set_scale(Vector2(1, 1))
 	else:
 		enemy.animated_sprite.flip_h = true
-		enemy.get_node("TorchArea").set_scale(Vector2(-1, 1))
-	if enemy.animated_sprite.animation == "attack" && enemy.animated_sprite.frame == 3:
-			enemy.get_node("TorchArea/CollisionShape2D").disabled = false
+	if enemy.animated_sprite.animation == "attack" && enemy.animated_sprite.frame == 3 || enemy.animated_sprite.animation == "attack_up" && enemy.animated_sprite.frame == 4 || enemy.animated_sprite.animation == "attack_down" && enemy.animated_sprite.frame == 4:
+			enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = false
 	if enemy.dead:
 		Transitioned.emit(self, "Dead")
 

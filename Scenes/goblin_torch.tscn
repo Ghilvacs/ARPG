@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=62 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Texture2D" uid="uid://b0q2abkqxi5xa" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="1_6e1k8"]
 [ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_antxv"]
@@ -42,6 +42,54 @@ region = Rect2(768, 384, 192, 192)
 [sub_resource type="AtlasTexture" id="AtlasTexture_v4vv4"]
 atlas = ExtResource("1_6e1k8")
 region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4b1a"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sitw2"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_syjmb"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vbecw"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ec77e"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0twwk"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mucvj"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvn51"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(192, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m8ni7"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(384, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rm0px"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(576, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hagkk"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(768, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kbsv"]
+atlas = ExtResource("1_6e1k8")
+region = Rect2(960, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ofw2b"]
 atlas = ExtResource("4_x1pvp")
@@ -182,6 +230,52 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_b4b1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sitw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_syjmb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vbecw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ec77e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0twwk")
+}],
+"loop": false,
+"name": &"attack_down",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mucvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvn51")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m8ni7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rm0px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hagkk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1kbsv")
+}],
+"loop": false,
+"name": &"attack_up",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ofw2b")
 }, {
 "duration": 1.0,
@@ -284,12 +378,12 @@ animations = [{
 radius = 20.0
 height = 46.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_eysye"]
-size = Vector2(44, 98)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_khh3g"]
 radius = 34.0
 height = 72.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eysye"]
+size = Vector2(44, 98)
 
 [node name="goblin_torch" type="CharacterBody2D" groups=["Enemy"]]
 motion_mode = 1
@@ -301,8 +395,10 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_qss17")
 position = Vector2(0, -17)
 sprite_frames = SubResource("SpriteFrames_xg5rr")
-animation = &"run"
+animation = &"attack_down"
 autoplay = "idle"
+frame = 5
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
@@ -331,13 +427,6 @@ enemy = NodePath("../..")
 script = ExtResource("9_qacjp")
 enemy = NodePath("../..")
 
-[node name="TorchArea" type="Area2D" parent="." groups=["GoblinTorch"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TorchArea"]
-position = Vector2(58, -28)
-shape = SubResource("RectangleShape2D_eysye")
-disabled = true
-
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
@@ -365,12 +454,22 @@ show_percentage = false
 one_shot = true
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
 position = Vector2(-3, -25)
 scale = Vector2(1.015, 1.015)
 color = Color(1, 0.835294, 0, 1)
 energy = 0.8
 texture = ExtResource("10_uqbm7")
+
+[node name="TorchPivot" type="Marker2D" parent="."]
+
+[node name="TorchAttackPoint" type="Marker2D" parent="TorchPivot"]
+
+[node name="TorchArea" type="Area2D" parent="TorchPivot/TorchAttackPoint" groups=["GoblinTorch"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TorchPivot/TorchAttackPoint/TorchArea"]
+position = Vector2(58, -28)
+shape = SubResource("RectangleShape2D_eysye")
+disabled = true
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

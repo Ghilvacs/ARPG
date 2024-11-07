@@ -6,6 +6,6 @@ class_name EnemyDead
 
 func enter() -> void:
 	enemy.get_node("CollisionShape2D").disabled = true
-	enemy.get_node("TorchArea/CollisionShape2D").disabled = true
+	enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = true
 	enemy.get_node("AnimatedSprite2D").z_index = 0
 	enemy.animated_sprite.play("death")
