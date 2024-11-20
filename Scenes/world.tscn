@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://08kphpika57a"]
+[gd_scene load_steps=36 format=3 uid="uid://b71yxxtch8tu7"]
 
 [ext_resource type="Texture2D" uid="uid://dx1bn5hwjfvdr" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="1_vs7yp"]
 [ext_resource type="Texture2D" uid="uid://bpullgrlaydlb" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Elevation.png" id="2_0eo8g"]
@@ -6557,6 +6557,7 @@ script = ExtResource("16_2dvhw")
 player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
+visible = false
 energy = 0.95
 blend_mode = 1
 

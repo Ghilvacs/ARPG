@@ -3,9 +3,11 @@ signal EnemyDamaged
 signal HealthChanged
 
 const MAX_HEALTH = 100
+const MAX_STAMINA = 100
 
 var speed = 300
 var current_health
+var current_stamina
 var isAttacking = false
 var enemy: CharacterBody2D
 var dead = false
@@ -21,19 +23,28 @@ var last_position
 @onready var blade_area_one: Area2D = $BladeOnePivot/BladeOneAttackPoint/BladeAreaOne
 @onready var blade_one_attack_point: Marker2D = $BladeOnePivot/BladeOneAttackPoint
 @onready var point_light: Marker2D = $PivotLight/PointLight
+@onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
+	current_stamina = MAX_STAMINA
 
 func _physics_process(delta: float) -> void:
+	
+	print(current_stamina)
+	
 	if dead:
 		point_light.visible = false
 		if animated_sprite.animation != "death":
 			animated_sprite.play("death")
 		return
-
+	
 	if animated_sprite.animation == "attack_one" || "attack_one_up" || "attack_one_down" && animated_sprite.frame > 1:
 		blade_area_one.get_child(0).disabled = true
+	
+	if current_stamina < 100:
+		if timer_stamina_regen.is_stopped():
+			timer_stamina_regen.start()
 	
 	mouse_position = get_local_mouse_position()
 	blade_one_attack_point.look_at(get_global_mouse_position())
@@ -62,18 +73,20 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	if Input.is_action_just_pressed("attack"):
-		last_position = mouse_position.x > 0
-		if mouse_position.y < -30 && mouse_position.x < 150 && mouse_position.x > -150:
-			attack("attack_one_up")
-		elif mouse_position.y > 30 && mouse_position.x < 150 && mouse_position.x > -150:
-			attack("attack_one_down")
-		else:
-			if animated_sprite.animation == "attack_one" && animated_sprite.frame > 2:
-				if last_position == (mouse_position.x > 0):
-					blade_area_one.get_child(0).disabled = true
-					attack("attack_two")
-			elif !isAttacking:
-				attack("attack_one")
+		if current_stamina >= 20:
+			last_position = mouse_position.x > 0
+			if mouse_position.y < -30 && mouse_position.x < 150 && mouse_position.x > -150:
+				
+				attack("attack_one_up")
+			elif mouse_position.y > 30 && mouse_position.x < 150 && mouse_position.x > -150:
+				attack("attack_one_down")
+			else:
+				if animated_sprite.animation == "attack_one" && animated_sprite.frame > 2:
+					if last_position == (mouse_position.x > 0):
+						blade_area_one.get_child(0).disabled = true
+						attack("attack_two")
+				elif !isAttacking:
+					attack("attack_one")
 
 func death() -> void:
 	collision_shape.disabled = true
@@ -84,6 +97,7 @@ func death() -> void:
 	dead = true
 
 func attack(animation: String) -> void:
+	current_stamina -= 20
 	animated_sprite.play(animation)
 	isAttacking = true
 	if animation == "attack_one" || "attack_one_up" || "attack_one_down":
@@ -126,3 +140,6 @@ func _on_timer_take_damage_timeout() -> void:
 
 func _on_timer_death_timeout() -> void:
 	get_tree().reload_current_scene()
+
+func _on_timer_stamina_regen_timeout() -> void:
+	current_stamina += 10
