@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b71yxxtch8tu7"]
+[gd_scene load_steps=37 format=3 uid="uid://b71yxxtch8tu7"]
 
 [ext_resource type="Texture2D" uid="uid://dx1bn5hwjfvdr" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="1_vs7yp"]
 [ext_resource type="Texture2D" uid="uid://bpullgrlaydlb" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Elevation.png" id="2_0eo8g"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/goblin_torch.tscn" id="15_jqxqr"]
 [ext_resource type="Script" path="res://Scripts/Player/HealthBar.gd" id="16_2dvhw"]
 [ext_resource type="Script" path="res://Scripts/Player/Draw.gd" id="19_km0o5"]
+[ext_resource type="Script" path="res://Scenes/StaminaBar.gd" id="19_vx361"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h4gaj"]
 texture = ExtResource("1_vs7yp")
@@ -6556,6 +6557,17 @@ show_percentage = false
 script = ExtResource("16_2dvhw")
 player = NodePath("../../TileMap/player")
 
+[node name="StaminaBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
+offset_left = 54.0
+offset_top = 89.0
+offset_right = 259.0
+offset_bottom = 109.0
+value = 100.0
+rounded = true
+show_percentage = false
+script = ExtResource("19_vx361")
+player = NodePath("../../TileMap/player")
+
 [node name="Shadow" type="DirectionalLight2D" parent="."]
 visible = false
 energy = 0.95
@@ -6567,3 +6579,4 @@ script = ExtResource("19_km0o5")
 
 [connection signal="EnemyDamaged" from="TileMap/player" to="goblin_torch" method="_on_player_enemy_damaged"]
 [connection signal="HealthChanged" from="TileMap/player" to="CanvasLayer/HealthBar" method="_on_player_health_changed"]
+[connection signal="StaminaChanged" from="TileMap/player" to="CanvasLayer/StaminaBar" method="_on_player_stamina_changed"]

@@ -351,7 +351,7 @@ height = 70.0
 size = Vector2(46.2045, 123.709)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rq7l8"]
-size = Vector2(56, 111)
+size = Vector2(57, 111)
 
 [node name="player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
@@ -362,7 +362,7 @@ script = ExtResource("1_gt1ej")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_iu414")
 sprite_frames = SubResource("SpriteFrames_c2ap4")
-animation = &"attack_two"
+animation = &"attack_one"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -398,11 +398,12 @@ position = Vector2(1, 0)
 [node name="BladeAreaOne" type="Area2D" parent="BladeOnePivot/BladeOneAttackPoint" groups=["BladeOne"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BladeOnePivot/BladeOneAttackPoint/BladeAreaOne"]
-position = Vector2(59, -15.5)
+position = Vector2(59.5, -15.5)
 shape = SubResource("RectangleShape2D_rq7l8")
 disabled = true
 
 [node name="PivotLight" type="Marker2D" parent="."]
+visible = false
 
 [node name="PointLight" type="Marker2D" parent="PivotLight"]
 position = Vector2(1.52588e-05, -1.90735e-06)
@@ -417,8 +418,13 @@ texture_scale = 0.1
 
 [node name="TimerStaminaRegen" type="Timer" parent="."]
 
+[node name="TimerStaminaRegenStart" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerDeath" to="." method="_on_timer_death_timeout"]
 [connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
 [connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
+[connection signal="timeout" from="TimerStaminaRegenStart" to="." method="_on_timer_stamina_regen_start_timeout"]
