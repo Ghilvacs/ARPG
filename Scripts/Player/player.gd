@@ -14,6 +14,7 @@ var dead = false
 var attack_speed
 var mouse_position
 var last_position
+var dash_speed = 5000
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var blade_area_two: Area2D = $BladeAreaTwo
@@ -30,9 +31,6 @@ func _ready() -> void:
 	current_stamina = MAX_STAMINA
 
 func _physics_process(delta: float) -> void:
-	
-	print(current_stamina)
-	
 	if dead:
 		point_light.visible = false
 		if animated_sprite.animation != "death":
@@ -69,6 +67,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		if !isAttacking:
 			animated_sprite.play("idle")
+	
+	if Input.is_action_just_pressed("dash"):
+		velocity = direction.normalized() * dash_speed
+		velocity *= 1.0 - (0.5 * delta)
 	
 	move_and_slide()
 	
