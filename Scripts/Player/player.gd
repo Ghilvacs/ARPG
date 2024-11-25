@@ -108,9 +108,7 @@ func death() -> void:
 
 func attack(animation: String) -> void:
 	timer_stamina_regen.stop()
-	print("1")
 	if timer_stamina_regen_start.is_stopped():
-		print("2")
 		timer_stamina_regen_start.start()
 	current_stamina -= 20
 	StaminaChanged.emit(current_stamina)
@@ -158,14 +156,10 @@ func _on_timer_death_timeout() -> void:
 	get_tree().reload_current_scene()
 
 func _on_timer_stamina_regen_timeout() -> void:
-	print("6")
 	current_stamina += 20
 	StaminaChanged.emit(current_stamina)
 
 func _on_timer_stamina_regen_start_timeout() -> void:
-	print("3")
 	if current_stamina < 100:
-		print("4")
 		if timer_stamina_regen.is_stopped():
-			print("5")
 			timer_stamina_regen.start()
