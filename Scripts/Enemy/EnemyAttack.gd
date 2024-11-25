@@ -31,10 +31,11 @@ func physics_update(delta: float) -> void:
 		enemy.animated_sprite.flip_h = false
 	else:
 		enemy.animated_sprite.flip_h = true
-	if enemy.animated_sprite.animation == "attack" || enemy.animated_sprite.animation == "attack_up" || enemy.animated_sprite.animation == "attack_down" && enemy.animated_sprite.frame == 1:
+	if enemy.animated_sprite.animation == "attack" || enemy.animated_sprite.animation == "attack_up" || enemy.animated_sprite.animation == "attack_down":
+		if enemy.animated_sprite.frame == 3:
 			enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = false
-	if enemy.dead:
-		Transitioned.emit(self, "Dead")
+		if enemy.dead:
+			Transitioned.emit(self, "Dead")
 
 func _on_timer_timeout() -> void:
 	Transitioned.emit(self, "Wander")
