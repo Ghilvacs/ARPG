@@ -13,7 +13,7 @@ func enter() -> void:
 	
 func physics_update(delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
-	if direction.length() > 60 && direction.length() < 400:
+	if direction.length() > 90 && direction.length() < 400:
 		Transitioned.emit(self, "Follow")
 	elif  direction.length() > 400:
 		Transitioned.emit(self, "Wander")
@@ -31,10 +31,11 @@ func physics_update(delta: float) -> void:
 		enemy.animated_sprite.flip_h = false
 	else:
 		enemy.animated_sprite.flip_h = true
-	if enemy.animated_sprite.animation == "attack" && enemy.animated_sprite.frame == 3 || enemy.animated_sprite.animation == "attack_up" && enemy.animated_sprite.frame == 4 || enemy.animated_sprite.animation == "attack_down" && enemy.animated_sprite.frame == 4:
+	if enemy.animated_sprite.animation == "attack" || enemy.animated_sprite.animation == "attack_up" || enemy.animated_sprite.animation == "attack_down":
+		if enemy.animated_sprite.frame == 3:
 			enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = false
-	if enemy.dead:
-		Transitioned.emit(self, "Dead")
+		if enemy.dead:
+			Transitioned.emit(self, "Dead")
 
 func _on_timer_timeout() -> void:
 	Transitioned.emit(self, "Wander")

@@ -1,13 +1,15 @@
 extends CharacterBody2D
 signal EnemyDamaged
 signal HealthChanged
+signal StaminaChanged
 
 const MAX_HEALTH = 100
 const MAX_STAMINA = 100
+const MAX_SPEED = 350
 
-var speed = 300
 var current_health
 var current_stamina
+var current_speed
 var isAttacking = false
 var enemy: CharacterBody2D
 var dead = false
@@ -25,6 +27,7 @@ var dash_speed = 5000
 @onready var blade_one_attack_point: Marker2D = $BladeOnePivot/BladeOneAttackPoint
 @onready var point_light: Marker2D = $PivotLight/PointLight
 @onready var timer_stamina_regen: Timer = $TimerStaminaRegen
+@onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
@@ -37,12 +40,11 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("death")
 		return
 	
+	if current_stamina > 99.9:
+		timer_stamina_regen.stop()
+	
 	if animated_sprite.animation == "attack_one" || "attack_one_up" || "attack_one_down" && animated_sprite.frame > 1:
 		blade_area_one.get_child(0).disabled = true
-	
-	if current_stamina < 100:
-		if timer_stamina_regen.is_stopped():
-			timer_stamina_regen.start()
 	
 	mouse_position = get_local_mouse_position()
 	blade_one_attack_point.look_at(get_global_mouse_position())
@@ -50,12 +52,25 @@ func _physics_process(delta: float) -> void:
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if !isAttacking:
-		if animated_sprite.flip_h && direction.x < 0 || !animated_sprite.flip_h && direction.x > 0:
-			velocity = direction * speed
+		if Input.is_action_pressed("sprint") && current_stamina > 0:
+			if animated_sprite.flip_h && direction.x < 0 || !animated_sprite.flip_h && direction.x > 0:
+				timer_stamina_regen.stop()
+				current_stamina -= 0.5
+				StaminaChanged.emit(current_stamina)
+				current_speed = MAX_SPEED
+			else:
+				current_speed = MAX_SPEED / 2
+				if timer_stamina_regen_start.is_stopped():
+					timer_stamina_regen_start.start()
 		else:
-			velocity = direction * speed / 2
+			current_speed = MAX_SPEED / 2
+			if timer_stamina_regen_start.is_stopped():
+					timer_stamina_regen_start.start()
+
+		velocity = direction * current_speed
 	else:
 		velocity = Vector2.ZERO
+		
 	
 	if get_global_mouse_position().x > animated_sprite.global_position.x && !isAttacking:
 		animated_sprite.flip_h = false
@@ -74,32 +89,34 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	if Input.is_action_just_pressed("attack"):
-		if current_stamina >= 20:
-			last_position = mouse_position.x > 0
-			if mouse_position.y < -30 && mouse_position.x < 150 && mouse_position.x > -150:
-				
-				attack("attack_one_up")
-			elif mouse_position.y > 30 && mouse_position.x < 150 && mouse_position.x > -150:
-				attack("attack_one_down")
-			else:
-				if animated_sprite.animation == "attack_one" && animated_sprite.frame > 2:
-					if last_position == (mouse_position.x > 0):
-						blade_area_one.get_child(0).disabled = true
-						attack("attack_two")
-				elif !isAttacking:
-					attack("attack_one")
+	if Input.is_action_just_pressed("attack") && current_stamina >= 20:
+		last_position = mouse_position.x > 0
+		if mouse_position.y < -30 && mouse_position.x < 150 && mouse_position.x > -150:
+			attack("attack_one_up")
+		elif mouse_position.y > 30 && mouse_position.x < 150 && mouse_position.x > -150:
+			attack("attack_one_down")
+		else:
+			if animated_sprite.animation == "attack_one" && animated_sprite.frame > 2:
+				if last_position == (mouse_position.x > 0):
+					blade_area_one.get_child(0).disabled = true
+					attack("attack_two")
+			elif !isAttacking:
+				attack("attack_one")
 
 func death() -> void:
 	collision_shape.disabled = true
 	animated_sprite.z_index = 0
 	blade_area_one.get_child(0).disabled = true
 	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
-	speed = 0
+	current_speed = 0
 	dead = true
 
 func attack(animation: String) -> void:
+	timer_stamina_regen.stop()
+	if timer_stamina_regen_start.is_stopped():
+		timer_stamina_regen_start.start()
 	current_stamina -= 20
+	StaminaChanged.emit(current_stamina)
 	animated_sprite.play(animation)
 	isAttacking = true
 	if animation == "attack_one" || "attack_one_up" || "attack_one_down":
@@ -144,4 +161,10 @@ func _on_timer_death_timeout() -> void:
 	get_tree().reload_current_scene()
 
 func _on_timer_stamina_regen_timeout() -> void:
-	current_stamina += 10
+	current_stamina += 20
+	StaminaChanged.emit(current_stamina)
+
+func _on_timer_stamina_regen_start_timeout() -> void:
+	if current_stamina < 100:
+		if timer_stamina_regen.is_stopped():
+			timer_stamina_regen.start()
