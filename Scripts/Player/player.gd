@@ -84,8 +84,7 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("idle")
 	
 	if Input.is_action_just_pressed("dash"):
-		velocity = direction.normalized() * dash_speed
-		velocity *= 1.0 - (0.5 * delta)
+		dash(direction, delta)
 	
 	move_and_slide()
 	
@@ -134,6 +133,16 @@ func take_damage() -> void:
 		animated_sprite.material.set_shader_parameter('b', 0)
 		animated_sprite.material.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
+
+func dash(direction: Vector2, delta: float) -> void:
+	if current_stamina >= 20:
+		timer_stamina_regen.stop()
+		if timer_stamina_regen_start.is_stopped():
+			timer_stamina_regen_start.start()
+		current_stamina -= 20
+		StaminaChanged.emit(current_stamina)
+		velocity = direction.normalized() * dash_speed
+		velocity *= 1.0 - (0.5 * delta)
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "death":
