@@ -14,12 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://chhxsaeieo4ok" path="res://Assets/Tiny Swords (Update 010)/Resources/Trees/Tree.png" id="7_t8cb6"]
 [ext_resource type="Texture2D" uid="uid://4gsj1qogm2pd" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/Tiles.png" id="7_vysse"]
 [ext_resource type="Texture2D" uid="uid://cxllh6uj1q5x8" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Buildings/Tower/Tower_Destroyed.png" id="8_pe5cx"]
-[ext_resource type="PackedScene" uid="uid://dqus222up43m0" path="res://Scenes/player.tscn" id="9_adphl"]
+[ext_resource type="PackedScene" uid="uid://dqus222up43m0" path="res://Scenes/Player/player.tscn" id="9_adphl"]
 [ext_resource type="Texture2D" uid="uid://c2jab35tovwk2" path="res://Assets/Tiny Swords (Update 010)/Deco/07.png" id="12_va30m"]
-[ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/goblin_torch.tscn" id="15_jqxqr"]
+[ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/goblin_torch.tscn" id="15_jqxqr"]
 [ext_resource type="Script" path="res://Scripts/Player/HealthBar.gd" id="16_2dvhw"]
 [ext_resource type="Script" path="res://Scripts/Player/Draw.gd" id="19_km0o5"]
-[ext_resource type="Script" path="res://Scenes/StaminaBar.gd" id="19_vx361"]
+[ext_resource type="Script" path="res://Scenes/Player/StaminaBar.gd" id="19_vx361"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h4gaj"]
 texture = ExtResource("1_vs7yp")
