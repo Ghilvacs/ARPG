@@ -532,6 +532,7 @@ hframes = 7
 vframes = 5
 
 [node name="DeathSprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("4_c7y5k")
 hframes = 7
 vframes = 2
@@ -542,7 +543,6 @@ libraries = {
 }
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-visible = false
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_qss17")
