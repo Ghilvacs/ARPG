@@ -5,7 +5,6 @@ var player: CharacterBody2D
 
 @export var enemy: CharacterBody2D
 @export var move_speed := 0
-
 @onready var timer: Timer = $"../../Timer"
 
 func enter() -> void:
@@ -19,21 +18,25 @@ func physics_update(delta: float) -> void:
 		Transitioned.emit(self, "Wander")
 	elif player.current_health > 0:
 		if enemy.global_position.y - player.global_position.y > 50:
-			enemy.animated_sprite.play("attack_up")
+			enemy.animation_player.play("attack_up")
 		elif enemy.global_position.y - player.global_position.y < -30:
-			enemy.animated_sprite.play("attack_down")
+			enemy.animation_player.play("attack_down")
 		else:
-			enemy.animated_sprite.play("attack")
+			enemy.animation_player.play("attack")
 	
 	enemy.torch_attack_point.look_at(player.global_position)
 
 	if player.global_position.x > enemy.global_position.x:
-		enemy.animated_sprite.flip_h = false
+		enemy.sprite.flip_h = false
 	else:
-		enemy.animated_sprite.flip_h = true
-	if enemy.animated_sprite.animation == "attack" || enemy.animated_sprite.animation == "attack_up" || enemy.animated_sprite.animation == "attack_down":
-		if enemy.animated_sprite.frame == 3:
+		enemy.sprite.flip_h = true
+	if enemy.animation_player.current_animation == "attack" || enemy.animation_player.current_animation == "attack_up" || enemy.animation_player.current_animation == "attack_down":
+
+		##### THIS IS BUGGY. NEED TO MAKE SOME CHANGES
+		if enemy.animation_player.current_animation_position > 0.3 && enemy.animation_player.current_animation_position < 0.34:
 			enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = false
+		else:
+			enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = true
 		if enemy.dead:
 			Transitioned.emit(self, "Dead")
 

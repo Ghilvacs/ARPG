@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=71 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_dauif"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
@@ -10,6 +10,150 @@
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyAttack.gd" id="8_yjkbg"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="9_uubq2"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d00ob"]
+shader = ExtResource("2_oolxi")
+shader_parameter/opacity = 1.0
+shader_parameter/r = null
+shader_parameter/g = null
+shader_parameter/b = null
+shader_parameter/mix_color = null
+
+[sub_resource type="Animation" id="Animation_54xf7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DeathSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lep1j"]
+resource_name = "attack"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17, 18, 19]
+}
+
+[sub_resource type="Animation" id="Animation_jn0ld"]
+resource_name = "attack_down"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [21, 22, 23, 24, 25, 26]
+}
+
+[sub_resource type="Animation" id="Animation_4ct7l"]
+resource_name = "attack_up"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [28, 29, 30, 31, 32, 33]
+}
+
+[sub_resource type="Animation" id="Animation_8bemg"]
+resource_name = "death"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+}
+
+[sub_resource type="Animation" id="Animation_llqhb"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_remst"]
+resource_name = "run"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [7, 8, 9, 10, 11, 12]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dieqk"]
+_data = {
+"RESET": SubResource("Animation_54xf7"),
+"attack": SubResource("Animation_lep1j"),
+"attack_down": SubResource("Animation_jn0ld"),
+"attack_up": SubResource("Animation_4ct7l"),
+"death": SubResource("Animation_8bemg"),
+"idle": SubResource("Animation_llqhb"),
+"run": SubResource("Animation_remst")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qss17"]
 shader = ExtResource("2_oolxi")
@@ -389,7 +533,25 @@ size = Vector2(44, 94)
 motion_mode = 1
 script = ExtResource("1_dauif")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_d00ob")
+texture = ExtResource("3_xxij7")
+hframes = 7
+vframes = 5
+
+[node name="DeathSprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_c7y5k")
+hframes = 7
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dieqk")
+}
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_qss17")
@@ -470,6 +632,7 @@ position = Vector2(56, -25)
 shape = SubResource("RectangleShape2D_eysye")
 disabled = true
 
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
