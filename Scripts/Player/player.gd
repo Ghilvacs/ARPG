@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
 	
-	if animation_player.current_animation == "attack_one" || "attack_one_up" || "attack_one_down" && animation_player.current_animation_position > 1:
+	if animation_player.current_animation == "attack_one" || "attack_one_up" || "attack_one_down" && animation_player.current_animation_position > 0.1:
 		blade_area_one.get_child(0).disabled = true
 	
 	mouse_position = get_local_mouse_position()
