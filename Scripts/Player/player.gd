@@ -75,7 +75,6 @@ func _physics_process(delta: float) -> void:
 		velocity = direction * current_speed
 	else:
 		velocity = Vector2.ZERO
-		
 	
 	if get_global_mouse_position().x > sprite.global_position.x && !isAttacking:
 		sprite.flip_h = false
