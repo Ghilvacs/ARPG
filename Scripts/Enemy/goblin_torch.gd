@@ -30,8 +30,6 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
-	print(current_stamina)
-	
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
 	
