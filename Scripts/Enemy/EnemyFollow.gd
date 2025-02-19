@@ -11,7 +11,7 @@ func enter() -> void:
 func physics_update(delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
 	if direction.length() > 60:
-		if enemy.current_stamina > 0:
+		if enemy.current_stamina > 10:
 			move_speed = 200.0
 			enemy.timer_stamina_regen.stop()
 			enemy.current_stamina -= 0.5

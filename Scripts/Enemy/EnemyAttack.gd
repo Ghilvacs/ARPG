@@ -16,7 +16,11 @@ func physics_update(delta: float) -> void:
 		Transitioned.emit(self, "Follow")
 	elif  direction.length() > 400:
 		Transitioned.emit(self, "Wander")
-	elif player.current_health > 0:
+	elif player.current_health > 0 && enemy.current_stamina >= 10:
+		enemy.timer_stamina_regen.stop()
+		if enemy.timer_stamina_regen_start.is_stopped():
+			enemy.timer_stamina_regen_start.start()
+		enemy.current_stamina -= 10
 		if enemy.global_position.y - player.global_position.y > 50:
 			enemy.animation_player.play("attack_up")
 		elif enemy.global_position.y - player.global_position.y < -30:
