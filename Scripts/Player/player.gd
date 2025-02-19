@@ -3,7 +3,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 
-const MAX_HEALTH = 100
+const MAX_HEALTH = 10000
 const MAX_STAMINA = 100
 const MAX_SPEED = 350
 
@@ -75,7 +75,6 @@ func _physics_process(delta: float) -> void:
 		velocity = direction * current_speed
 	else:
 		velocity = Vector2.ZERO
-		
 	
 	if get_global_mouse_position().x > sprite.global_position.x && !isAttacking:
 		sprite.flip_h = false

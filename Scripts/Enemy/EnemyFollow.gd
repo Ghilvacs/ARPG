@@ -11,10 +11,23 @@ func enter() -> void:
 func physics_update(delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
 	if direction.length() > 60:
-		enemy.velocity = direction.normalized() * move_speed
+		if enemy.current_stamina > 10:
+			move_speed = 200.0
+			enemy.timer_stamina_regen.stop()
+			enemy.current_stamina -= 0.5
+			enemy.velocity = direction.normalized() * move_speed
+		else:
+			move_speed = 100.0
+			enemy.velocity = direction.normalized() * move_speed
+			if enemy.timer_stamina_regen_start.is_stopped():
+					enemy.timer_stamina_regen_start.start()
 	else:
 		enemy.velocity = Vector2()
+		if enemy.timer_stamina_regen_start.is_stopped():
+				enemy.timer_stamina_regen_start.start()
 	if direction.length() > 600 || player.current_health < 1:
+		if enemy.timer_stamina_regen_start.is_stopped():
+			enemy.timer_stamina_regen_start.start()
 		Transitioned.emit(self, "Wander")
 	elif direction.length() < 80:
 		Transitioned.emit(self, "Attack")

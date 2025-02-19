@@ -1,8 +1,11 @@
 extends CharacterBody2D
+signal StaminaChanged
 
 const MAX_HEALTH = 50
+const MAX_STAMINA = 100
 
 var current_health
+var current_stamina
 var dead = false
 var player: CharacterBody2D
 
@@ -17,13 +20,21 @@ var player: CharacterBody2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var death_sprite: Sprite2D = $DeathSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var timer_stamina_regen: Timer = $TimerStaminaRegen
+@onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
+	current_stamina = MAX_STAMINA
 	health_bar.value = current_health
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
+	print(current_stamina)
+	
+	if current_stamina > 99.9:
+		timer_stamina_regen.stop()
+	
 	if animation_player.current_animation == "attack" || animation_player.current_animation == "attack_up" || animation_player.current_animation == "attack_down":
 		return
 	if dead:
@@ -77,3 +88,11 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		queue_free()
 	if !dead:
 		animation_player.play("run")
+
+func _on_timer_stamina_regen_timeout() -> void:
+	current_stamina += 20
+
+func _on_timer_stamina_regen_start_timeout() -> void:
+	if current_stamina < 100:
+		if timer_stamina_regen.is_stopped():
+			timer_stamina_regen.start()
