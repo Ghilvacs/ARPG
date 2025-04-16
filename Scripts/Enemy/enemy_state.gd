@@ -1,6 +1,5 @@
-extends Node
+class_name State extends Node
 
-class_name State
 signal Transitioned
 
 func enter():
@@ -14,3 +13,6 @@ func update(_delta: float):
 
 func physics_update(_delta: float):
 	pass
+
+func handle_input(_event: InputEvent) -> State:
+	return null

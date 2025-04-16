@@ -30,10 +30,12 @@ var dash_speed = 3000
 @onready var point_light: Marker2D = $PivotLight/PointLight
 @onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
+@onready var state_machine: Node = $PlayerStateMachine
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
+	player_state_machine.initialize(self)
 	animation_player.get_animation("idle").loop = true
 
 func _physics_process(delta: float) -> void:
