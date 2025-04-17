@@ -3,7 +3,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 
-const MAX_HEALTH = 1000
+const MAX_HEALTH = 100
 const MAX_STAMINA = 100
 
 var current_health
