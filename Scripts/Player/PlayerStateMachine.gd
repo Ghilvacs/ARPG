@@ -1,4 +1,4 @@
-extends Node
+class_name PlayerStateMachine extends Node
 
 @export var initial_state: PlayerState
 
@@ -30,11 +30,10 @@ func initialize(_player: CharacterBody2D) -> void:
 		process_mode = Node.PROCESS_MODE_INHERIT
 
 func change_state(new_state: PlayerState) -> void:
-	if new_state == null || current_state:
+	if new_state == null or new_state == current_state:
 		return
 	
 	if current_state:
 		current_state.exit()
-	
 	current_state = new_state
 	current_state.enter()

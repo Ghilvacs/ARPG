@@ -13,3 +13,6 @@ func update(_delta: float) -> PlayerState:
 
 func physics_update(_delta: float) -> PlayerState:
 	return null
+
+func handle_input(_event: InputEvent) -> PlayerState:
+	return null
