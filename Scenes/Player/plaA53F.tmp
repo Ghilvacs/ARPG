@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=63 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -6,10 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_dnl75"]
 [ext_resource type="Texture2D" uid="uid://ce7aevx27rvhx" path="res://Assets/line_of_sight.png" id="5_mo2at"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStateMachine.gd" id="6_53wn1"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerIdle.gd" id="7_lfyrn"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerWalk.gd" id="8_g54q2"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerAttack.gd" id="9_h6bdn"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerDash.gd" id="10_p3q17"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -590,21 +586,12 @@ texture_scale = 0.1
 wait_time = 2.0
 one_shot = true
 
-[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="PlayerStateMachine" type="Node" parent="."]
 script = ExtResource("6_53wn1")
-initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("7_lfyrn")
 
 [node name="Walk" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("8_g54q2")
-
-[node name="Attack" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("9_h6bdn")
-
-[node name="Dash" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("10_p3q17")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
