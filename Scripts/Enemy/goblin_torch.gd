@@ -24,10 +24,6 @@ var player: CharacterBody2D
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 
 func _ready() -> void:
-#	var original_shader_material = sprite.material as ShaderMaterial
-#	var new_shader_material = ShaderMaterial.new()
-#	new_shader_material.shader = original_shader_material.shader
-#	sprite.material = new_shader_material
 	if sprite.material:
 		var shader_mat = sprite.material.duplicate()
 		sprite.material = shader_mat
@@ -79,9 +75,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
 		dead = true
-#	sprite.material.set_shader_parameter('opacity', 1.0)
-#	sprite.material.set_shader_parameter('r', 0)
-#	sprite.material.set_shader_parameter('mix_color', 0)
 	var shader_mat = sprite.material
 	shader_mat.set_shader_parameter('opacity', 1.0)
 	shader_mat.set_shader_parameter('r', 1.0)
