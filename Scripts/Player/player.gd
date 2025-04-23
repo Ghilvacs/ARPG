@@ -36,6 +36,7 @@ func _ready() -> void:
 	player_state_machine.initialize(self)
 
 func _physics_process(delta: float) -> void:
+	player_state_machine.current_state.physics_update(delta)
 	if dead:
 		point_light.visible = false
 		if animation_player.is_playing() && animation_player.current_animation != "death":
@@ -48,20 +49,21 @@ func _physics_process(delta: float) -> void:
 		current_stamina = 100.0
 		timer_stamina_regen.stop()
 	
-	mouse_position = get_local_mouse_position()
-	blade_one_attack_point.look_at(get_global_mouse_position())
-	point_light.look_at(get_global_mouse_position())
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
-	if get_global_mouse_position().x > sprite.global_position.x && !isAttacking:
-		sprite.flip_h = false
-	elif get_global_mouse_position().x < sprite.global_position.x && !isAttacking:
-		sprite.flip_h = true
+	update_facing()
 	
 	move_and_slide()
 
 func update_animation(state: String) -> void:
 	animation_player.play(state)
+
+func update_facing() -> void:
+	mouse_position = get_local_mouse_position()
+	if !isAttacking:
+		blade_one_attack_point.look_at(get_global_mouse_position())
+		point_light.look_at(get_global_mouse_position())
+		sprite.flip_h = mouse_position.x < 0
 
 func death() -> void:
 	collision_shape.disabled = true

@@ -10,6 +10,7 @@ var dash_time := 0.0
 var direction: Vector2
 
 func enter():
+	player.update_facing()
 	direction = player.direction
 	dash_time = 0.0
 

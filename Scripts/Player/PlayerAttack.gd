@@ -8,12 +8,14 @@ class_name StateAttack extends PlayerState
 var attack_started := false
 
 func enter():
+	player.update_facing()
 	attack_started = false
 	player.velocity = Vector2.ZERO  # Stop movement while attacking
 	_handle_attack_animation()
 
 func exit():
 	player.blade_area_one.get_node("CollisionShape2D").disabled = true
+	player.isAttacking = false
 	attack_started = false
 
 func update(_delta: float) -> PlayerState:
