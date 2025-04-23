@@ -6514,34 +6514,47 @@ position = Vector2(-577, 250)
 [node name="Camera2D" type="Camera2D" parent="TileMap/player"]
 position = Vector2(4, 7)
 limit_left = -1500
-limit_top = 0
+limit_top = -9999
 limit_right = 4300
 limit_bottom = 1500
 position_smoothing_enabled = true
 
-[node name="goblin_torch" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(1188, 655)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(419, 319)
 
-[node name="goblin_torch2" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch2" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(-443, 1444)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(-1212, 1108)
 
-[node name="goblin_torch6" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch3" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(2698, 1531)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(700, 972)
 
-[node name="goblin_torch3" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch4" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(1469, 1308)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(-1069, -1)
+scale = Vector2(0.994892, 1.00395)
 
-[node name="goblin_torch4" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch5" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(-451, 75)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1765, 276)
 
-[node name="goblin_torch5" parent="." instance=ExtResource("15_jqxqr")]
+[node name="goblin_torch6" parent="TileMap" instance=ExtResource("15_jqxqr")]
 light_mask = 2
-position = Vector2(2534, 612)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1929, 1195)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -6577,6 +6590,6 @@ blend_mode = 1
 position = Vector2(182, 590)
 script = ExtResource("19_km0o5")
 
-[connection signal="EnemyDamaged" from="TileMap/player" to="goblin_torch" method="_on_player_enemy_damaged"]
+[connection signal="EnemyDamaged" from="TileMap/player" to="TileMap/goblin_torch" method="_on_player_enemy_damaged"]
 [connection signal="HealthChanged" from="TileMap/player" to="CanvasLayer/HealthBar" method="_on_player_health_changed"]
 [connection signal="StaminaChanged" from="TileMap/player" to="CanvasLayer/StaminaBar" method="_on_player_stamina_changed"]

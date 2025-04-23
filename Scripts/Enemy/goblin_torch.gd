@@ -24,6 +24,13 @@ var player: CharacterBody2D
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 
 func _ready() -> void:
+#	var original_shader_material = sprite.material as ShaderMaterial
+#	var new_shader_material = ShaderMaterial.new()
+#	new_shader_material.shader = original_shader_material.shader
+#	sprite.material = new_shader_material
+	if sprite.material:
+		var shader_mat = sprite.material.duplicate()
+		sprite.material = shader_mat
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	health_bar.value = current_health
@@ -54,11 +61,12 @@ func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		current_health -= damage
 		health_bar.value = current_health
-		sprite.material.set_shader_parameter('opacity', 0.9)
-		sprite.material.set_shader_parameter('r', 1.0)
-		sprite.material.set_shader_parameter('g', 0)
-		sprite.material.set_shader_parameter('b', 0)
-		sprite.material.set_shader_parameter('mix_color', 0.5)
+		var shader_mat = sprite.material
+		shader_mat.set_shader_parameter('opacity', 0.9)
+		shader_mat.set_shader_parameter('r', 1.0)
+		shader_mat.set_shader_parameter('g', 0)
+		shader_mat.set_shader_parameter('b', 0)
+		shader_mat.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -71,9 +79,15 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
 		dead = true
-	sprite.material.set_shader_parameter('opacity', 1.0)
-	sprite.material.set_shader_parameter('r', 0)
-	sprite.material.set_shader_parameter('mix_color', 0)
+#	sprite.material.set_shader_parameter('opacity', 1.0)
+#	sprite.material.set_shader_parameter('r', 0)
+#	sprite.material.set_shader_parameter('mix_color', 0)
+	var shader_mat = sprite.material
+	shader_mat.set_shader_parameter('opacity', 1.0)
+	shader_mat.set_shader_parameter('r', 1.0)
+	shader_mat.set_shader_parameter('g', 1.0)
+	shader_mat.set_shader_parameter('b', 1.0)
+	shader_mat.set_shader_parameter('mix_color', 0.0)
 	timer_take_damage.stop()
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:

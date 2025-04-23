@@ -37,8 +37,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	player_state_machine.current_state.physics_update(delta)
-	print("Mouse at:", get_global_mouse_position())
-	print("BladePivot rotated to:", blade_one_attack_point.rotation)
 	if dead:
 		point_light.visible = false
 		if animation_player.is_playing() && animation_player.current_animation != "death":
@@ -62,11 +60,6 @@ func update_animation(state: String) -> void:
 
 func update_facing() -> void:
 	mouse_position = get_local_mouse_position()
-	
-#	if get_global_mouse_position().x > sprite.global_position.x && !isAttacking:
-#		sprite.flip_h = false
-#	elif get_global_mouse_position().x < sprite.global_position.x && !isAttacking:
-#		sprite.flip_h = true
 	if !isAttacking:
 		blade_one_attack_point.look_at(get_global_mouse_position())
 		point_light.look_at(get_global_mouse_position())
