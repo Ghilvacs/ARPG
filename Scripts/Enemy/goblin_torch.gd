@@ -1,7 +1,7 @@
 extends CharacterBody2D
 signal StaminaChanged
 
-const MAX_HEALTH = 50
+const MAX_HEALTH = 25
 const MAX_STAMINA = 100
 
 var current_health
