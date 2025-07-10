@@ -34,4 +34,6 @@ func physics_update(delta: float) -> void:
 
 	if enemy.dead:
 		Transitioned.emit(self, "Dead")
+	if enemy.hit:
+		Transitioned.emit(self, "Knockback")
 	
