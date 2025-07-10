@@ -1,6 +1,6 @@
 class_name StateAttack extends PlayerState
 
-@export var stamina_cost: float = 10.0
+@export var stamina_cost: float = 5.0
 @onready var idle: PlayerState = $"../Idle"
 @onready var walk: PlayerState = $"../Walk"
 @onready var dash: PlayerState = $"../Dash"

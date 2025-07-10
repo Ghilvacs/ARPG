@@ -1,12 +1,14 @@
 extends CharacterBody2D
 signal StaminaChanged
 
-const MAX_HEALTH = 25
+const MAX_HEALTH = 50
 const MAX_STAMINA = 100
 
 var current_health
 var current_stamina
 var dead = false
+var stunned = false
+var hit = false
 var player: CharacterBody2D
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -14,6 +16,7 @@ var player: CharacterBody2D
 @onready var torch_area: Area2D = $TorchPivot/TorchAttackPoint/TorchArea
 @onready var timer_take_damage: Timer = $TimerTakeDamage
 @onready var health_bar: ProgressBar = $HealthBar
+@onready var stamina_bar: ProgressBar = $StaminaBar
 @onready var timer: Timer = $Timer
 @onready var torch_light: PointLight2D = $PointLight2D
 @onready var torch_attack_point: Marker2D = $TorchPivot/TorchAttackPoint
@@ -22,6 +25,8 @@ var player: CharacterBody2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
+@onready var timer_stun: Timer = $TimerStun
+@onready var timer_knockback: Timer = $TimerKnockback
 
 func _ready() -> void:
 	if sprite.material:
@@ -30,6 +35,8 @@ func _ready() -> void:
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	health_bar.value = current_health
+	stamina_bar.value = current_stamina
+	
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
@@ -41,20 +48,29 @@ func _physics_process(delta: float) -> void:
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false
+		stamina_bar.visible = false
 		return
 	if velocity.length() > 0:
 		animation_player.play("run")
 	else:
 		animation_player.play("idle")
-	if velocity.x > 0:
-		sprite.flip_h = false
+	if !stunned:
+		if velocity.x > 0:
+			sprite.flip_h = false
+		else:
+			sprite.flip_h = true
 	else:
-		sprite.flip_h = true
+		if velocity.x < 0:
+			sprite.flip_h = false
+		else:
+			sprite.flip_h = true
 		
 	move_and_slide()
 
 func take_damage(damage: int) -> void:
+	var direction = -player.global_position + self.global_position
 	if timer_take_damage.is_stopped():
+		hit = true
 		current_health -= damage
 		health_bar.value = current_health
 		var shader_mat = sprite.material
@@ -95,9 +111,22 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		animation_player.play("run")
 
 func _on_timer_stamina_regen_timeout() -> void:
-	current_stamina += 20
+	current_stamina += 5
 
 func _on_timer_stamina_regen_start_timeout() -> void:
 	if current_stamina < 100:
 		if timer_stamina_regen.is_stopped():
 			timer_stamina_regen.start()
+
+func _on_timer_stun_timeout() -> void:
+	stunned = false
+	timer_stun.stop()
+	
+func _on_timer_knockback_timeout() -> void:
+	print("Knockback timer started")
+	if timer_stun.is_stopped():
+		print("Stun timer start")
+		stunned = true
+		timer_stun.start(0)
+	print("Knockback timer stop")
+	timer_knockback.stop()

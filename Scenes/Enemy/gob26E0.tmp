@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=72 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_dauif"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="9_uubq2"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_jkhm6"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="11_mfkwe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d00ob"]
 shader = ExtResource("2_oolxi")
@@ -590,13 +589,8 @@ enemy = NodePath("../..")
 script = ExtResource("9_uubq2")
 enemy = NodePath("../..")
 
-[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+[node name="Stun" type="Node" parent="StateMachine"]
 script = ExtResource("10_jkhm6")
-enemy = NodePath("../..")
-
-[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
-script = ExtResource("11_mfkwe")
-enemy = NodePath("../..")
 
 [node name="Hitbox" type="Area2D" parent="."]
 
@@ -616,23 +610,8 @@ offset_left = -45.0
 offset_top = -81.0
 offset_right = 45.0
 offset_bottom = -69.0
-max_value = 50.0
-value = 50.0
-rounded = true
-show_percentage = false
-
-[node name="StaminaBar" type="ProgressBar" parent="."]
-visible = false
-modulate = Color(0.231373, 0.635294, 0, 1)
-z_index = 1
-y_sort_enabled = true
-layout_direction = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -12.0
-offset_right = 90.0
-grow_vertical = 0
+max_value = 25.0
+value = 25.0
 rounded = true
 show_percentage = false
 
@@ -664,12 +643,6 @@ wait_time = 0.2
 one_shot = true
 
 [node name="TimerStun" type="Timer" parent="."]
-wait_time = 0.2
-
-[node name="TimerKnockback" type="Timer" parent="."]
-wait_time = 0.2
-
-[node name="KnockbackTween" type="Node" parent="."]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
@@ -679,4 +652,3 @@ wait_time = 0.2
 [connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
 [connection signal="timeout" from="TimerStaminaRegenStart" to="." method="_on_timer_stamina_regen_start_timeout"]
 [connection signal="timeout" from="TimerStun" to="." method="_on_timer_stun_timeout"]
-[connection signal="timeout" from="TimerKnockback" to="." method="_on_timer_knockback_timeout"]

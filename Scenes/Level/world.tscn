@@ -7142,40 +7142,16 @@ limit_bottom = 1500
 position_smoothing_enabled = true
 
 [node name="goblin_torch" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(419, 319)
+position = Vector2(512, 382)
 
 [node name="goblin_torch2" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(-1212, 1108)
+position = Vector2(-1523, 323)
 
 [node name="goblin_torch3" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(700, 972)
+position = Vector2(-560, 846)
 
 [node name="goblin_torch4" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(-1069, -1)
-
-[node name="goblin_torch5" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(1765, 276)
-
-[node name="goblin_torch6" parent="TileMap" instance=ExtResource("15_jqxqr")]
-light_mask = 2
-z_index = 1
-y_sort_enabled = true
-position = Vector2(1929, 1195)
+position = Vector2(-599, -410)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -7202,7 +7178,6 @@ script = ExtResource("19_vx361")
 player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
-visible = false
 energy = 0.95
 blend_mode = 1
 
@@ -7210,6 +7185,5 @@ blend_mode = 1
 position = Vector2(182, 590)
 script = ExtResource("19_km0o5")
 
-[connection signal="EnemyDamaged" from="TileMap/player" to="TileMap/goblin_torch" method="_on_player_enemy_damaged"]
 [connection signal="HealthChanged" from="TileMap/player" to="CanvasLayer/HealthBar" method="_on_player_health_changed"]
 [connection signal="StaminaChanged" from="TileMap/player" to="CanvasLayer/StaminaBar" method="_on_player_stamina_changed"]
