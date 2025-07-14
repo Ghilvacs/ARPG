@@ -7156,6 +7156,7 @@ position = Vector2(-599, -410)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
+visible = false
 modulate = Color(1, 0, 0, 1)
 offset_left = 55.0
 offset_top = 53.0
@@ -7178,7 +7179,7 @@ script = ExtResource("19_vx361")
 player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
-energy = 0.95
+energy = 0.99
 blend_mode = 1
 
 [node name="Draw" type="Node2D" parent="."]

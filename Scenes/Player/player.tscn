@@ -1,10 +1,11 @@
-[gd_scene load_steps=67 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=68 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
 [ext_resource type="Texture2D" uid="uid://bq5o17cv0lfxx" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_yja34"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_dnl75"]
 [ext_resource type="Texture2D" uid="uid://ce7aevx27rvhx" path="res://Assets/line_of_sight.png" id="5_mo2at"]
+[ext_resource type="Script" path="res://Scripts/Player/LineOfSight.gd" id="6_2hbxi"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStateMachine.gd" id="6_53wn1"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerIdle.gd" id="7_lfyrn"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerWalk.gd" id="8_g54q2"]
@@ -578,13 +579,15 @@ disabled = true
 [node name="PointLight" type="Marker2D" parent="PivotLight"]
 position = Vector2(1.52588e-05, -1.90735e-06)
 
-[node name="LineOfSight" type="PointLight2D" parent="PivotLight/PointLight"]
+[node name="LineOfSight" type="PointLight2D" parent="PivotLight/PointLight" node_paths=PackedStringArray("player")]
 position = Vector2(236, -11)
 scale = Vector2(24, 30.43)
 energy = 0.8
 shadow_enabled = true
 texture = ExtResource("5_mo2at")
 texture_scale = 0.1
+script = ExtResource("6_2hbxi")
+player = NodePath("../../..")
 
 [node name="TimerStaminaRegen" type="Timer" parent="."]
 

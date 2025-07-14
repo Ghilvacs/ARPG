@@ -3,7 +3,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 
-const MAX_HEALTH = 100
+const MAX_HEALTH = 5
 const MAX_STAMINA = 100
 
 var current_health
@@ -74,7 +74,7 @@ func death() -> void:
 
 func take_damage() -> void:
 	if timer_take_damage.is_stopped():
-		current_health -= 20
+		current_health -= 1
 		HealthChanged.emit(current_health)
 		sprite.material.set_shader_parameter('opacity', 0.9)
 		sprite.material.set_shader_parameter('r', 1.0)
@@ -82,6 +82,9 @@ func take_damage() -> void:
 		sprite.material.set_shader_parameter('b', 0)
 		sprite.material.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
+
+func get_hp_percent() -> float:
+	return float(current_health) / float(MAX_HEALTH)
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("GoblinTorch"):
