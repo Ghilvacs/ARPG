@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=86 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerWalk.gd" id="8_g54q2"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerAttack.gd" id="9_h6bdn"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerDash.gd" id="10_p3q17"]
+[ext_resource type="Texture2D" uid="uid://hu327xpu2nrs" path="res://Assets/Animation Pack/Animation Pack/Magic Mirror.png" id="12_c4vsp"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_mhh83"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -19,6 +21,316 @@ shader_parameter/r = null
 shader_parameter/g = null
 shader_parameter/b = null
 shader_parameter/mix_color = null
+
+[sub_resource type="Animation" id="Animation_jlu10"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/CrystalSprite1:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/CrystalSprite1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-70, -30)]
+}
+
+[sub_resource type="Animation" id="Animation_e6qyh"]
+resource_name = "cristal_spin"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/CrystalSprite1:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 0.5, 0.25, 0.5, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/CrystalSprite1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 0.5, 0.25, 0.5, 1),
+"update": 0,
+"values": [Vector2(-70, -30), Vector2(-70, -32.5), Vector2(-70, -35), Vector2(-70, -37.5), Vector2(-70, -40)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pcs4o"]
+_data = {
+"RESET": SubResource("Animation_jlu10"),
+"crystal_spin": SubResource("Animation_e6qyh")
+}
+
+[sub_resource type="Animation" id="Animation_70qt3"]
+resource_name = "crystal_spin"
+length = 0.625
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.125, 0.25, 0.375, 0.5, 0.625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.125, 0.25, 0.375, 0.5, 0.625),
+"transitions": PackedFloat32Array(1, 0.5, 0.25, 0.5, 1),
+"update": 0,
+"values": [Vector2(-35, -60), Vector2(-35, -57.5), Vector2(-35, -55), Vector2(-35, -52.5), Vector2(-35, -50)]
+}
+
+[sub_resource type="Animation" id="Animation_7dsab"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-35, -60)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwpdm"]
+_data = {
+"RESET": SubResource("Animation_7dsab"),
+"crystal_spin": SubResource("Animation_70qt3")
+}
+
+[sub_resource type="Animation" id="Animation_irkj4"]
+resource_name = "crystal_spin"
+length = 0.75
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.25, 0.375, 0.5, 0.625, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.25, 0.375, 0.5, 0.625, 0.75),
+"transitions": PackedFloat32Array(1, 0.5, 0.25, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, -80), Vector2(0, -82.5), Vector2(0, -85), Vector2(0, -87.5), Vector2(0, -90)]
+}
+
+[sub_resource type="Animation" id="Animation_1tifo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -80)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2hs5j"]
+_data = {
+"RESET": SubResource("Animation_1tifo"),
+"crystal_spin": SubResource("Animation_irkj4")
+}
+
+[sub_resource type="Animation" id="Animation_2yjct"]
+resource_name = "crystal_spin"
+length = 0.625
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.125, 0.25, 0.375, 0.5, 0.625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.125, 0.25, 0.375, 0.5, 0.625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(35, -65), Vector2(35, -62.5), Vector2(35, -60), Vector2(35, -58.5), Vector2(35, -55)]
+}
+
+[sub_resource type="Animation" id="Animation_bbrdu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35, -60)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3p2xt"]
+_data = {
+"RESET": SubResource("Animation_bbrdu"),
+"crystal_spin": SubResource("Animation_2yjct")
+}
+
+[sub_resource type="Animation" id="Animation_et0dh"]
+resource_name = "crystal_spin"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(70, -30), Vector2(70, -32.5), Vector2(70, -35), Vector2(70, -37.5), Vector2(70, -40)]
+}
+
+[sub_resource type="Animation" id="Animation_f1vrr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(70, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ctdq"]
+_data = {
+"RESET": SubResource("Animation_f1vrr"),
+"crystal_spin": SubResource("Animation_et0dh")
+}
 
 [sub_resource type="Animation" id="Animation_gskdi"]
 length = 0.001
@@ -41,6 +353,18 @@ tracks/1/path = NodePath("DeathSprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D/CrystalSprite1:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -93,6 +417,23 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [39, 40, 41]
+}
+
+[sub_resource type="Animation" id="Animation_tpqmv"]
+resource_name = "cristal_spin"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/CrystalSprite1:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
 }
 
 [sub_resource type="Animation" id="Animation_0sgym"]
@@ -151,6 +492,7 @@ _data = {
 "attack_one": SubResource("Animation_vf7w0"),
 "attack_one_down": SubResource("Animation_okm0s"),
 "attack_one_up": SubResource("Animation_vcbbn"),
+"cristal_spin": SubResource("Animation_tpqmv"),
 "death": SubResource("Animation_0sgym"),
 "idle": SubResource("Animation_mia6e"),
 "run": SubResource("Animation_lx57n")
@@ -518,6 +860,87 @@ texture = ExtResource("3_yja34")
 hframes = 6
 vframes = 8
 
+[node name="CrystalSprite1" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(-70, -30)
+scale = Vector2(0.5, 0.45)
+texture = ExtResource("12_c4vsp")
+vframes = 5
+
+[node name="CrystalAnimationPlayer" type="AnimationPlayer" parent="Sprite2D/CrystalSprite1"]
+root_node = NodePath("../../..")
+autoplay = "crystal_spin"
+libraries = {
+"": SubResource("AnimationLibrary_pcs4o")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite1"]
+texture = ExtResource("13_mhh83")
+texture_scale = 0.5
+
+[node name="CrystalSprite2" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(-35, -60)
+scale = Vector2(0.5, 0.45)
+texture = ExtResource("12_c4vsp")
+vframes = 5
+
+[node name="CrystalAnimationPlayer" type="AnimationPlayer" parent="Sprite2D/CrystalSprite2"]
+autoplay = "crystal_spin"
+libraries = {
+"": SubResource("AnimationLibrary_kwpdm")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite2"]
+texture = ExtResource("13_mhh83")
+texture_scale = 0.5
+
+[node name="CrystalSprite3" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(0, -80)
+scale = Vector2(0.5, 0.45)
+texture = ExtResource("12_c4vsp")
+vframes = 5
+
+[node name="CrystalAnimationPlayer" type="AnimationPlayer" parent="Sprite2D/CrystalSprite3"]
+autoplay = "crystal_spin"
+libraries = {
+"": SubResource("AnimationLibrary_2hs5j")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite3"]
+texture = ExtResource("13_mhh83")
+texture_scale = 0.5
+
+[node name="CrystalSprite4" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(35, -60)
+scale = Vector2(0.5, 0.45)
+texture = ExtResource("12_c4vsp")
+vframes = 5
+
+[node name="CrystalAnimationPlayer" type="AnimationPlayer" parent="Sprite2D/CrystalSprite4"]
+autoplay = "crystal_spin"
+libraries = {
+"": SubResource("AnimationLibrary_3p2xt")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite4"]
+texture = ExtResource("13_mhh83")
+texture_scale = 0.5
+
+[node name="CrystalSprite5" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(70, -30)
+scale = Vector2(0.5, 0.45)
+texture = ExtResource("12_c4vsp")
+vframes = 5
+
+[node name="CrystalAnimationPlayer" type="AnimationPlayer" parent="Sprite2D/CrystalSprite5"]
+autoplay = "crystal_spin"
+libraries = {
+"": SubResource("AnimationLibrary_5ctdq")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite5"]
+texture = ExtResource("13_mhh83")
+texture_scale = 0.5
+
 [node name="DeathSprite2D" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("4_dnl75")
@@ -525,7 +948,6 @@ hframes = 7
 vframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_12tow")
 }
@@ -580,7 +1002,7 @@ disabled = true
 position = Vector2(1.52588e-05, -1.90735e-06)
 
 [node name="LineOfSight" type="PointLight2D" parent="PivotLight/PointLight" node_paths=PackedStringArray("player")]
-position = Vector2(236, -11)
+position = Vector2(241.667, 3.33334)
 scale = Vector2(24, 30.43)
 energy = 0.8
 shadow_enabled = true
