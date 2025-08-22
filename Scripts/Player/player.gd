@@ -3,7 +3,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 
-const MAX_HEALTH = 100
+const MAX_HEALTH = 5
 const MAX_STAMINA = 100
 
 var current_health
@@ -29,6 +29,9 @@ var direction: Vector2
 @onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 @onready var player_state_machine: Node = $PlayerStateMachine
+@onready var crystals = $Sprite2D.get_children()
+
+
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
@@ -74,7 +77,8 @@ func death() -> void:
 
 func take_damage() -> void:
 	if timer_take_damage.is_stopped():
-		current_health -= 20
+		current_health -= 1
+		update_crystals()
 		HealthChanged.emit(current_health)
 		sprite.material.set_shader_parameter('opacity', 0.9)
 		sprite.material.set_shader_parameter('r', 1.0)
@@ -82,6 +86,17 @@ func take_damage() -> void:
 		sprite.material.set_shader_parameter('b', 0)
 		sprite.material.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
+
+func update_crystals() -> void:
+	for i in range(crystals.size()):
+		var light = crystals[i].get_node("PointLight2D")
+		if i < current_health:
+			light.visible = true
+		else:
+			light.visible = false
+
+func get_hp_percent() -> float:
+	return float(current_health) / float(MAX_HEALTH)
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("GoblinTorch"):
