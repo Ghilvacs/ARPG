@@ -47,7 +47,5 @@ func update(delta: float) -> PlayerState:
 	return null
 
 func physics_update(delta: float) -> PlayerState:
-#	var adjusted_speed = dash_speed * (1.0 - (0.5 * delta))
-#	player.velocity = direction.normalized() * adjusted_speed
 
 	return null
