@@ -84,6 +84,33 @@ _data = {
 "crystal_spin": SubResource("Animation_e6qyh")
 }
 
+[sub_resource type="Animation" id="Animation_7dsab"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-35, -60)]
+}
+
 [sub_resource type="Animation" id="Animation_70qt3"]
 resource_name = "crystal_spin"
 length = 0.625
@@ -113,7 +140,13 @@ tracks/1/keys = {
 "values": [Vector2(-35, -60), Vector2(-35, -57.5), Vector2(-35, -55), Vector2(-35, -52.5), Vector2(-35, -50)]
 }
 
-[sub_resource type="Animation" id="Animation_7dsab"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwpdm"]
+_data = {
+"RESET": SubResource("Animation_7dsab"),
+"crystal_spin": SubResource("Animation_70qt3")
+}
+
+[sub_resource type="Animation" id="Animation_1tifo"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -137,13 +170,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-35, -60)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwpdm"]
-_data = {
-"RESET": SubResource("Animation_7dsab"),
-"crystal_spin": SubResource("Animation_70qt3")
+"values": [Vector2(0, -80)]
 }
 
 [sub_resource type="Animation" id="Animation_irkj4"]
@@ -175,7 +202,13 @@ tracks/1/keys = {
 "values": [Vector2(0, -80), Vector2(0, -82.5), Vector2(0, -85), Vector2(0, -87.5), Vector2(0, -90)]
 }
 
-[sub_resource type="Animation" id="Animation_1tifo"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2hs5j"]
+_data = {
+"RESET": SubResource("Animation_1tifo"),
+"crystal_spin": SubResource("Animation_irkj4")
+}
+
+[sub_resource type="Animation" id="Animation_bbrdu"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -199,13 +232,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -80)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2hs5j"]
-_data = {
-"RESET": SubResource("Animation_1tifo"),
-"crystal_spin": SubResource("Animation_irkj4")
+"values": [Vector2(35, -60)]
 }
 
 [sub_resource type="Animation" id="Animation_2yjct"]
@@ -237,7 +264,13 @@ tracks/1/keys = {
 "values": [Vector2(35, -65), Vector2(35, -62.5), Vector2(35, -60), Vector2(35, -58.5), Vector2(35, -55)]
 }
 
-[sub_resource type="Animation" id="Animation_bbrdu"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3p2xt"]
+_data = {
+"RESET": SubResource("Animation_bbrdu"),
+"crystal_spin": SubResource("Animation_2yjct")
+}
+
+[sub_resource type="Animation" id="Animation_f1vrr"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -261,13 +294,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(35, -60)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_3p2xt"]
-_data = {
-"RESET": SubResource("Animation_bbrdu"),
-"crystal_spin": SubResource("Animation_2yjct")
+"values": [Vector2(70, -30)]
 }
 
 [sub_resource type="Animation" id="Animation_et0dh"]
@@ -297,33 +324,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(70, -30), Vector2(70, -32.5), Vector2(70, -35), Vector2(70, -37.5), Vector2(70, -40)]
-}
-
-[sub_resource type="Animation" id="Animation_f1vrr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(70, -30)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ctdq"]
