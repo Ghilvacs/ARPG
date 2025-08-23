@@ -7179,6 +7179,7 @@ script = ExtResource("19_vx361")
 player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
+visible = false
 energy = 0.99
 blend_mode = 1
 

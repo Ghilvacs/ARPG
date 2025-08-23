@@ -40,8 +40,8 @@ func physics_update(_delta: float) -> PlayerState:
 	return null
 
 func handle_input(_event: InputEvent) -> PlayerState:
-	if _event.is_action_pressed("attack") and player.current_stamina >= 10:
+	if _event.is_action_pressed("attack") and player.current_stamina >= 1:
 		return attack
-	if _event.is_action_pressed("dash") and player.current_stamina >= 20:
+	if _event.is_action_pressed("dash") and player.current_stamina >= 10:
 		return dash
 	return null

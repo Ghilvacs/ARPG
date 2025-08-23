@@ -15,7 +15,7 @@ func enter():
 	direction = player.direction
 	dash_time = 0.0
 
-	if player.current_stamina >= 20:
+	if player.current_stamina >= 10:
 		player.timer_stamina_regen.stop()
 		if player.timer_stamina_regen_start.is_stopped():
 			player.timer_stamina_regen_start.start()
