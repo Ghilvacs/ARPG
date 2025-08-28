@@ -9,7 +9,7 @@ var player: CharacterBody2D
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	# Predict the player's future position based on current velocity
 	var predicted_position = player.global_position + (player.velocity * prediction_factor)
 	var direction = predicted_position - enemy.global_position

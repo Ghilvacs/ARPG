@@ -28,8 +28,6 @@ func enter():
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(player, "global_position", target_position, dash_duration)
-	
-	tween.connect("finished", Callable(self, "_on_dash_finished"))
 
 func exit():
 	player.velocity = Vector2.ZERO
@@ -45,6 +43,6 @@ func update(delta: float) -> PlayerState:
 
 	return null
 
-func physics_update(delta: float) -> PlayerState:
+func physics_update(_delta: float) -> PlayerState:
 
 	return null

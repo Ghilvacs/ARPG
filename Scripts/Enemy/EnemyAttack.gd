@@ -10,7 +10,7 @@ var player: CharacterBody2D
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	if !enemy.hit:
 		var direction = player.global_position - enemy.global_position
 		enemy.stamina_bar.value = enemy.current_stamina

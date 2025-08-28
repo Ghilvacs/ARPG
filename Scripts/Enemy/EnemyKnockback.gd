@@ -41,5 +41,5 @@ func _on_knockback_finished():
 	enemy.stunned = true
 	Transitioned.emit(self, "Stun")
 	
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	pass
