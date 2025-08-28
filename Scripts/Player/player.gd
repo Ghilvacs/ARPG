@@ -15,6 +15,7 @@ var attack_speed
 var mouse_position
 var last_position
 var direction: Vector2
+var stamina_regen = false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var death_sprite: Sprite2D = $DeathSprite2D
@@ -26,11 +27,9 @@ var direction: Vector2
 @onready var blade_area_one: Area2D = $BladeOnePivot/BladeOneAttackPoint/BladeAreaOne
 @onready var blade_one_attack_point: Marker2D = $BladeOnePivot/BladeOneAttackPoint
 @onready var point_light: Marker2D = $PivotLight/PointLight
-@onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 @onready var player_state_machine: Node = $PlayerStateMachine
 @onready var crystals = $Sprite2D.get_children()
-
 
 
 func _ready() -> void:
@@ -50,7 +49,14 @@ func _physics_process(delta: float) -> void:
 	
 	if current_stamina > 99.9:
 		current_stamina = 100.0
-		timer_stamina_regen.stop()
+		stamina_regen = false
+		timer_stamina_regen_start.stop()
+	
+	if stamina_regen:
+		if current_stamina < 0:
+			current_stamina = 0
+		current_stamina += 0.2
+		StaminaChanged.emit(current_stamina)
 	
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	
@@ -113,17 +119,6 @@ func _on_timer_take_damage_timeout() -> void:
 func _on_timer_death_timeout() -> void:
 	get_tree().reload_current_scene()
 
-func _on_timer_stamina_regen_timeout() -> void:
-	if current_stamina < 0:
-		current_stamina = 0
-	current_stamina += 20
-	StaminaChanged.emit(current_stamina)
-
-func _on_timer_stamina_regen_start_timeout() -> void:
-	if current_stamina < 100:
-		if timer_stamina_regen.is_stopped():
-			timer_stamina_regen.start()
-
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "death":
 		timer_death.start()
@@ -133,3 +128,6 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	elif anim_name in ["attack_one", "attack_one_up", "attack_one_down"]:
 		blade_area_one.get_child(0).disabled = true
 		isAttacking = false
+
+func _on_timer_stamina_regen_start_timeout() -> void:
+	stamina_regen = true

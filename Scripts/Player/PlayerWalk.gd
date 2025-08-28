@@ -8,7 +8,7 @@ var current_speed
 @onready var dash: PlayerState = $"../Dash"
 
 func enter():
-	player.update_animation("run")	
+	player.update_animation("run")
 	pass
 
 func exit():
@@ -21,9 +21,9 @@ func update(_delta: float) -> PlayerState:
 	return null
 
 func physics_update(_delta: float) -> PlayerState:
-	if Input.is_action_pressed("sprint") and player.current_stamina > 0:
+	if Input.is_action_pressed("sprint") and player.current_stamina:
 		if player.sprite.flip_h && player.direction.x < 0 || !player.sprite.flip_h && player.direction.x > 0:
-				player.timer_stamina_regen.stop()
+				player.stamina_regen = false
 				player.current_stamina -= 0.1
 				player.StaminaChanged.emit(player.current_stamina)
 				current_speed = MAX_SPEED
@@ -40,8 +40,8 @@ func physics_update(_delta: float) -> PlayerState:
 	return null
 
 func handle_input(_event: InputEvent) -> PlayerState:
-	if _event.is_action_pressed("attack") and player.current_stamina >= 10:
+	if _event.is_action_pressed("attack") and player.current_stamina >= 1:
 		return attack
-	if _event.is_action_pressed("dash") and player.current_stamina >= 20:
+	if _event.is_action_pressed("dash") and player.current_stamina >= 10:
 		return dash
 	return null

@@ -1011,8 +1011,6 @@ texture_scale = 0.1
 script = ExtResource("6_2hbxi")
 player = NodePath("../../..")
 
-[node name="TimerStaminaRegen" type="Timer" parent="."]
-
 [node name="TimerStaminaRegenStart" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
@@ -1038,5 +1036,4 @@ script = ExtResource("10_p3q17")
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerDeath" to="." method="_on_timer_death_timeout"]
 [connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
-[connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
 [connection signal="timeout" from="TimerStaminaRegenStart" to="." method="_on_timer_stamina_regen_start_timeout"]

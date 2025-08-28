@@ -36,12 +36,12 @@ func handle_input(_event: InputEvent) -> PlayerState:
 	return null
 
 func _handle_attack_animation():
-#	if player.current_stamina < stamina_cost:
-#		return
+	if player.current_stamina < stamina_cost:
+		return
 
 	player.isAttacking = true
-#	player.current_stamina -= stamina_cost
-#	player.StaminaChanged.emit(player.current_stamina)
+	player.current_stamina -= stamina_cost
+	player.StaminaChanged.emit(player.current_stamina)
 
 	var mouse_pos = player.get_local_mouse_position()
 
@@ -55,9 +55,9 @@ func _handle_attack_animation():
 	attack(anim_name)
 
 func attack(animation: String) -> void:
-#	player.timer_stamina_regen.stop()
-#	if player.timer_stamina_regen_start.is_stopped():
-#		player.timer_stamina_regen_start.start()
+	player.stamina_regen = false
+	if player.timer_stamina_regen_start.is_stopped():
+		player.timer_stamina_regen_start.start()
 	player.animation_player.play(animation)
 	if animation in ["attack_one", "attack_one_up", "attack_one_down"]:
 		player.blade_area_one.get_node("CollisionShape2D").disabled = false
