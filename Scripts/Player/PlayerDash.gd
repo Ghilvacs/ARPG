@@ -16,10 +16,9 @@ func enter():
 	dash_time = 0.0
 
 	if player.current_stamina >= 10:
-		player.timer_stamina_regen.stop()
+		player.stamina_regen = false
 		if player.timer_stamina_regen_start.is_stopped():
 			player.timer_stamina_regen_start.start()
-
 		player.current_stamina -= 10
 		player.StaminaChanged.emit(player.current_stamina)
 		
