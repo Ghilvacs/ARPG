@@ -1,6 +1,6 @@
 class_name StateWalk extends PlayerState
 
-const MAX_SPEED = 350
+const MAX_SPEED = 350.0
 var current_speed
 
 @onready var idle: PlayerState = $"../Idle"

@@ -7144,15 +7144,6 @@ position_smoothing_enabled = true
 [node name="goblin_torch" parent="TileMap" instance=ExtResource("15_jqxqr")]
 position = Vector2(512, 382)
 
-[node name="goblin_torch2" parent="TileMap" instance=ExtResource("15_jqxqr")]
-position = Vector2(-1523, 323)
-
-[node name="goblin_torch3" parent="TileMap" instance=ExtResource("15_jqxqr")]
-position = Vector2(-560, 846)
-
-[node name="goblin_torch4" parent="TileMap" instance=ExtResource("15_jqxqr")]
-position = Vector2(-599, -410)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
@@ -7179,6 +7170,7 @@ script = ExtResource("19_vx361")
 player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
+visible = false
 energy = 0.99
 blend_mode = 1
 

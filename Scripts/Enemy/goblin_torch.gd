@@ -39,7 +39,7 @@ func _ready() -> void:
 	
 	player = get_tree().get_first_node_in_group("Player")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
 	
@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func take_damage(damage: int) -> void:
-	var direction = -player.global_position + self.global_position
+#	var direction = -player.global_position + self.global_position
 	if timer_take_damage.is_stopped():
 		hit = true
 		current_health -= damage

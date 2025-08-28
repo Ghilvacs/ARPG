@@ -12,7 +12,7 @@ func enter() -> void:
 	if enemy.timer_stun.is_stopped():
 		enemy.timer_stun.start(0)
 
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	direction = player.global_position - enemy.global_position
 	if !enemy.stunned:
 		if direction.length() > 600 || player.current_health < 1:
