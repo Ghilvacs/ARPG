@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://c2jab35tovwk2" path="res://Assets/Tiny Swords (Update 010)/Deco/07.png" id="12_va30m"]
 [ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/goblin_torch.tscn" id="15_jqxqr"]
 [ext_resource type="Script" path="res://Scripts/Player/Draw.gd" id="19_km0o5"]
-[ext_resource type="PackedScene" uid="uid://drurpwy2q2uc7" path="res://Scenes/Level/PlayerSpawn.tscn" id="19_otxqc"]
+[ext_resource type="PackedScene" uid="uid://bq8au61eaed7j" path="res://Scenes/Level/PlayerSpawn.tscn" id="19_otxqc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h4gaj"]
 texture = ExtResource("1_vs7yp")
