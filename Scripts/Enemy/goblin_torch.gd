@@ -29,6 +29,8 @@ var player: CharacterBody2D
 @onready var timer_knockback: Timer = $TimerKnockback
 
 func _ready() -> void:
+	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
+	GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
 	if sprite.material:
 		var shader_mat = sprite.material.duplicate()
 		sprite.material = shader_mat
@@ -68,7 +70,6 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func take_damage(damage: int) -> void:
-#	var direction = -player.global_position + self.global_position
 	if timer_take_damage.is_stopped():
 		hit = true
 		current_health -= damage
@@ -130,3 +131,9 @@ func _on_timer_knockback_timeout() -> void:
 		timer_stun.start(0)
 	print("Knockback timer stop")
 	timer_knockback.stop()
+
+func _on_player_spawned(player: CharacterBody2D) -> void:
+		self.player = player
+		
+func _on_player_despawned() -> void:
+	player = null

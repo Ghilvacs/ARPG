@@ -14,6 +14,8 @@ func randomize_wander():
 	wander_time = randf_range(1, 3)
 
 func enter() -> void:
+	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
+	GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
 	player = get_tree().get_first_node_in_group("Player")
 	randomize_wander()
 	
@@ -36,4 +38,12 @@ func physics_update(_delta: float) -> void:
 		Transitioned.emit(self, "Dead")
 	if enemy.hit:
 		Transitioned.emit(self, "Knockback")
-	
+
+func _on_player_spawned(player: CharacterBody2D) -> void:
+		self.player = player
+		
+func _on_player_despawned() -> void:
+	player = null
+
+
+

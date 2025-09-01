@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://b71yxxtch8tu7"]
+[gd_scene load_steps=37 format=3 uid="uid://b71yxxtch8tu7"]
 
 [ext_resource type="Texture2D" uid="uid://dx1bn5hwjfvdr" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="1_vs7yp"]
 [ext_resource type="Texture2D" uid="uid://bpullgrlaydlb" path="res://Assets/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Elevation.png" id="2_0eo8g"]
@@ -15,12 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://4gsj1qogm2pd" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/Tiles.png" id="7_vysse"]
 [ext_resource type="Texture2D" uid="uid://cxllh6uj1q5x8" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Buildings/Tower/Tower_Destroyed.png" id="8_pe5cx"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="8_y4o1i"]
-[ext_resource type="PackedScene" uid="uid://dqus222up43m0" path="res://Scenes/Player/player.tscn" id="9_adphl"]
 [ext_resource type="Texture2D" uid="uid://c2jab35tovwk2" path="res://Assets/Tiny Swords (Update 010)/Deco/07.png" id="12_va30m"]
 [ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/goblin_torch.tscn" id="15_jqxqr"]
-[ext_resource type="Script" path="res://Scripts/Player/HealthBar.gd" id="16_2dvhw"]
 [ext_resource type="Script" path="res://Scripts/Player/Draw.gd" id="19_km0o5"]
-[ext_resource type="Script" path="res://Scenes/Player/StaminaBar.gd" id="19_vx361"]
+[ext_resource type="PackedScene" uid="uid://drurpwy2q2uc7" path="res://Scenes/Level/PlayerSpawn.tscn" id="19_otxqc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h4gaj"]
 texture = ExtResource("1_vs7yp")
@@ -7129,45 +7127,20 @@ layer_4/y_sort_origin = 0
 layer_4/z_index = 1
 layer_4/tile_data = PackedInt32Array()
 
-[node name="player" parent="TileMap" instance=ExtResource("9_adphl")]
-position = Vector2(-577, 250)
-
-[node name="Camera2D" type="Camera2D" parent="TileMap/player"]
-position = Vector2(4, 7)
-zoom = Vector2(1.5, 1.5)
-limit_left = -1500
-limit_top = -9999
-limit_right = 4300
-limit_bottom = 1500
-position_smoothing_enabled = true
-
 [node name="goblin_torch" parent="TileMap" instance=ExtResource("15_jqxqr")]
 position = Vector2(512, 382)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
 visible = false
-modulate = Color(1, 0, 0, 1)
-offset_left = 55.0
-offset_top = 53.0
-offset_right = 259.0
-offset_bottom = 80.0
-value = 100.0
-rounded = true
-show_percentage = false
-script = ExtResource("16_2dvhw")
-player = NodePath("../../TileMap/player")
 
-[node name="StaminaBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
+[node name="StaminaBar" type="ProgressBar" parent="CanvasLayer"]
+visible = false
 offset_left = 54.0
 offset_top = 89.0
 offset_right = 259.0
 offset_bottom = 109.0
 value = 100.0
 rounded = true
-script = ExtResource("19_vx361")
-player = NodePath("../../TileMap/player")
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
 visible = false
@@ -7178,5 +7151,6 @@ blend_mode = 1
 position = Vector2(182, 590)
 script = ExtResource("19_km0o5")
 
-[connection signal="HealthChanged" from="TileMap/player" to="CanvasLayer/HealthBar" method="_on_player_health_changed"]
-[connection signal="StaminaChanged" from="TileMap/player" to="CanvasLayer/StaminaBar" method="_on_player_stamina_changed"]
+[node name="PlayerSpawn" parent="." instance=ExtResource("19_otxqc")]
+z_index = 1
+position = Vector2(554, 386)

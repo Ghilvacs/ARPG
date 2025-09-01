@@ -3,6 +3,7 @@ extends ProgressBar
 @export var player: CharacterBody2D
 
 func _ready() -> void:
+	player.connect("StaminaChanged", Callable(self, "_on_player_stamina_changed"))
 	update(player.current_stamina)
 
 func update(current_stamina: int):
