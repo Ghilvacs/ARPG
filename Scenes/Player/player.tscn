@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=87 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerDash.gd" id="10_p3q17"]
 [ext_resource type="Texture2D" uid="uid://hu327xpu2nrs" path="res://Assets/Animation Pack/Animation Pack/Magic Mirror.png" id="12_c4vsp"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_mhh83"]
+[ext_resource type="Script" path="res://Scripts/Player/StaminaBar.gd" id="14_2h7eg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -1030,6 +1031,25 @@ script = ExtResource("9_h6bdn")
 
 [node name="Dash" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_p3q17")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+
+[node name="StaminaBar" type="ProgressBar" parent="." node_paths=PackedStringArray("player")]
+offset_left = -50.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 77.0
+scale = Vector2(0.5, 0.5)
+value = 100.0
+rounded = true
+show_percentage = false
+script = ExtResource("14_2h7eg")
+player = NodePath("..")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

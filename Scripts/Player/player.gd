@@ -1,13 +1,15 @@
 extends CharacterBody2D
+
 signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
+signal PlayerDied
 
 const MAX_HEALTH = 5
 const MAX_STAMINA = 100
 
 var current_health
-var current_stamina
+var current_stamina = MAX_STAMINA
 var isAttacking = false
 var enemy: CharacterBody2D
 var dead = false
@@ -31,11 +33,11 @@ var stamina_regen = false
 @onready var player_state_machine: Node = $PlayerStateMachine
 @onready var crystals = $Sprite2D.get_children()
 
-
 func _ready() -> void:
 	current_health = MAX_HEALTH
-	current_stamina = MAX_STAMINA
+#	current_stamina = MAX_STAMINA
 	player_state_machine.initialize(self)
+	StaminaChanged.emit(current_stamina)
 
 func _physics_process(delta: float) -> void:
 	player_state_machine.current_state.physics_update(delta)
@@ -117,7 +119,9 @@ func _on_timer_take_damage_timeout() -> void:
 	timer_take_damage.stop()
 
 func _on_timer_death_timeout() -> void:
-	get_tree().reload_current_scene()
+	emit_signal("PlayerDied")
+#	get_tree().reload_current_scene()
+	queue_free()
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "death":
