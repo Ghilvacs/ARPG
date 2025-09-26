@@ -1,6 +1,6 @@
 class_name StateDash extends PlayerState
 
-@export var dash_distance: float = 100.0
+@export var dash_distance: float = 35.0
 @export var dash_duration: float = 0.2
 
 @onready var idle: PlayerState = $"../Idle"

@@ -1,6 +1,6 @@
 class_name StateWalk extends PlayerState
 
-const MAX_SPEED = 350.0
+const MAX_SPEED = 100.0
 var current_speed
 
 @onready var idle: PlayerState = $"../Idle"
@@ -28,11 +28,11 @@ func physics_update(_delta: float) -> PlayerState:
 				player.StaminaChanged.emit(player.current_stamina)
 				current_speed = MAX_SPEED
 		else:
-			current_speed = MAX_SPEED / 2
+			current_speed = MAX_SPEED / 1.5
 			if player.timer_stamina_regen_start.is_stopped():
 				player.timer_stamina_regen_start.start()
 	else:
-		current_speed = MAX_SPEED / 2
+		current_speed = MAX_SPEED / 1.5
 		if player.timer_stamina_regen_start.is_stopped():
 			player.timer_stamina_regen_start.start()
 	player.velocity = player.direction * current_speed
