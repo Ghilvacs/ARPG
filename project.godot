@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="ARPG"
-run/main_scene="res://Scenes/Level/world.tscn"
+run/main_scene="res://Scenes/Level/Level00Tutorial/room01.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GlobalPlayerManager="*res://Scripts/00_Globals/global_player_manager.gd"
+GlobalLevelManager="*res://Scripts/00_Globals/global_level_manager.gd"
+ScreenFader="*res://Scripts/Level/ScreenFader.gd"
 
 [input]
 

@@ -28,11 +28,11 @@ func update(delta: float) -> void:
 func physics_update(_delta: float) -> void:
 	if enemy:
 		enemy.velocity = move_direction * move_speed
-
-	var direction = player.global_position - enemy.global_position
+	if player:
+		var direction = player.global_position - enemy.global_position
 	
-	if direction.length() < 500 && player.current_health > 1:
-		Transitioned.emit(self, "Follow")
+		if direction.length() < 300 && player.current_health > 1:
+			Transitioned.emit(self, "Follow")
 
 	if enemy.dead:
 		Transitioned.emit(self, "Dead")
