@@ -2,7 +2,7 @@ extends State
 class_name EnemyFollow
 
 @export var enemy: CharacterBody2D
-@export var move_speed := 400.0
+@export var move_speed := 150.0
 @export var prediction_factor := 0.4  # How far ahead the enemy predicts (tweakable)
 var player: CharacterBody2D
 
@@ -16,7 +16,7 @@ func physics_update(_delta: float) -> void:
 	
 	enemy.stamina_bar.value = enemy.current_stamina
 	
-	if direction.length() > 60:
+	if direction.length() > 30:
 		if enemy.current_stamina > 10:
 			enemy.timer_stamina_regen.stop()
 			enemy.velocity = direction.normalized() * move_speed
@@ -30,11 +30,11 @@ func physics_update(_delta: float) -> void:
 			enemy.timer_stamina_regen_start.start()
 	
 	# Transitions
-	if direction.length() > 600 or player.current_health < 1:
+	if direction.length() > 200 or player.current_health < 1:
 		if enemy.timer_stamina_regen_start.is_stopped():
 			enemy.timer_stamina_regen_start.start()
 		Transitioned.emit(self, "Wander")
-	elif direction.length() < 80:
+	elif direction.length() < 20:
 		Transitioned.emit(self, "Attack")
 	
 	if enemy.dead:

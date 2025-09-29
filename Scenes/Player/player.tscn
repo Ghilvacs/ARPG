@@ -1034,6 +1034,7 @@ script = ExtResource("10_p3q17")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(6, 6)
+limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
 

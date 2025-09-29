@@ -5,7 +5,7 @@ signal HealthChanged
 signal StaminaChanged
 signal PlayerDied
 
-const MAX_HEALTH = 5
+const MAX_HEALTH = 100000
 const MAX_STAMINA = 100
 
 var current_health
@@ -35,7 +35,7 @@ var stamina_regen = false
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
-#	current_stamina = MAX_STAMINA
+	current_stamina = MAX_STAMINA
 	player_state_machine.initialize(self)
 	StaminaChanged.emit(current_stamina)
 

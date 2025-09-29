@@ -533,7 +533,7 @@ size = Vector2(44, 94)
 
 [node name="goblin_torch" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 1
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.15, 0.15)
 motion_mode = 1
 script = ExtResource("1_dauif")
 
