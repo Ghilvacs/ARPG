@@ -10,6 +10,7 @@ var dead = false
 var stunned = false
 var hit = false
 var player: CharacterBody2D
+var isAttacking = false
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: Node = $StateMachine
@@ -44,18 +45,17 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
-	
-	if animation_player.current_animation == "attack" || animation_player.current_animation == "attack_up" || animation_player.current_animation == "attack_down":
-		return
+		print(current_stamina)
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false
 		stamina_bar.visible = false
 		return
-	if velocity.length() > 0:
+	if velocity.length() > 0 && !isAttacking:
 		animation_player.play("run")
-	else:
+	elif !isAttacking:
 		animation_player.play("idle")
+		
 	if !stunned:
 		if velocity.x > 0:
 			sprite.flip_h = false
@@ -101,15 +101,8 @@ func _on_timer_take_damage_timeout() -> void:
 	timer_take_damage.stop()
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "attack" || "attack_up" || "attack_down":
-		torch_area.get_child(0).disabled = true
-		animation_player.play("run")
-		if player.current_health < 1:
-			timer.start()
 	if anim_name == "death":
 		queue_free()
-	if !dead:
-		animation_player.play("run")
 
 func _on_timer_stamina_regen_timeout() -> void:
 	current_stamina += 5

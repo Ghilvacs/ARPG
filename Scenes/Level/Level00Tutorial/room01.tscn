@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://p2tl4q6yn0j4"]
+[gd_scene load_steps=15 format=3 uid="uid://p2tl4q6yn0j4"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_2papx"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_tcxjb"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://caglke5lw744q" path="res://Assets/free-2d-top-down-pixel-dungeon-asset-pack/PNG/walls_floor.png" id="5_we6ao"]
 [ext_resource type="PackedScene" uid="uid://bq8au61eaed7j" path="res://Scenes/Level/PlayerSpawn.tscn" id="6_3uv1x"]
 [ext_resource type="PackedScene" uid="uid://dxgc6jaofntpi" path="res://Scenes/Level/LevelTransition.tscn" id="7_x2avf"]
+[ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/goblin_torch.tscn" id="8_evx8m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_tcxjb")
@@ -2663,3 +2664,9 @@ position = Vector2(-176, 176)
 level = "res://Scenes/Level/Level00Tutorial/room04.tscn"
 side = 3
 size = 3
+
+[node name="goblin_torch" parent="." instance=ExtResource("8_evx8m")]
+position = Vector2(160, -16)
+
+[node name="goblin_torch2" parent="." instance=ExtResource("8_evx8m")]
+position = Vector2(-336, 48)

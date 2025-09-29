@@ -5,7 +5,7 @@ signal HealthChanged
 signal StaminaChanged
 signal PlayerDied
 
-const MAX_HEALTH = 100000
+const MAX_HEALTH = 5
 const MAX_STAMINA = 100
 
 var current_health

@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=75 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_dauif"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
@@ -51,6 +51,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id="Animation_lep1j"]
 resource_name = "attack"
 length = 0.6
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -67,6 +68,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_jn0ld"]
 resource_name = "attack_down"
 length = 0.6
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -83,6 +85,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_4ct7l"]
 resource_name = "attack_up"
 length = 0.6
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -531,6 +534,12 @@ height = 72.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eysye"]
 size = Vector2(44, 94)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ahqda"]
+radius = 684.69
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jowbk"]
+radius = 92.8559
+
 [node name="goblin_torch" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 1
 scale = Vector2(0.15, 0.15)
@@ -541,7 +550,7 @@ script = ExtResource("1_dauif")
 material = SubResource("ShaderMaterial_d00ob")
 texture = ExtResource("3_xxij7")
 hframes = 7
-vframes = 5
+vframes = 6
 
 [node name="DeathSprite2D" type="Sprite2D" parent="."]
 visible = false
@@ -565,6 +574,7 @@ animation = &"attack"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, 10)
@@ -577,7 +587,6 @@ initial_state = NodePath("Wander")
 [node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
 script = ExtResource("6_pe4vp")
 enemy = NodePath("../..")
-move_speed = 50.0
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
 script = ExtResource("7_rgr1q")
@@ -603,6 +612,7 @@ enemy = NodePath("../..")
 position = Vector2(3.33333, 18.3333)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 position = Vector2(-4, -19)
 shape = SubResource("CapsuleShape2D_khh3g")
 
@@ -672,6 +682,18 @@ wait_time = 0.2
 wait_time = 0.2
 
 [node name="KnockbackTween" type="Node" parent="."]
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+visible = false
+shape = SubResource("CircleShape2D_ahqda")
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+visible = false
+shape = SubResource("CircleShape2D_jowbk")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
