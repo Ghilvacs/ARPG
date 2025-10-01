@@ -2,7 +2,7 @@ extends State
 class_name EnemyFollow
 
 @export var enemy: CharacterBody2D
-@export var move_speed := 100.0
+@export var move_speed := 80.0
 var player: CharacterBody2D
 var player_in_detection_range := true
 var attack_animation: String = ""

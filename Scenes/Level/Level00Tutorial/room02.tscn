@@ -2648,7 +2648,8 @@ visible = false
 position = Vector2(88, -112)
 shape = SubResource("RectangleShape2D_6wnv2")
 
-[node name="LevelTransition" parent="." instance=ExtResource("7_vi7hj")]
+[node name="RoomTransition" parent="." instance=ExtResource("7_vi7hj")]
 position = Vector2(0, 48)
 level = "res://Scenes/Level/Level00Tutorial/room01.tscn"
+target_transition_area = "RoomTransition"
 side = 3

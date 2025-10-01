@@ -45,7 +45,6 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
-		print(current_stamina)
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false

@@ -2,7 +2,7 @@ extends State
 class_name EnemyKnockback
 
 @export var enemy: CharacterBody2D
-@export var knockback_distance: float = 5.0
+@export var knockback_distance: float = 8.0
 @export var knockback_duration: float = 0.2
 
 var player: CharacterBody2D

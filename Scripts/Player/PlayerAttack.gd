@@ -14,7 +14,6 @@ func enter():
 	_handle_attack_animation()
 
 func exit():
-	player.blade_area_one.get_node("CollisionShape2D").disabled = true
 	player.isAttacking = false
 	attack_started = false
 
@@ -60,7 +59,6 @@ func attack(animation: String) -> void:
 		player.timer_stamina_regen_start.start()
 	player.animation_player.play(animation)
 	if animation in ["attack_one", "attack_one_up", "attack_one_down"]:
-		player.blade_area_one.get_node("CollisionShape2D").disabled = false
 		await get_tree().process_frame
 	elif animation == "attack_two":
 		player.blade_area_two.get_child(0).disabled = false

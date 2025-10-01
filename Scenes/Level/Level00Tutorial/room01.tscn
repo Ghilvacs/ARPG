@@ -2649,24 +2649,24 @@ visible = false
 position = Vector2(-32, 0)
 shape = SubResource("RectangleShape2D_vky3s")
 
-[node name="LevelTransition" parent="." instance=ExtResource("7_x2avf")]
+[node name="RoomTransition" parent="." instance=ExtResource("7_x2avf")]
 position = Vector2(-320, -176)
 level = "res://Scenes/Level/Level00Tutorial/room02.tscn"
+target_transition_area = "RoomTransition"
 side = 2
 
-[node name="LevelTransition2" parent="." instance=ExtResource("7_x2avf")]
+[node name="RoomTransition2" parent="." instance=ExtResource("7_x2avf")]
 position = Vector2(-368, 0)
 level = "res://Scenes/Level/Level00Tutorial/room03.tscn"
+target_transition_area = "RoomTransition"
 size = 5
 
-[node name="LevelTransition3" parent="." instance=ExtResource("7_x2avf")]
-position = Vector2(-176, 176)
+[node name="RoomTransition3" parent="." instance=ExtResource("7_x2avf")]
+position = Vector2(-168, 176)
 level = "res://Scenes/Level/Level00Tutorial/room04.tscn"
+target_transition_area = "RoomTransition"
 side = 3
-size = 3
+size = 4
 
 [node name="goblin_torch" parent="." instance=ExtResource("8_evx8m")]
-position = Vector2(160, -16)
-
-[node name="goblin_torch2" parent="." instance=ExtResource("8_evx8m")]
-position = Vector2(-336, 48)
+position = Vector2(192, -40)
