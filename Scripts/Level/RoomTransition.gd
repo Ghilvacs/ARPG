@@ -38,10 +38,11 @@ func _ready() -> void:
 	body_entered.connect(_player_entered)
 
 func _player_entered(_p: Node2D) -> void:
-	if not monitoring:
-		return
-	monitoring = false
-	GlobalLevelManager.load_new_level(level, target_transition_area, get_offset())
+	if _p.is_in_group("Player"):
+		if not monitoring:
+			return
+		monitoring = false
+		GlobalLevelManager.load_new_level(level, target_transition_area, get_offset())
 
 func _place_player() -> void:
 	if name != GlobalLevelManager.target_transition:
