@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://ck1e8nxkvuciu"]
+
+[ext_resource type="Script" path="res://Player/PlayerSpawn.gd" id="1_utv58"]
+[ext_resource type="Texture2D" uid="uid://bq5o17cv0lfxx" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="2_ow8j2"]
+
+[node name="PlayerSpawn" type="Node2D"]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_utv58")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.458824, 1, 0.219608, 0.635294)
+texture = ExtResource("2_ow8j2")
+hframes = 6
+vframes = 8
