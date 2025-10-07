@@ -11,6 +11,7 @@ var direction: Vector2
 var tween: Tween
 
 func enter():
+	player.dash_audio.play()
 	player.update_facing()
 	direction = player.direction
 	dash_time = 0.0

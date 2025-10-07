@@ -32,6 +32,9 @@ var stamina_regen = false
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 @onready var player_state_machine: Node = $PlayerStateMachine
 @onready var crystals = $Sprite2D.get_children()
+@onready var dash_audio: AudioStreamPlayer2D = $DashAudio
+@onready var player_damage_taken_audio: AudioStreamPlayer2D = $PlayerDamageTakenAudio
+@onready var player_death_audio: AudioStreamPlayer2D = $PlayerDeathAudio
 
 func _ready() -> void:
 	current_health = MAX_HEALTH
@@ -39,7 +42,7 @@ func _ready() -> void:
 	player_state_machine.initialize(self)
 	StaminaChanged.emit(current_stamina)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float) -> void:	
 	player_state_machine.current_state.physics_update(delta)
 	if dead:
 		point_light.visible = false
@@ -78,6 +81,7 @@ func update_facing() -> void:
 
 func death() -> void:
 	collision_shape.disabled = true
+	player_death_audio.play()
 	sprite.z_index = 0
 	blade_area_one.get_child(0).disabled = true
 	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
@@ -85,6 +89,7 @@ func death() -> void:
 
 func take_damage() -> void:
 	if timer_take_damage.is_stopped():
+		player_damage_taken_audio.play()
 		current_health -= 1
 		update_crystals()
 		HealthChanged.emit(current_health)

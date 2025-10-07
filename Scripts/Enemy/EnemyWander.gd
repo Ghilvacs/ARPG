@@ -22,8 +22,6 @@ func enter() -> void:
 		var detection_area = enemy.get_node("DetectionArea") as Area2D
 		if not detection_area.is_connected("body_entered", Callable(self,"_on_detection_area_entered")):
 			detection_area.connect("body_entered", Callable(self,"_on_detection_area_entered"))
-		if not detection_area.is_connected("body_exited", Callable(self, "_on_detection_area_exited")):
-			detection_area.connect("body_exited", Callable(self, "_on_detection_area_exited"))
 		
 	
 func update(delta: float) -> void:

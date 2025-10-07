@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=78 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/goblin_torch.gd" id="1_dauif"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
@@ -11,6 +11,10 @@
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_jkhm6"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="11_mfkwe"]
+[ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="12_iomp7"]
+[ext_resource type="PackedScene" uid="uid://cng6qu26gskpd" path="res://Scenes/Enemy/TorchWooshAudio/TorchWooshAudio.tscn" id="13_bni6b"]
+[ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_duprp"]
+[ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="15_7505l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d00ob"]
 shader = ExtResource("2_oolxi")
@@ -63,6 +67,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [14, 15, 16, 17, 18, 19]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchWooshAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_torch"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_jn0ld"]
 resource_name = "attack_down"
@@ -80,6 +98,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [21, 22, 23, 24, 25, 26]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchWooshAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_torch"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_4ct7l"]
 resource_name = "attack_up"
@@ -96,6 +128,20 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [28, 29, 30, 31, 32, 33]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchWooshAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_torch"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_8bemg"]
@@ -615,6 +661,7 @@ shape = SubResource("CapsuleShape2D_khh3g")
 wait_time = 0.3
 
 [node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
 modulate = Color(1, 0, 0, 1)
 z_index = 1
 y_sort_enabled = true
@@ -689,6 +736,22 @@ shape = SubResource("CircleShape2D_ahqda")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 visible = false
 shape = SubResource("CircleShape2D_jowbk")
+
+[node name="SwordHitAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_iomp7")
+volume_db = -20.0
+
+[node name="TorchWooshAudio" parent="." instance=ExtResource("13_bni6b")]
+volume_db = -30.0
+
+[node name="PlayerDetectedAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_duprp")
+volume_db = -23.0
+
+[node name="GoblinFollowAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_7505l")
+volume_db = -25.0
+attenuation = 1e-05
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
