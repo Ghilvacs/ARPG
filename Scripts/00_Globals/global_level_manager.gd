@@ -5,6 +5,7 @@ signal level_loaded
 
 var target_transition: String
 var position_offset: Vector2
+var enemy_states = {}
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -35,3 +36,9 @@ func load_new_level(
 	await get_tree().process_frame
 	level_loaded.emit()
 	ScreenFader.fade_in(0.5)
+
+func record_enemy_state(id: String, alive: bool) -> void:
+	enemy_states[id] = alive
+
+func is_enemy_alive(id: String) -> bool:
+	return enemy_states.get(id, true)

@@ -34,6 +34,10 @@ var isAttacking = false
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
 	GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
+	
+	if not GlobalLevelManager.is_enemy_alive(name):
+		queue_free()
+		
 	if sprite.material:
 		var shader_mat = sprite.material.duplicate()
 		sprite.material = shader_mat
@@ -93,6 +97,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
+		GlobalLevelManager.record_enemy_state(name, false)
 		dead = true
 	var shader_mat = sprite.material
 	shader_mat.set_shader_parameter('opacity', 1.0)
@@ -119,12 +124,9 @@ func _on_timer_stun_timeout() -> void:
 	timer_stun.stop()
 	
 func _on_timer_knockback_timeout() -> void:
-	print("Knockback timer started")
 	if timer_stun.is_stopped():
-		print("Stun timer start")
 		stunned = true
 		timer_stun.start(0)
-	print("Knockback timer stop")
 	timer_knockback.stop()
 
 func _on_player_spawned(player: CharacterBody2D) -> void:
