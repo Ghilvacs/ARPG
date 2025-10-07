@@ -2669,3 +2669,6 @@ size = 4
 
 [node name="goblin_torch" parent="." instance=ExtResource("8_evx8m")]
 position = Vector2(192, -40)
+
+[node name="goblin_torch2" parent="." instance=ExtResource("8_evx8m")]
+position = Vector2(-288, 48)

@@ -13,15 +13,12 @@ func _ready() -> void:
 	_spawn_player()
 
 func _spawn_player() -> void:
-	if player and is_instance_valid(player):
-		player.queue_free()
-		player = null
-
-	player = PLAYER.instantiate()
-
-	# Put player directly into the level (not in manager)
+	if not player or !is_instance_valid(player):
+		player = PLAYER.instantiate()
+		add_child(player) # Add to the manager (autoload)
+		
 	var level = get_tree().current_scene
-	if level:
+	if level && player.get_parent() != level:
 		level.add_child(player)
 
 		# Set position from PlayerSpawn node if available
@@ -66,6 +63,11 @@ func _apply_camera_bounds():
 		camera.limit_top = rect.position.y
 		camera.limit_right = rect.position.x + rect.size.x
 		camera.limit_bottom = rect.position.y + rect.size.y
+
+func despawn_player() -> void:
+	var level = get_tree().current_scene
+	if level:
+		level.remove_child(player)
 
 func _on_level_loaded():
 	_spawn_player()
