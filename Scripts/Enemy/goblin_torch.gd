@@ -28,6 +28,8 @@ var isAttacking = false
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 @onready var timer_stun: Timer = $TimerStun
 @onready var timer_knockback: Timer = $TimerKnockback
+@onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
+@onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
 
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
@@ -71,6 +73,7 @@ func _physics_process(_delta: float) -> void:
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true
+		sword_hit_audio.play()
 		current_health -= damage
 		health_bar.value = current_health
 		var shader_mat = sprite.material

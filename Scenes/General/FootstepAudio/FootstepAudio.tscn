@@ -1,0 +1,12 @@
+[gd_scene load_steps=5 format=3 uid="uid://qah6ldb3u7an"]
+
+[ext_resource type="AudioStream" uid="uid://behsgm7l4ddjv" path="res://Assets/SFX/walk1.mp3" id="1_pnpp6"]
+[ext_resource type="Script" path="res://Scripts/General/FootstepAudio/FootstepAudio.gd" id="2_sijuh"]
+[ext_resource type="AudioStream" uid="uid://le2son733a7" path="res://Assets/SFX/walk2.mp3" id="3_5tio1"]
+[ext_resource type="AudioStream" uid="uid://bk0b7ag30rnbi" path="res://Assets/SFX/walk3.mp3" id="4_463a4"]
+
+[node name="FootstepAudio" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_pnpp6")
+bus = &"Footsteps"
+script = ExtResource("2_sijuh")
+footstep = Array[AudioStream]([ExtResource("1_pnpp6"), ExtResource("3_5tio1"), ExtResource("4_463a4")])

@@ -41,13 +41,12 @@ func _player_entered(_p: Node2D) -> void:
 	if _p.is_in_group("Player"):
 		if not monitoring:
 			return
-		monitoring = false
+		set_deferred("monitoring", false)
 		GlobalLevelManager.load_new_level(level, target_transition_area, get_offset())
 
 func _place_player() -> void:
 	if name != GlobalLevelManager.target_transition:
 		return
-	print("Placing player at ", global_position, " + offset ", GlobalLevelManager.position_offset)
 	GlobalPlayerManager.set_player_position(global_position + GlobalLevelManager.position_offset)
 		
 

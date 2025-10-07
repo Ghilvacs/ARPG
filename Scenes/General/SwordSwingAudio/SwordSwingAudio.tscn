@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3 uid="uid://8w6h156kf4t2"]
+
+[ext_resource type="Script" path="res://Scripts/General/SwordSwingAudio/SwordSwingAudio.gd" id="1_kcwuk"]
+[ext_resource type="AudioStream" uid="uid://5usynebfr3yf" path="res://Assets/SFX/sword1.mp3" id="2_v7wyd"]
+[ext_resource type="AudioStream" uid="uid://dw11q82qtciib" path="res://Assets/SFX/sword2.mp3" id="3_jajc3"]
+[ext_resource type="AudioStream" uid="uid://dqnj0617w2dyw" path="res://Assets/SFX/sword4.mp3" id="5_1mmha"]
+
+[node name="SwordSwingAudio" type="AudioStreamPlayer2D"]
+volume_db = -20.0
+script = ExtResource("1_kcwuk")
+sword_swings = Array[AudioStream]([ExtResource("2_v7wyd"), ExtResource("3_jajc3"), ExtResource("5_1mmha")])

@@ -9,6 +9,9 @@ var attack_animation: String = ""
 
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
+	
+	if not enemy.isAttacking:
+		enemy.player_detected_audio.play()
 	enemy.isAttacking = true
 	
 	if enemy.has_node("DetectionArea"):
@@ -68,7 +71,6 @@ func _on_detection_area_entered(body: Node) -> void:
 		player_in_detection_range = true
 
 func _update_attack_animation() -> void:
-	var attack_animation: String = ""
 	if player.global_position.y < enemy.global_position.y:
 		attack_animation = "attack_up"
 	elif player.global_position.y > enemy.global_position.y:

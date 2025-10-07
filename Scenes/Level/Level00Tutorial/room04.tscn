@@ -2637,7 +2637,6 @@ layer_1/tile_data = PackedInt32Array(-786457, 65539, 1, -720921, 65539, 1, -6553
 position = Vector2(-144, 0)
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
-visible = false
 energy = 0.95
 blend_mode = 1
 

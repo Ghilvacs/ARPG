@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=103 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -14,6 +14,22 @@
 [ext_resource type="Texture2D" uid="uid://hu327xpu2nrs" path="res://Assets/Animation Pack/Animation Pack/Magic Mirror.png" id="12_c4vsp"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_mhh83"]
 [ext_resource type="Script" path="res://Scripts/Player/StaminaBar.gd" id="14_2h7eg"]
+[ext_resource type="PackedScene" uid="uid://qah6ldb3u7an" path="res://Scenes/General/FootstepAudio/FootstepAudio.tscn" id="15_7ltm0"]
+[ext_resource type="AudioStream" uid="uid://behsgm7l4ddjv" path="res://Assets/SFX/walk1.mp3" id="16_2f18b"]
+[ext_resource type="AudioStream" uid="uid://le2son733a7" path="res://Assets/SFX/walk2.mp3" id="17_ucdld"]
+[ext_resource type="AudioStream" uid="uid://bk0b7ag30rnbi" path="res://Assets/SFX/walk3.mp3" id="18_4x5ty"]
+[ext_resource type="AudioStream" uid="uid://dm2kg5dy2dys8" path="res://Assets/SFX/walk4.mp3" id="19_rysqm"]
+[ext_resource type="AudioStream" uid="uid://c8xos1o6550iq" path="res://Assets/SFX/walk5.mp3" id="20_si1vc"]
+[ext_resource type="AudioStream" uid="uid://ccc4xyi6lwjkt" path="res://Assets/SFX/walk6.mp3" id="21_sgtxc"]
+[ext_resource type="AudioStream" uid="uid://bjd06vsn42pma" path="res://Assets/SFX/walk7.mp3" id="22_dhlhj"]
+[ext_resource type="AudioStream" uid="uid://cldllkat2ggcu" path="res://Assets/SFX/walk8.mp3" id="23_vxwqs"]
+[ext_resource type="AudioStream" uid="uid://dsxd8mm8flbp" path="res://Assets/SFX/walk9.mp3" id="24_5e05l"]
+[ext_resource type="AudioStream" uid="uid://bahd5usi33af5" path="res://Assets/SFX/walk10.mp3" id="25_0hw1c"]
+[ext_resource type="PackedScene" uid="uid://8w6h156kf4t2" path="res://Scenes/General/SwordSwingAudio/SwordSwingAudio.tscn" id="26_ixkcp"]
+[ext_resource type="AudioStream" uid="uid://pl6ojkgn08xr" path="res://Assets/SFX/dash.mp3" id="27_a2uob"]
+[ext_resource type="AudioStream" uid="uid://bkpl65kxlb1u" path="res://Assets/SFX/damage_taken.mp3" id="28_k7sy3"]
+[ext_resource type="AudioStream" uid="uid://cxicn7ifkh4ob" path="res://Assets/SFX/player_death.mp3" id="29_4qfrn"]
+[ext_resource type="AudioStream" uid="uid://b5lr1fewyxeru" path="res://Assets/SFX/creature-in-the-sewer-17657.mp3" id="30_d300b"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -411,6 +427,20 @@ tracks/1/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SwordSwingAudio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_okm0s"]
 resource_name = "attack_one_down"
@@ -439,6 +469,20 @@ tracks/1/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SwordSwingAudio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_vcbbn"]
 resource_name = "attack_one_up"
@@ -466,6 +510,20 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SwordSwingAudio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_tpqmv"]
@@ -533,6 +591,23 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [6, 7, 8, 9, 10, 11]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FootstepAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_footstep"
+}, {
+"args": [],
+"method": &"play_footstep"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_12tow"]
@@ -1101,6 +1176,29 @@ player = NodePath("..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
+
+[node name="FootstepAudio" parent="." instance=ExtResource("15_7ltm0")]
+volume_db = -25.0
+footstep = Array[AudioStream]([ExtResource("16_2f18b"), ExtResource("17_ucdld"), ExtResource("18_4x5ty"), ExtResource("19_rysqm"), ExtResource("20_si1vc"), ExtResource("21_sgtxc"), ExtResource("22_dhlhj"), ExtResource("23_vxwqs"), ExtResource("24_5e05l"), ExtResource("25_0hw1c")])
+
+[node name="SwordSwingAudio" parent="." instance=ExtResource("26_ixkcp")]
+
+[node name="DashAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("27_a2uob")
+volume_db = -25.0
+
+[node name="PlayerDamageTakenAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("28_k7sy3")
+volume_db = -20.0
+
+[node name="PlayerDeathAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("29_4qfrn")
+volume_db = -25.0
+
+[node name="EnviromentAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("30_d300b")
+volume_db = -15.0
+autoplay = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
