@@ -7,6 +7,7 @@ var player: CharacterBody2D
 var player_in_detection_range := true
 var attack_animation: String = ""
 
+
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
@@ -23,7 +24,8 @@ func enter() -> void:
 			
 	_update_attack_animation()
 	enemy.animation_player.play("attack")
-	
+
+
 func physics_update(_delta: float) -> void:
 	if not player:
 		return
@@ -62,13 +64,16 @@ func physics_update(_delta: float) -> void:
 	if enemy.hit:
 		Transitioned.emit(self, "Knockback")
 
+
 func _on_detection_area_exited(body: Node) -> void:
 	if body.is_in_group("Player"):
 		player_in_detection_range = false
 
+
 func _on_detection_area_entered(body: Node) -> void:
 	if body.is_in_group("Player"):
 		player_in_detection_range = true
+
 
 func _update_attack_animation() -> void:
 	if player.global_position.y < enemy.global_position.y:

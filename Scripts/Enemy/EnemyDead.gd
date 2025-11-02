@@ -4,6 +4,7 @@ class_name EnemyDead
 @export var enemy: CharacterBody2D
 @export var move_speed := 0
 
+
 func enter() -> void:
 	enemy.get_node("CollisionShape2D").disabled = true
 	enemy.get_node("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D").disabled = true

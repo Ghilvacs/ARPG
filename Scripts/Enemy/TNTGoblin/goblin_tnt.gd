@@ -11,14 +11,12 @@ var stunned = false
 var hit = false
 var player: CharacterBody2D
 var isAttacking = false
+var inCooldown = false
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: Node = $StateMachine
-@onready var torch_area: Area2D = $TorchPivot/TorchAttackPoint/TorchArea
 @onready var timer_take_damage: Timer = $TimerTakeDamage
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var stamina_bar: ProgressBar = $StaminaBar
-@onready var timer: Timer = $Timer
 @onready var torch_light: PointLight2D = $PointLight2D
 @onready var torch_attack_point: Marker2D = $TorchPivot/TorchAttackPoint
 @onready var sprite: Sprite2D = $Sprite2D
@@ -30,6 +28,8 @@ var isAttacking = false
 @onready var timer_knockback: Timer = $TimerKnockback
 @onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
 @onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
+@onready var timer_attack: Timer = $TimerAttack
+
 
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
@@ -48,9 +48,11 @@ func _ready() -> void:
 	
 	player = get_tree().get_first_node_in_group("Player")
 
+
 func _physics_process(_delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
+		pass
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false
@@ -74,6 +76,7 @@ func _physics_process(_delta: float) -> void:
 		
 	move_and_slide()
 
+
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true
@@ -88,12 +91,14 @@ func take_damage(damage: int) -> void:
 		shader_mat.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
 
+
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if !dead:
 		if area.is_in_group("BladeOne"):
 			take_damage(12)
 		elif area.is_in_group("BladeTwo"):
 			take_damage(24)
+
 
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
@@ -107,30 +112,41 @@ func _on_timer_take_damage_timeout() -> void:
 	shader_mat.set_shader_parameter('mix_color', 0.0)
 	timer_take_damage.stop()
 
+
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "death":
 		queue_free()
 
+
 func _on_timer_stamina_regen_timeout() -> void:
 	current_stamina += 5
+
 
 func _on_timer_stamina_regen_start_timeout() -> void:
 	if current_stamina < 100:
 		if timer_stamina_regen.is_stopped():
 			timer_stamina_regen.start()
 
+
 func _on_timer_stun_timeout() -> void:
 	stunned = false
 	timer_stun.stop()
-	
+
+
 func _on_timer_knockback_timeout() -> void:
 	if timer_stun.is_stopped():
 		stunned = true
 		timer_stun.start(0)
 	timer_knockback.stop()
 
+
 func _on_player_spawned(player: CharacterBody2D) -> void:
 		self.player = player
-		
+
+
 func _on_player_despawned() -> void:
 	player = null
+
+
+func _on_timer_attack_timeout() -> void:
+	inCooldown = false
