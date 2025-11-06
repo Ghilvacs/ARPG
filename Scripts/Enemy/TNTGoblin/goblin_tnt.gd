@@ -12,6 +12,8 @@ var hit = false
 var player: CharacterBody2D
 var isAttacking = false
 var inCooldown = false
+var idle = false
+var transitionLocked = false
 
 @onready var state_machine: Node = $StateMachine
 @onready var timer_take_damage: Timer = $TimerTakeDamage
@@ -29,6 +31,7 @@ var inCooldown = false
 @onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
 @onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
 @onready var timer_attack: Timer = $TimerAttack
+@onready var timer_state_transition: Timer = $TimerStateTransition
 
 
 func _ready() -> void:
@@ -50,14 +53,17 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	print(timer_state_transition.is_stopped())
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
 		pass
+		
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false
 		stamina_bar.visible = false
 		return
+		
 	if velocity.length() > 0 && !isAttacking:
 		animation_player.play("run")
 	elif !isAttacking:
@@ -80,7 +86,7 @@ func _physics_process(_delta: float) -> void:
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true
-		sword_hit_audio.play()
+#		sword_hit_audio.play()
 		current_health -= damage
 		health_bar.value = current_health
 		var shader_mat = sprite.material
@@ -90,6 +96,16 @@ func take_damage(damage: int) -> void:
 		shader_mat.set_shader_parameter('b', 0)
 		shader_mat.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
+
+
+func trigger_state_transition(target_state: String, from_state: Node) -> void:
+	# Returns true if the transition timer was started, false otherwise.
+	if transitionLocked:
+		return 
+	transitionLocked = true
+	idle = true
+	timer_state_transition.start()
+	from_state.Transitioned.emit(from_state, target_state)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -150,3 +166,8 @@ func _on_player_despawned() -> void:
 
 func _on_timer_attack_timeout() -> void:
 	inCooldown = false
+
+
+func _on_timer_state_transition_timeout() -> void:
+	transitionLocked = false
+	idle = false

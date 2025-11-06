@@ -7,13 +7,16 @@ var player: CharacterBody2D
 
 
 func enter() -> void:
-	print("Attack")
+#	if not enemy.timer_state_transition.is_stopped():
+#		print("Attack TIMER")
+#	else:
+#		print("Attack")
 	if enemy.timer_attack.is_stopped():
 		enemy.timer_attack.start()
-	enemy.inCooldown = true
-	player = get_tree().get_first_node_in_group("Player")
-	enemy.isAttacking = true
-	enemy.animation_player.play("attack")
+		enemy.inCooldown = true
+		player = get_tree().get_first_node_in_group("Player")
+		enemy.isAttacking = true
+		enemy.animation_player.play("attack")
 	
 	if enemy.has_node("AttackArea"):
 		var attack_area = enemy.get_node("AttackArea") as Area2D
@@ -27,6 +30,10 @@ func enter() -> void:
 
 
 func physics_update(_delta: float) -> void:
+	if enemy.idle or enemy.transitionLocked:
+		enemy.velocity = Vector2.ZERO
+		return
+	
 	if not player:
 		return
 	enemy.sprite.flip_h = player.global_position.x < enemy.global_position.x
@@ -40,15 +47,21 @@ func physics_update(_delta: float) -> void:
 		player = get_tree().get_first_node_in_group("Player")
 		enemy.isAttacking = true
 		enemy.animation_player.play("attack")
+		
+		if enemy.dead:
+			enemy.isAttacking = false
+			Transitioned.emit(self, "Dead")
+		if enemy.hit:
+			Transitioned.emit(self, "Knockback")
 
 
 func _on_attack_area_exited(body: Node) -> void:
 	if body.is_in_group("Player"):
 		enemy.isAttacking = false
-		Transitioned.emit(self, "Follow")
+		enemy.trigger_state_transition("Follow", self)
 
 
 func _on_retreat_area_entered(body: Node) -> void:
 	if body.is_in_group("Player"):
 		enemy.isAttacking = false
-		Transitioned.emit(self, "Retreat")
+		enemy.trigger_state_transition("Retreat", self)

@@ -20,8 +20,8 @@ func physics_update(_delta: float) -> void:
 				enemy.timer_stamina_regen_start.start()
 			Transitioned.emit(self, "Wander")
 		elif direction.length() < 500 && player.current_health > 1:
+			Transitioned.emit(self, "Retreat")
 			Transitioned.emit(self, "Follow")
-		elif direction.length() < 80:
-			Transitioned.emit(self, "Attack")
+	
 	if enemy.dead:
 		Transitioned.emit(self, "Dead")

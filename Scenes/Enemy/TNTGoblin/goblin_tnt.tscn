@@ -1,13 +1,24 @@
-[gd_scene load_steps=18 format=3 uid="uid://cimwe44bpbow"]
+[gd_scene load_steps=22 format=3 uid="uid://cimwe44bpbow"]
 
 [ext_resource type="Texture2D" uid="uid://doq7lkie3kjri" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/TNT_Red.png" id="1_2a2fw"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/goblin_tnt.gd" id="1_r1o35"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="2_b8dar"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_tnyl8"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyWander.gd" id="3_n6g27"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="5_5p663"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinFollow.gd" id="5_6p4nv"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinAttack.gd" id="6_s3uw8"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinRetreat.gd" id="7_4r77o"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="9_fth2j"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_1ffx1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_apgfj"]
+shader = ExtResource("2_tnyl8")
+shader_parameter/opacity = 1.0
+shader_parameter/r = null
+shader_parameter/g = null
+shader_parameter/b = null
+shader_parameter/mix_color = null
 
 [sub_resource type="Animation" id="Animation_hx065"]
 length = 0.001
@@ -73,13 +84,13 @@ radius = 33.3333
 height = 66.6667
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ry7vl"]
-radius = 1273.96
+radius = 974.793
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x8rga"]
-radius = 795.012
+radius = 593.67
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6n0mm"]
-radius = 520.683
+radius = 353.899
 
 [node name="goblin_tnt" type="CharacterBody2D"]
 z_index = 1
@@ -87,6 +98,7 @@ scale = Vector2(0.15, 0.15)
 script = ExtResource("1_r1o35")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_apgfj")
 texture = ExtResource("1_2a2fw")
 hframes = 7
 vframes = 3
@@ -121,6 +133,14 @@ enemy = NodePath("../..")
 
 [node name="Retreat" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
 script = ExtResource("7_4r77o")
+enemy = NodePath("../..")
+
+[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("9_fth2j")
+enemy = NodePath("../..")
+
+[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("10_1ffx1")
 enemy = NodePath("../..")
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -176,7 +196,6 @@ rounded = true
 show_percentage = false
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
 color = Color(1, 0.835294, 0, 1)
 energy = 0.8
 texture = ExtResource("5_5p663")
@@ -185,7 +204,25 @@ texture_scale = 0.5
 [node name="TimerStaminaRegen" type="Timer" parent="."]
 
 [node name="TimerAttack" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
+[node name="TimerTakeDamage" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="TimerStun" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="TimerKnockback" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="TimerStateTransition" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
 [connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]
+[connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
+[connection signal="timeout" from="TimerStun" to="." method="_on_timer_stun_timeout"]
+[connection signal="timeout" from="TimerKnockback" to="." method="_on_timer_knockback_timeout"]
+[connection signal="timeout" from="TimerStateTransition" to="." method="_on_timer_state_transition_timeout"]
