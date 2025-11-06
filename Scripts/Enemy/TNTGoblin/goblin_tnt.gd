@@ -14,6 +14,7 @@ var isAttacking = false
 var inCooldown = false
 var idle = false
 var transitionLocked = false
+var pending_target_state = null
 
 @onready var state_machine: Node = $StateMachine
 @onready var timer_take_damage: Timer = $TimerTakeDamage
@@ -53,7 +54,6 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	print(timer_state_transition.is_stopped())
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
 		pass
@@ -66,9 +66,9 @@ func _physics_process(_delta: float) -> void:
 		
 	if velocity.length() > 0 && !isAttacking:
 		animation_player.play("run")
-	elif !isAttacking:
+	elif animation_player.current_animation != "attack":
 		animation_player.play("idle")
-		
+	
 	if !stunned:
 		if velocity.x > 0:
 			sprite.flip_h = false
@@ -99,13 +99,15 @@ func take_damage(damage: int) -> void:
 
 
 func trigger_state_transition(target_state: String, from_state: Node) -> void:
-	# Returns true if the transition timer was started, false otherwise.
 	if transitionLocked:
-		return 
+		# Don’t start a new transition while locked, but remember what we wanted to do.
+		pending_target_state = target_state
+		return
+
 	transitionLocked = true
 	idle = true
+	pending_target_state = target_state
 	timer_state_transition.start()
-	from_state.Transitioned.emit(from_state, target_state)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -162,6 +164,7 @@ func _on_player_spawned(player: CharacterBody2D) -> void:
 
 func _on_player_despawned() -> void:
 	player = null
+	pending_target_state = null
 
 
 func _on_timer_attack_timeout() -> void:
@@ -171,3 +174,11 @@ func _on_timer_attack_timeout() -> void:
 func _on_timer_state_transition_timeout() -> void:
 	transitionLocked = false
 	idle = false
+
+	if pending_target_state != null:
+		# Perform the actual transition *now*
+		state_machine.current_state.Transitioned.emit(
+			state_machine.current_state,
+			pending_target_state
+		)
+		pending_target_state = null

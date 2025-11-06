@@ -9,10 +9,6 @@ var attack_animation: String = ""
 
 
 func enter() -> void:
-#	if not enemy.timer_state_transition.is_stopped():
-#		print("Follow TIMER")
-#	else:
-#		print("Follow")
 	player = get_tree().get_first_node_in_group("Player")
 	
 	if enemy.has_node("DetectionArea"):

@@ -7,10 +7,6 @@ var player: CharacterBody2D
 
 
 func enter() -> void:
-#	if not enemy.timer_state_transition.is_stopped():
-#		print("Attack TIMER")
-#	else:
-#		print("Attack")
 	if enemy.timer_attack.is_stopped():
 		enemy.timer_attack.start()
 		enemy.inCooldown = true

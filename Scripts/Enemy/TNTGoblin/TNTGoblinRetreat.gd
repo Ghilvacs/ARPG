@@ -8,10 +8,6 @@ var player_in_retreat_range := true
 
 
 func enter() -> void:
-#	if not enemy.timer_state_transition.is_stopped():
-#		print("Retreat TIMER")
-#	else:
-#		print("Retreat")
 	player = get_tree().get_first_node_in_group("Player")
 	
 	if enemy.has_node("RetreatArea"):
