@@ -2640,6 +2640,7 @@ position = Vector2(-41, -12)
 scale = Vector2(0.15, 0.15)
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
+visible = false
 energy = 0.95
 blend_mode = 1
 

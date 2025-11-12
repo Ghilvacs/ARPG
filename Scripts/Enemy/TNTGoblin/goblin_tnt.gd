@@ -86,7 +86,6 @@ func _physics_process(_delta: float) -> void:
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true
-#		sword_hit_audio.play()
 		current_health -= damage
 		health_bar.value = current_health
 		var shader_mat = sprite.material
@@ -100,7 +99,6 @@ func take_damage(damage: int) -> void:
 
 func trigger_state_transition(target_state: String, from_state: Node) -> void:
 	if transitionLocked:
-		# Don’t start a new transition while locked, but remember what we wanted to do.
 		pending_target_state = target_state
 		return
 
@@ -176,7 +174,6 @@ func _on_timer_state_transition_timeout() -> void:
 	idle = false
 
 	if pending_target_state != null:
-		# Perform the actual transition *now*
 		state_machine.current_state.Transitioned.emit(
 			state_machine.current_state,
 			pending_target_state

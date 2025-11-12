@@ -3,16 +3,16 @@ class_name TNTGoblinAttack
 
 @export var enemy: CharacterBody2D
 @export var move_speed := 0.0
+
 var player: CharacterBody2D
 
 
 func enter() -> void:
-	if enemy.timer_attack.is_stopped():
-		enemy.timer_attack.start()
+	if not enemy.inCooldown:
 		enemy.inCooldown = true
-		player = get_tree().get_first_node_in_group("Player")
-		enemy.isAttacking = true
 		enemy.animation_player.play("attack")
+	enemy.isAttacking = true
+	player = get_tree().get_first_node_in_group("Player")
 	
 	if enemy.has_node("AttackArea"):
 		var attack_area = enemy.get_node("AttackArea") as Area2D
@@ -36,19 +36,24 @@ func physics_update(_delta: float) -> void:
 	var direction = player.global_position - enemy.global_position
 	enemy.velocity = direction.normalized() * move_speed
 	
+	player = get_tree().get_first_node_in_group("Player")
 	if not enemy.inCooldown:
-		if enemy.timer_attack.is_stopped():
-			enemy.timer_attack.start()
 		enemy.inCooldown = true
-		player = get_tree().get_first_node_in_group("Player")
-		enemy.isAttacking = true
 		enemy.animation_player.play("attack")
-		
+	
 		if enemy.dead:
 			enemy.isAttacking = false
 			Transitioned.emit(self, "Dead")
 		if enemy.hit:
 			Transitioned.emit(self, "Knockback")
+
+func throw():
+	var throw_direction = (player.global_position - enemy.global_position).normalized()
+	var dynamite = preload("res://Scenes/Enemy/TNTGoblin/dynamite.tscn").instantiate()
+	dynamite.global_position = enemy.global_position
+	
+	get_tree().current_scene.add_child(dynamite)
+	dynamite.throw(throw_direction)
 
 
 func _on_attack_area_exited(body: Node) -> void:
