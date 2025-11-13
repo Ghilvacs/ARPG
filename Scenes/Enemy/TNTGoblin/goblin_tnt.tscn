@@ -1,0 +1,319 @@
+[gd_scene load_steps=29 format=3 uid="uid://cimwe44bpbow"]
+
+[ext_resource type="Texture2D" uid="uid://doq7lkie3kjri" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/TNT_Red.png" id="1_2a2fw"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/goblin_tnt.gd" id="1_r1o35"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="2_b8dar"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_tnyl8"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyWander.gd" id="3_n6g27"]
+[ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_shj8o"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="5_5p663"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinFollow.gd" id="5_6p4nv"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinAttack.gd" id="6_s3uw8"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/TNTGoblinRetreat.gd" id="7_4r77o"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="9_fth2j"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_1ffx1"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="12_28th5"]
+[ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_wyvik"]
+[ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="14_ywnjk"]
+[ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="16_1bety"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_apgfj"]
+shader = ExtResource("2_tnyl8")
+shader_parameter/opacity = 1.0
+shader_parameter/r = null
+shader_parameter/g = null
+shader_parameter/b = null
+shader_parameter/mix_color = null
+
+[sub_resource type="Animation" id="Animation_hx065"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DeathSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_hh6n1"]
+resource_name = "attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17, 18, 19, 20]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.6],
+"method": &"throw"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_e46u1"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13]
+}
+
+[sub_resource type="Animation" id="Animation_kbnhj"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_vhexg"]
+resource_name = "run"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [7, 8, 9, 10, 11, 12]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fipo5"]
+_data = {
+"RESET": SubResource("Animation_hx065"),
+"attack": SubResource("Animation_hh6n1"),
+"death": SubResource("Animation_e46u1"),
+"idle": SubResource("Animation_kbnhj"),
+"run": SubResource("Animation_vhexg")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h52ir"]
+radius = 20.0
+height = 40.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_80ca1"]
+radius = 33.3333
+height = 66.6667
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ry7vl"]
+radius = 974.793
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x8rga"]
+radius = 706.667
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6n0mm"]
+radius = 240.924
+
+[node name="goblin_tnt" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(0.15, 0.15)
+script = ExtResource("1_r1o35")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_apgfj")
+texture = ExtResource("1_2a2fw")
+hframes = 7
+vframes = 3
+
+[node name="DeathSprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_shj8o")
+hframes = 7
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fipo5")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, 13.3333)
+shape = SubResource("CapsuleShape2D_h52ir")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_b8dar")
+initial_state = NodePath("Wander")
+
+[node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("3_n6g27")
+enemy = NodePath("../..")
+
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("5_6p4nv")
+enemy = NodePath("../..")
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("6_s3uw8")
+enemy = NodePath("../..")
+
+[node name="Retreat" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("7_4r77o")
+enemy = NodePath("../..")
+
+[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("9_fth2j")
+enemy = NodePath("../..")
+
+[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("10_1ffx1")
+enemy = NodePath("../..")
+
+[node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("12_28th5")
+enemy = NodePath("../..")
+
+[node name="Hitbox" type="Area2D" parent="."]
+position = Vector2(0, 20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+position = Vector2(0, -13.3333)
+shape = SubResource("CapsuleShape2D_80ca1")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_ry7vl")
+
+[node name="AttackArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_x8rga")
+
+[node name="RetreatArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RetreatArea"]
+shape = SubResource("CircleShape2D_6n0mm")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+z_index = 1
+y_sort_enabled = true
+layout_direction = 1
+offset_left = -46.6667
+offset_top = -66.6667
+offset_right = 43.3333
+offset_bottom = -54.6667
+max_value = 50.0
+value = 50.0
+rounded = true
+show_percentage = false
+
+[node name="StaminaBar" type="ProgressBar" parent="."]
+visible = false
+modulate = Color(0.231373, 0.635294, 0, 1)
+z_index = 1
+y_sort_enabled = true
+layout_direction = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+offset_right = 4.0
+grow_vertical = 0
+rounded = true
+show_percentage = false
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0.835294, 0, 1)
+energy = 0.8
+texture = ExtResource("5_5p663")
+texture_scale = 0.5
+
+[node name="TimerStaminaRegen" type="Timer" parent="."]
+
+[node name="TimerAttack" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="TimerTakeDamage" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="TimerStun" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="TimerKnockback" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="TimerStateTransition" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="PlayerDetectedAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_wyvik")
+volume_db = -23.0
+
+[node name="GoblinFollowAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_ywnjk")
+volume_db = -25.0
+attenuation = 1e-05
+
+[node name="SwordHitAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_1bety")
+volume_db = -20.0
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
+[connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]
+[connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
+[connection signal="timeout" from="TimerStun" to="." method="_on_timer_stun_timeout"]
+[connection signal="timeout" from="TimerKnockback" to="." method="_on_timer_knockback_timeout"]
+[connection signal="timeout" from="TimerStateTransition" to="." method="_on_timer_state_transition_timeout"]

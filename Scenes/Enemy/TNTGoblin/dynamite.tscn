@@ -1,0 +1,198 @@
+[gd_scene load_steps=12 format=3 uid="uid://b6o3vkurtwxkt"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/dynamite.gd" id="1_7po7m"]
+[ext_resource type="Texture2D" uid="uid://c6g562q4oyqu5" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/Dynamite.png" id="2_6rhmw"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="3_4j545"]
+[ext_resource type="Texture2D" uid="uid://b2p6o5cwq8qeh" path="res://Assets/Explosion.png" id="3_j4548"]
+[ext_resource type="AudioStream" uid="uid://d21k8dhms15j7" path="res://Assets/SFX/explosion.mp3" id="5_m68p5"]
+[ext_resource type="AudioStream" uid="uid://gukwc8qygo4u" path="res://Assets/SFX/throw.mp3" id="6_pklpv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hlnwv"]
+radius = 28.8889
+height = 128.889
+
+[sub_resource type="Animation" id="Animation_rq4rb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ExplosionSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:texture_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:enabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DamageArea/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_8lmbh"]
+resource_name = "explode"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ExplosionSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:texture_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.3, 0.4, 0.6, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:enabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DamageArea/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_r3pxn"]
+resource_name = "throw"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wohfs"]
+_data = {
+"RESET": SubResource("Animation_rq4rb"),
+"explode": SubResource("Animation_8lmbh"),
+"throw": SubResource("Animation_r3pxn")
+}
+
+[node name="dynamite" type="Node2D"]
+z_index = 1
+scale = Vector2(0.45, 0.45)
+script = ExtResource("1_7po7m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_6rhmw")
+hframes = 7
+
+[node name="ExplosionSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(4.44444, -46.6667)
+scale = Vector2(2.1, 2.1)
+texture = ExtResource("3_j4548")
+hframes = 12
+
+[node name="DamageArea" type="Area2D" parent="." groups=["GoblinTNT"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, -8.88889)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_hlnwv")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "throw"
+speed_scale = 2.0
+libraries = {
+"": SubResource("AnimationLibrary_wohfs")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0.835294, 0, 1)
+energy = 0.4
+texture = ExtResource("3_4j545")
+texture_scale = 0.2
+
+[node name="ExplosionAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_m68p5")
+volume_db = -15.0
+
+[node name="ThrowAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_pklpv")
+volume_db = -25.0
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -36,11 +36,13 @@ var stamina_regen = false
 @onready var player_damage_taken_audio: AudioStreamPlayer2D = $PlayerDamageTakenAudio
 @onready var player_death_audio: AudioStreamPlayer2D = $PlayerDeathAudio
 
+
 func _ready() -> void:
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	player_state_machine.initialize(self)
 	StaminaChanged.emit(current_stamina)
+
 
 func _physics_process(delta: float) -> void:	
 	player_state_machine.current_state.physics_update(delta)
@@ -69,8 +71,10 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+
 func update_animation(state: String) -> void:
 	animation_player.play(state)
+
 
 func update_facing() -> void:
 	mouse_position = get_local_mouse_position()
@@ -78,6 +82,7 @@ func update_facing() -> void:
 		blade_one_attack_point.look_at(get_global_mouse_position())
 		point_light.look_at(get_global_mouse_position())
 		sprite.flip_h = mouse_position.x < 0
+
 
 func death() -> void:
 	collision_shape.disabled = true
@@ -87,10 +92,11 @@ func death() -> void:
 	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
 	dead = true
 
-func take_damage() -> void:
+
+func take_damage(amount: int) -> void:
 	if timer_take_damage.is_stopped():
 		player_damage_taken_audio.play()
-		current_health -= 1
+		current_health -= amount
 		update_crystals()
 		HealthChanged.emit(current_health)
 		sprite.material.set_shader_parameter('opacity', 0.9)
@@ -100,6 +106,7 @@ func take_damage() -> void:
 		sprite.material.set_shader_parameter('mix_color', 0.5)
 		timer_take_damage.start(0)
 
+
 func update_crystals() -> void:
 	for i in range(crystals.size()):
 		var light = crystals[i].get_node("PointLight2D")
@@ -108,12 +115,17 @@ func update_crystals() -> void:
 		else:
 			light.visible = false
 
+
 func get_hp_percent() -> float:
 	return float(current_health) / float(MAX_HEALTH)
 
+
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("GoblinTorch"):
-		take_damage()
+		take_damage(1)
+	if area.is_in_group("GoblinTNT"):
+		take_damage(2)
+
 
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
@@ -123,10 +135,12 @@ func _on_timer_take_damage_timeout() -> void:
 	sprite.material.set_shader_parameter('mix_color', 0)
 	timer_take_damage.stop()
 
+
 func _on_timer_death_timeout() -> void:
 	emit_signal("PlayerDied")
 #	get_tree().reload_current_scene()
 	queue_free()
+
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "death":
@@ -137,6 +151,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	elif anim_name in ["attack_one", "attack_one_up", "attack_one_down"]:
 		blade_area_one.get_child(0).disabled = true
 		isAttacking = false
+
 
 func _on_timer_stamina_regen_start_timeout() -> void:
 	stamina_regen = true
