@@ -11,6 +11,9 @@ var attack_animation: String = ""
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
+	if not enemy.isAttacking and enemy.last_state == enemy.get_node("StateMachine/Wander"):
+		enemy.player_detected_audio.play()
+	
 	if enemy.has_node("DetectionArea"):
 		var detection_area = enemy.get_node("DetectionArea") as Area2D
 		if not detection_area.is_connected("body_exited", Callable(self, "_on_detection_area_exited")):

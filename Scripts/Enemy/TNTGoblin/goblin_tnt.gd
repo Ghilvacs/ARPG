@@ -15,6 +15,7 @@ var inCooldown = false
 var idle = false
 var transitionLocked = false
 var pending_target_state = null
+var last_state = null
 
 @onready var state_machine: Node = $StateMachine
 @onready var timer_take_damage: Timer = $TimerTakeDamage
@@ -38,6 +39,7 @@ var pending_target_state = null
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
 	GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
+	last_state = get_node("StateMachine/Wander")
 	
 	if not GlobalLevelManager.is_enemy_alive(name):
 		queue_free()
@@ -86,6 +88,7 @@ func _physics_process(_delta: float) -> void:
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true
+		sword_hit_audio.play()
 		current_health -= damage
 		health_bar.value = current_health
 		var shader_mat = sprite.material
@@ -104,8 +107,20 @@ func trigger_state_transition(target_state: String, from_state: Node) -> void:
 
 	transitionLocked = true
 	idle = true
+	last_state = from_state
 	pending_target_state = target_state
-	timer_state_transition.start()
+	if target_state == "Dead":
+		transitionLocked = false
+		idle = false
+
+		if pending_target_state != null:
+			state_machine.current_state.Transitioned.emit(
+				state_machine.current_state,
+				pending_target_state
+			)
+			pending_target_state = null
+	else:
+		timer_state_transition.start()
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:

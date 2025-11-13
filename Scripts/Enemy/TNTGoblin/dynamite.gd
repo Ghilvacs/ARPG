@@ -3,12 +3,14 @@ extends Node2D
 
 @export var initial_speed: float = 300.0
 @export var arc_duration: float = 0.6  # time to reach target
-@export var arc_height: float = 30.0   # visual height of the arc
+@export var arc_height: float = 40.0   # visual height of the arc
 @export var slowdown_factor: float = 0.6  # how much slower it gets mid-air
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var explosion_sprite: Sprite2D = $ExplosionSprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var explosion_audio: AudioStreamPlayer2D = $ExplosionAudio
+@onready var throw_audio: AudioStreamPlayer2D = $ThrowAudio
 
 var start_position: Vector2
 var target_position: Vector2
@@ -21,6 +23,7 @@ func throw(throw_direction: Vector2) -> void:
 	if not player:
 		return
 	
+	throw_audio.play()
 	get_node("DamageArea/CollisionShape2D").disabled = true
 	start_position = global_position
 	target_position = player.global_position
@@ -53,10 +56,12 @@ func _on_landed() -> void:
 	await get_tree().create_timer(0.2).timeout
 	sprite.visible = false
 	explosion_sprite.visible = true
+	explosion_audio.play()
 	animation_player.play("explode")
 	get_node("DamageArea/CollisionShape2D").disabled = false
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "explode":
+		await get_tree().create_timer(0.2).timeout
 		queue_free()
