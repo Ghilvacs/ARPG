@@ -9,7 +9,6 @@ var player: CharacterBody2D
 
 func enter() -> void:
 	if not enemy.inCooldown:
-		enemy.inCooldown = true
 		enemy.animation_player.play("attack")
 	enemy.isAttacking = true
 	player = get_tree().get_first_node_in_group("Player")
@@ -38,7 +37,6 @@ func physics_update(_delta: float) -> void:
 	
 	player = get_tree().get_first_node_in_group("Player")
 	if not enemy.inCooldown:
-		enemy.inCooldown = true
 		enemy.animation_player.play("attack")
 	
 		if enemy.dead:
@@ -46,14 +44,6 @@ func physics_update(_delta: float) -> void:
 			Transitioned.emit(self, "Dead")
 		if enemy.hit:
 			Transitioned.emit(self, "Knockback")
-
-func throw():
-	var throw_direction = (player.global_position - enemy.global_position).normalized()
-	var dynamite = preload("res://Scenes/Enemy/TNTGoblin/dynamite.tscn").instantiate()
-	dynamite.global_position = enemy.global_position
-	
-	get_tree().current_scene.add_child(dynamite)
-	dynamite.throw(throw_direction)
 
 
 func _on_attack_area_exited(body: Node) -> void:

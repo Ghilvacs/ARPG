@@ -85,6 +85,20 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 
+func throw(duration: float):
+	if inCooldown:
+		return
+	inCooldown = true
+	if timer_attack.is_stopped():
+		timer_attack.start()
+	var throw_direction = (player.global_position - global_position).normalized()
+	var dynamite = preload("res://Scenes/Enemy/TNTGoblin/dynamite.tscn").instantiate()
+	dynamite.global_position = global_position
+	
+	get_tree().current_scene.add_child(dynamite)
+	dynamite.throw(throw_direction, duration)
+
+
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped():
 		hit = true

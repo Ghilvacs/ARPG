@@ -2,7 +2,7 @@ extends State
 class_name TNTGoblinRetreat
 
 @export var enemy: CharacterBody2D
-@export var move_speed := 50.0
+@export var move_speed := 40.0
 var player: CharacterBody2D
 var player_in_retreat_range := true
 
@@ -43,6 +43,8 @@ func physics_update(_delta: float) -> void:
 		enemy.isAttacking = false
 		Transitioned.emit(self, "Dead")
 	if enemy.hit:
+		enemy.inCooldown = false
+		enemy.throw(0.6)
 		Transitioned.emit(self, "Knockback")
 
 

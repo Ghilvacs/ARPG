@@ -18,11 +18,12 @@ var elapsed_time := 0.0
 var thrown := false
 
 
-func throw(throw_direction: Vector2) -> void:
+func throw(throw_direction: Vector2, throw_duration: float) -> void:
 	var player = get_tree().get_first_node_in_group("Player")
 	if not player:
 		return
-	
+	if throw_direction:
+		arc_duration = throw_duration
 	throw_audio.play()
 	get_node("DamageArea/CollisionShape2D").disabled = true
 	start_position = global_position
@@ -58,10 +59,10 @@ func _on_landed() -> void:
 	explosion_sprite.visible = true
 	explosion_audio.play()
 	animation_player.play("explode")
-	get_node("DamageArea/CollisionShape2D").disabled = false
-
+#	get_node("DamageArea/CollisionShape2D").disabled = false
+#	await get_tree().create_timer(0.2).timeout
+#	get_node("DamageArea/CollisionShape2D").disabled = true
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "explode":
 		await get_tree().create_timer(0.2).timeout
 		queue_free()

@@ -11,6 +11,9 @@ var attack_animation: String = ""
 func enter() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
+	if enemy.timer_attack.is_stopped():
+		enemy.timer_attack.start()
+	
 	if not enemy.isAttacking and enemy.last_state == enemy.get_node("StateMachine/Wander"):
 		enemy.player_detected_audio.play()
 	
@@ -33,7 +36,7 @@ func physics_update(_delta: float) -> void:
 		return
 	if not player:
 		return
-	enemy.sprite.flip_h = player.global_position.x < enemy.global_position.x	
+	enemy.sprite.flip_h = player.global_position.x < enemy.global_position.x
 	var direction = player.global_position - enemy.global_position
 	enemy.stamina_bar.value = enemy.current_stamina
 	
@@ -44,6 +47,9 @@ func physics_update(_delta: float) -> void:
 		enemy.velocity = direction.normalized() * move_speed
 		if enemy.timer_stamina_regen_start.is_stopped():
 			enemy.timer_stamina_regen_start.start()
+	
+	if randf() < 0.02:
+		enemy.throw(0.6)
 	
 	# Transitions
 	if not player_in_detection_range or player.current_health < 1:
@@ -68,5 +74,5 @@ func _on_detection_area_entered(body: Node) -> void:
 
 
 func _on_attack_area_entered(body: Node) -> void:
-	if body.is_in_group("Player") and player.current_health > 1:
+	if body.is_in_group("Player") and player.current_health > 0.1:
 		enemy.trigger_state_transition("Attack", self)

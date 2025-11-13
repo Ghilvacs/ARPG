@@ -16,8 +16,8 @@ func physics_update(_delta: float) -> void:
 	direction = player.global_position - enemy.global_position
 	if !enemy.stunned:
 		if direction.length() > 600 || player.current_health < 1:
-			if enemy.timer_stamina_regen_start.is_stopped():
-				enemy.timer_stamina_regen_start.start()
+#			if enemy.timer_stamina_regen_start.is_stopped():
+#				enemy.timer_stamina_regen_start.start()
 			Transitioned.emit(self, "Wander")
 		elif direction.length() < 500 && player.current_health > 1:
 			Transitioned.emit(self, "Retreat")
