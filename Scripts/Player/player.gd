@@ -84,20 +84,20 @@ func update_facing() -> void:
 		sprite.flip_h = mouse_position.x < 0
 
 
-func death() -> void:
-	collision_shape.disabled = true
-	player_death_audio.play()
-	sprite.z_index = 0
-	blade_area_one.get_child(0).disabled = true
-	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
-	dead = true
+func update_health(ammount: int) -> void:
+	current_health += ammount
+	for crystal in range(crystals.size()):
+		var light = crystals[crystal].get_node("PointLight2D")
+		if crystal < current_health:
+			light.visible = true
+		else:
+			light.visible = false
 
 
 func take_damage(amount: int) -> void:
 	if timer_take_damage.is_stopped():
 		player_damage_taken_audio.play()
-		current_health -= amount
-		update_crystals()
+		update_health(-amount)
 		HealthChanged.emit(current_health)
 		sprite.material.set_shader_parameter('opacity', 0.9)
 		sprite.material.set_shader_parameter('r', 1.0)
@@ -107,17 +107,17 @@ func take_damage(amount: int) -> void:
 		timer_take_damage.start(0)
 
 
-func update_crystals() -> void:
-	for i in range(crystals.size()):
-		var light = crystals[i].get_node("PointLight2D")
-		if i < current_health:
-			light.visible = true
-		else:
-			light.visible = false
-
-
 func get_hp_percent() -> float:
 	return float(current_health) / float(MAX_HEALTH)
+
+
+func death() -> void:
+	collision_shape.disabled = true
+	player_death_audio.play()
+	sprite.z_index = 0
+	blade_area_one.get_child(0).disabled = true
+	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
+	dead = true
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
