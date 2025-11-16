@@ -8,9 +8,11 @@ var player_spawned: bool = false
 signal PlayerSpawned(player: CharacterBody2D)
 signal PlayerDespawned
 
+
 func _ready() -> void:
 	GlobalLevelManager.level_loaded.connect(_on_level_loaded)
 	_spawn_player()
+
 
 func _spawn_player() -> void:
 	if not player or !is_instance_valid(player):
@@ -24,7 +26,7 @@ func _spawn_player() -> void:
 		# Set position from PlayerSpawn node if available
 		var spawn = level.get_node_or_null("PlayerSpawn")
 		if spawn:
-			player.global_position = spawn.global_position
+			player.global_position = GlobalLevelManager.position_offset
 
 	camera = player.get_node("Camera2D")
 	emit_signal("PlayerSpawned", player)
@@ -33,9 +35,16 @@ func _spawn_player() -> void:
 	_apply_camera_bounds()
 	player_spawned = true
 
+
+func set_player_health(hp: int, max_hp: int) -> void:
+	player.current_health = hp
+	player.update_health(0)
+
+
 func set_player_position(_new_position: Vector2) -> void:
 	if player and is_instance_valid(player):
 		player.global_position = _new_position
+
 
 func _on_player_died():
 	emit_signal("PlayerDespawned")
@@ -43,6 +52,7 @@ func _on_player_died():
 		player.queue_free()
 		player = null
 	_spawn_player()
+
 
 func _apply_camera_bounds():
 	var level = get_tree().current_scene
@@ -64,10 +74,12 @@ func _apply_camera_bounds():
 		camera.limit_right = rect.position.x + rect.size.x
 		camera.limit_bottom = rect.position.y + rect.size.y
 
+
 func despawn_player() -> void:
 	var level = get_tree().current_scene
 	if level:
 		level.remove_child(player)
+
 
 func _on_level_loaded():
 	_spawn_player()
