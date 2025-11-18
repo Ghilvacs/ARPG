@@ -7,15 +7,17 @@ class_name StateAttack extends PlayerState
 
 var attack_started := false
 
+
 func enter():
 	player.update_facing()
 	attack_started = false
 	player.velocity = Vector2.ZERO  # Stop movement while attacking
 	_handle_attack_animation()
 
+
 func exit():
-	player.isAttacking = false
 	attack_started = false
+
 
 func update(_delta: float) -> PlayerState:
 	if !player.isAttacking:
@@ -26,25 +28,22 @@ func update(_delta: float) -> PlayerState:
 	
 	return null
 
+
 func physics_update(_delta: float) -> PlayerState:
 	return null
+
 
 func handle_input(_event: InputEvent) -> PlayerState:
 	if _event.is_action_pressed("dash") and player.current_stamina >= 20:
 		return dash
 	return null
 
+
 func _handle_attack_animation():
 	if player.current_stamina < stamina_cost:
 		return
-
-	player.isAttacking = true
-	player.current_stamina -= stamina_cost
-	player.StaminaChanged.emit(player.current_stamina)
-
 	var mouse_pos = player.get_local_mouse_position()
 
-	# Determine attack direction
 	var anim_name := "attack_one"
 	if mouse_pos.y < -30 and abs(mouse_pos.x) < 150:
 		anim_name = "attack_one_up"
@@ -53,10 +52,9 @@ func _handle_attack_animation():
 
 	attack(anim_name)
 
+
 func attack(animation: String) -> void:
-	player.stamina_regen = false
-	if player.timer_stamina_regen_start.is_stopped():
-		player.timer_stamina_regen_start.start()
+	player.consume_stamina(stamina_cost)
 	player.animation_player.play(animation)
 	if animation in ["attack_one", "attack_one_up", "attack_one_down"]:
 		await get_tree().process_frame

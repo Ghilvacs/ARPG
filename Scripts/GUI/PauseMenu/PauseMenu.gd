@@ -33,7 +33,6 @@ func hide_pause_menu() -> void:
 	is_paused = false
 
 
-
 func _on_load_button_pressed() -> void:
 	if not is_paused:
 		return
