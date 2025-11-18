@@ -10,7 +10,6 @@ const MAX_STAMINA = 100
 
 var current_health
 var current_stamina = MAX_STAMINA
-var isAttacking = false
 var enemy: CharacterBody2D
 var dead = false
 var attack_speed
@@ -18,6 +17,8 @@ var mouse_position
 var last_position
 var direction: Vector2
 var stamina_regen = false
+
+@export var isAttacking = false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var death_sprite: Sprite2D = $DeathSprite2D
@@ -38,14 +39,13 @@ var stamina_regen = false
 
 
 func _ready() -> void:
+	player_state_machine.initialize(self)
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
-	player_state_machine.initialize(self)
 	StaminaChanged.emit(current_stamina)
 
 
-func _physics_process(delta: float) -> void:	
-	player_state_machine.current_state.physics_update(delta)
+func _physics_process(delta: float) -> void:
 	if dead:
 		point_light.visible = false
 		if animation_player.is_playing() && animation_player.current_animation != "death":
@@ -84,14 +84,25 @@ func update_facing() -> void:
 		sprite.flip_h = mouse_position.x < 0
 
 
-func update_health(ammount: int) -> void:
-	current_health += ammount
+func update_health(amount: int) -> void:
+	current_health += amount
 	for crystal in range(crystals.size()):
 		var light = crystals[crystal].get_node("PointLight2D")
 		if crystal < current_health:
 			light.visible = true
 		else:
 			light.visible = false
+
+
+func consume_stamina(amount: float) -> void:
+	stamina_regen = false
+	current_stamina -= amount
+	StaminaChanged.emit(current_stamina)
+
+
+func resume_stamina_regen() -> void:
+	if timer_stamina_regen_start.is_stopped():
+		timer_stamina_regen_start.start()	
 
 
 func take_damage(amount: int) -> void:
@@ -138,19 +149,12 @@ func _on_timer_take_damage_timeout() -> void:
 
 func _on_timer_death_timeout() -> void:
 	emit_signal("PlayerDied")
-#	get_tree().reload_current_scene()
 	queue_free()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "death":
 		timer_death.start()
-	elif anim_name == "attack_two":
-		blade_area_two.get_child(0).disabled = true
-		isAttacking = false
-	elif anim_name in ["attack_one", "attack_one_up", "attack_one_down"]:
-		blade_area_one.get_child(0).disabled = true
-		isAttacking = false
 
 
 func _on_timer_stamina_regen_start_timeout() -> void:
