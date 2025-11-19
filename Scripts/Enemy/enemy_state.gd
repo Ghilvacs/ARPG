@@ -1,23 +1,24 @@
-class_name State extends Node
+class_name EnemyState extends Node
 
-signal Transitioned
+var state_machine
+var enemy: CharacterBody2D
 
 
-func enter():
+func enter(previous_state: EnemyState) -> void:
 	pass
 
 
-func exit():
+func exit() -> void:
 	pass
 
 
-func update(_delta: float):
-	pass
+func update(_delta: float) -> EnemyState:
+	return null
 
 
-func physics_update(_delta: float):
-	pass
+func physics_update(_delta: float) -> EnemyState:
+	return null
 
 
-func handle_input(_event: InputEvent) -> State:
+func handle_input(_event: InputEvent) -> EnemyState:
 	return null
