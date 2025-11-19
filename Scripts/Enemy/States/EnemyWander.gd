@@ -25,6 +25,7 @@ var player_in_attack_range: bool = false
 func enter(_prev_state: EnemyState) -> void:
 	_ensure_player_connections()
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
+	enemy.isAttacking = false
 
 	randomize_wander()
 

@@ -18,8 +18,6 @@ class_name EnemyFollow
 @export var base_attack_animation: String = "attack"
 @export var attack_up_animation: String = "attack_up"
 @export var attack_down_animation: String = "attack_down"
-@export var attack_window_start: float = 0.3
-@export var attack_window_end: float = 0.34
 
 @export_category("Auto-throw")
 @export var auto_throw: bool = false

@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://b0q2abkqxi5xa" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="3_xxij7"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_c7y5k"]
 [ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="5_r0864"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyWander.gd" id="6_pe4vp"]
-[ext_resource type="Script" path="res://Scripts/Enemy/TorchGoblin/EnemyFollow.gd" id="7_sbnr6"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="9_uubq2"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_jkhm6"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyWander.gd" id="6_yix5a"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyFollow.gd" id="7_uqvvm"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyDead.gd" id="8_07poj"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyStun.gd" id="9_errv7"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="11_mfkwe"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyKnockback.gd" id="10_ri2kj"]
 [ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="12_iomp7"]
 [ext_resource type="PackedScene" uid="uid://cng6qu26gskpd" path="res://Scenes/Enemy/TorchGoblin/TorchWooshAudio/TorchWooshAudio.tscn" id="13_bni6b"]
 [ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_duprp"]
@@ -668,7 +668,7 @@ enemy = NodePath("..")
 dead_state = NodePath("Dead")
 
 [node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
-script = ExtResource("6_pe4vp")
+script = ExtResource("6_yix5a")
 follow_state = NodePath("../Follow")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
@@ -676,7 +676,7 @@ detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
-script = ExtResource("7_sbnr6")
+script = ExtResource("7_uqvvm")
 wander_state = NodePath("../Wander")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
@@ -685,16 +685,16 @@ attack_area = NodePath("../../AttackArea")
 use_attack_transition_delay = false
 
 [node name="Dead" type="Node" parent="StateMachine"]
-script = ExtResource("9_uubq2")
+script = ExtResource("8_07poj")
 
 [node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "dead_state")]
-script = ExtResource("10_jkhm6")
+script = ExtResource("9_errv7")
 wander_state = NodePath("../Wander")
 follow_state = NodePath("../Follow")
 dead_state = NodePath("../Dead")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
-script = ExtResource("11_mfkwe")
+script = ExtResource("10_ri2kj")
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 
