@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://caglke5lw744q" path="res://Assets/free-2d-top-down-pixel-dungeon-asset-pack/PNG/walls_floor.png" id="5_vue8f"]
 [ext_resource type="PackedScene" uid="uid://bq8au61eaed7j" path="res://Scenes/Level/PlayerSpawn.tscn" id="6_l48tt"]
 [ext_resource type="PackedScene" uid="uid://dxgc6jaofntpi" path="res://Scenes/Level/LevelTransition.tscn" id="7_wdd36"]
-[ext_resource type="PackedScene" uid="uid://cimwe44bpbow" path="res://Scenes/Enemy/TNTGoblin/goblin_tnt.tscn" id="8_838bo"]
+[ext_resource type="PackedScene" uid="uid://cimwe44bpbow" path="res://Scenes/Enemy/TNTGoblin/goblin_tnt.tscn" id="8_v02qi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_rfofq")
@@ -2661,5 +2661,5 @@ position = Vector2(-400, -104)
 level = "res://Scenes/Level/Level00Tutorial/room03.tscn"
 target_transition_area = "RoomTransition2"
 
-[node name="goblin_tnt" parent="." instance=ExtResource("8_838bo")]
-position = Vector2(-16, -8)
+[node name="goblin_tnt" parent="." instance=ExtResource("8_v02qi")]
+position = Vector2(128, 0)

@@ -1,0 +1,111 @@
+[gd_scene load_steps=29 format=3 uid="uid://cimwe44bpbow"]
+
+[ext_resource type="Texture2D" uid="uid://doq7lkie3kjri" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/TNT_Red.png" id="1_2a2fw"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/goblin_tnt.gd" id="1_r1o35"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="2_b8dar"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_tnyl8"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyWander.gd" id="3_n6g27"]
+[ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_shj8o"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="5_5p663"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyAttack.gd" id="6_s3uw8"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyRetreat.gd" id="7_4r77o"]
+[ext_resource type="Script" path="res://Scripts/Enemy/TorchGoblin/EnemyFollow.gd" id="7_6l0uj"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyKnockback.gd" id="9_fth2j"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStun.gd" id="10_1ffx1"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyDead.gd" id="12_28th5"]
+[ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_wyvik"]
+[ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="14_ywnjk"]
+[ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="16_1bety"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_apgfj"]
+shader = ExtResource("2_tnyl8")
+shader_parameter/opacity = 1.0
+shader_parameter/r = null
+shader_parameter/g = null
+shader_parameter/b = null
+shader_parameter/mix_color = null
+
+[sub_resource type="Animation" id="Animation_hx065"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DeathSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_hh6n1"]
+resource_name = "attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17, 18, 19, 20]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.6],
+"method": &"throw"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_e46u1"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13]
+}
+
+[sub_resource type="Animation" id="Animation_kbnhj"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Ar

@@ -12,10 +12,6 @@ var hit = false
 var player: CharacterBody2D
 var isAttacking = false
 var inCooldown = false
-var idle = false
-var transitionLocked = false
-var pending_target_state = null
-var last_state = null
 
 @onready var state_machine: Node = $StateMachine
 @onready var timer_take_damage: Timer = $TimerTakeDamage
@@ -33,68 +29,63 @@ var last_state = null
 @onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
 @onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
 @onready var timer_attack: Timer = $TimerAttack
-@onready var timer_state_transition: Timer = $TimerStateTransition
 
 
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
 	GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
-	last_state = get_node("StateMachine/Wander")
-	
+
 	if not GlobalLevelManager.is_enemy_alive(name):
 		queue_free()
-		
+
 	if sprite.material:
 		var shader_mat = sprite.material.duplicate()
 		sprite.material = shader_mat
+
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	health_bar.value = current_health
 	stamina_bar.value = current_stamina
-	
+
 	player = get_tree().get_first_node_in_group("Player")
 
 
 func _physics_process(_delta: float) -> void:
 	if current_stamina > 99.9:
 		timer_stamina_regen.stop()
-		pass
-		
+
 	if dead:
 		torch_light.visible = false
 		health_bar.visible = false
 		stamina_bar.visible = false
 		return
-		
-	if velocity.length() > 0 && !isAttacking:
+
+	if velocity.length() > 0 and not isAttacking:
 		animation_player.play("run")
 	elif animation_player.current_animation != "attack":
 		animation_player.play("idle")
-	
-	if !stunned:
-		if velocity.x > 0:
-			sprite.flip_h = false
-		else:
-			sprite.flip_h = true
+
+	if not stunned:
+		sprite.flip_h = velocity.x < 0
 	else:
-		if velocity.x < 0:
-			sprite.flip_h = false
-		else:
-			sprite.flip_h = true
-		
+		sprite.flip_h = velocity.x > 0
+
 	move_and_slide()
 
 
 func throw(duration: float):
 	if inCooldown:
 		return
+
 	inCooldown = true
+
 	if timer_attack.is_stopped():
 		timer_attack.start()
+
 	var throw_direction = (player.global_position - global_position).normalized()
 	var dynamite = preload("res://Scenes/Enemy/TNTGoblin/dynamite.tscn").instantiate()
+
 	dynamite.global_position = global_position
-	
 	get_tree().current_scene.add_child(dynamite)
 	dynamite.throw(throw_direction, duration)
 
@@ -105,40 +96,27 @@ func take_damage(damage: int) -> void:
 		sword_hit_audio.play()
 		current_health -= damage
 		health_bar.value = current_health
-		var shader_mat = sprite.material
-		shader_mat.set_shader_parameter('opacity', 0.9)
-		shader_mat.set_shader_parameter('r', 1.0)
-		shader_mat.set_shader_parameter('g', 0)
-		shader_mat.set_shader_parameter('b', 0)
-		shader_mat.set_shader_parameter('mix_color', 0.5)
+
+		shader_color(0.9, 1.0, 0.0, 0.0, 0.5)
 		timer_take_damage.start(0)
 
 
-func trigger_state_transition(target_state: String, from_state: Node) -> void:
-	if transitionLocked:
-		pending_target_state = target_state
-		return
-
-	transitionLocked = true
-	idle = true
-	last_state = from_state
-	pending_target_state = target_state
-	if target_state == "Dead":
-		transitionLocked = false
-		idle = false
-
-		if pending_target_state != null:
-			state_machine.current_state.Transitioned.emit(
-				state_machine.current_state,
-				pending_target_state
-			)
-			pending_target_state = null
-	else:
-		timer_state_transition.start()
+func shader_color(
+	opacity: float,
+	r: float, 
+	g: float, 
+	b: float, 
+	mix_color: float) -> void:
+		var shader_mat = sprite.material
+		shader_mat.set_shader_parameter('opacity', opacity)
+		shader_mat.set_shader_parameter('r', r)
+		shader_mat.set_shader_parameter('g', g)
+		shader_mat.set_shader_parameter('b', b)
+		shader_mat.set_shader_parameter('mix_color', mix_color)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if !dead:
+	if not dead:
 		if area.is_in_group("BladeOne"):
 			take_damage(12)
 		elif area.is_in_group("BladeTwo"):
@@ -149,12 +127,7 @@ func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
 		GlobalLevelManager.record_enemy_state(name, false)
 		dead = true
-	var shader_mat = sprite.material
-	shader_mat.set_shader_parameter('opacity', 1.0)
-	shader_mat.set_shader_parameter('r', 1.0)
-	shader_mat.set_shader_parameter('g', 1.0)
-	shader_mat.set_shader_parameter('b', 1.0)
-	shader_mat.set_shader_parameter('mix_color', 0.0)
+	shader_color(1.0, 1.0, 1.0, 1.0, 0.0)
 	timer_take_damage.stop()
 
 
@@ -185,26 +158,13 @@ func _on_timer_knockback_timeout() -> void:
 	timer_knockback.stop()
 
 
-func _on_player_spawned(player: CharacterBody2D) -> void:
-		self.player = player
+func _on_player_spawned(_player: CharacterBody2D) -> void:
+	player = _player
 
 
 func _on_player_despawned() -> void:
 	player = null
-	pending_target_state = null
 
 
 func _on_timer_attack_timeout() -> void:
 	inCooldown = false
-
-
-func _on_timer_state_transition_timeout() -> void:
-	transitionLocked = false
-	idle = false
-
-	if pending_target_state != null:
-		state_machine.current_state.Transitioned.emit(
-			state_machine.current_state,
-			pending_target_state
-		)
-		pending_target_state = null

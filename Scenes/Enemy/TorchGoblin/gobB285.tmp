@@ -81,18 +81,6 @@ tracks/1/keys = {
 "method": &"play_torch"
 }]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
 
 [sub_resource type="Animation" id="Animation_jn0ld"]
 resource_name = "attack_down"
@@ -124,18 +112,6 @@ tracks/1/keys = {
 "method": &"play_torch"
 }]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
 
 [sub_resource type="Animation" id="Animation_4ct7l"]
 resource_name = "attack_up"
@@ -166,18 +142,6 @@ tracks/1/keys = {
 "args": [],
 "method": &"play_torch"
 }]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_8bemg"]
@@ -661,42 +625,29 @@ y_sort_enabled = true
 position = Vector2(0, 10)
 shape = SubResource("CapsuleShape2D_hqfg7")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "enemy", "dead_state")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "enemy")]
 script = ExtResource("5_r0864")
 initial_state = NodePath("Wander")
 enemy = NodePath("..")
-dead_state = NodePath("Dead")
 
-[node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
+[node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state")]
 script = ExtResource("6_pe4vp")
 follow_state = NodePath("../Follow")
-knockback_state = NodePath("../Knockback")
-dead_state = NodePath("../Dead")
-detection_area = NodePath("../../DetectionArea")
-attack_area = NodePath("../../AttackArea")
 
-[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state")]
 script = ExtResource("7_sbnr6")
 wander_state = NodePath("../Wander")
-knockback_state = NodePath("../Knockback")
-dead_state = NodePath("../Dead")
-detection_area = NodePath("../../DetectionArea")
-attack_area = NodePath("../../AttackArea")
-use_attack_transition_delay = false
 
 [node name="Dead" type="Node" parent="StateMachine"]
 script = ExtResource("9_uubq2")
 
-[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "dead_state")]
+[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
 script = ExtResource("10_jkhm6")
-wander_state = NodePath("../Wander")
-follow_state = NodePath("../Follow")
-dead_state = NodePath("../Dead")
+enemy = NodePath("../..")
 
-[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
+[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
 script = ExtResource("11_mfkwe")
-stun_state = NodePath("../Stun")
-dead_state = NodePath("../Dead")
+enemy = NodePath("../..")
 
 [node name="Hitbox" type="Area2D" parent="."]
 position = Vector2(3.33333, 18.3333)
@@ -764,8 +715,9 @@ texture = ExtResource("10_n81kv")
 [node name="TorchArea" type="Area2D" parent="TorchPivot/TorchAttackPoint" groups=["GoblinTorch"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TorchPivot/TorchAttackPoint/TorchArea"]
-position = Vector2(53.3333, -13.3333)
+position = Vector2(56, -25)
 shape = SubResource("RectangleShape2D_eysye")
+disabled = true
 
 [node name="TimerStaminaRegen" type="Timer" parent="."]
 

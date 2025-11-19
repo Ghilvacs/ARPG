@@ -110,12 +110,23 @@ func take_damage(amount: int) -> void:
 		player_damage_taken_audio.play()
 		update_health(-amount)
 		HealthChanged.emit(current_health)
-		sprite.material.set_shader_parameter('opacity', 0.9)
-		sprite.material.set_shader_parameter('r', 1.0)
-		sprite.material.set_shader_parameter('g', 0)
-		sprite.material.set_shader_parameter('b', 0)
-		sprite.material.set_shader_parameter('mix_color', 0.5)
+		
+		shader_color(0.9, 1.0, 0.0, 0.0, 0.5)
 		timer_take_damage.start(0)
+
+
+func shader_color(
+	opacity: float,
+	r: float, 
+	g: float, 
+	b: float, 
+	mix_color: float) -> void:
+		var shader_mat = sprite.material
+		shader_mat.set_shader_parameter('opacity', opacity)
+		shader_mat.set_shader_parameter('r', r)
+		shader_mat.set_shader_parameter('g', g)
+		shader_mat.set_shader_parameter('b', b)
+		shader_mat.set_shader_parameter('mix_color', mix_color)
 
 
 func get_hp_percent() -> float:
@@ -141,9 +152,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 func _on_timer_take_damage_timeout() -> void:
 	if current_health < 1:
 		death()
-	sprite.material.set_shader_parameter('opacity', 1.0)
-	sprite.material.set_shader_parameter('r', 0)
-	sprite.material.set_shader_parameter('mix_color', 0)
+	shader_color(1.0, 1.0, 1.0, 1.0, 0.0)
 	timer_take_damage.stop()
 
 
