@@ -67,21 +67,6 @@ func load_game() -> void:
 	)
 	
 	game_loaded.emit()
-	
-#
-#	GlobalLevelManager.load_new_level(
-#		current_save.scene_path,
-#		 "",
-#		 Vector2(current_save.player.pos_x, current_save.player.pos_y))
-#
-#	await GlobalLevelManager.level_load_started
-#
-#	GlobalPlayerManager.set_player_position(Vector2(current_save.player.pos_x, current_save.player.pos_y))
-#	GlobalPlayerManager.set_player_health(current_save.player.hp, current_save.player.max_hp)
-#
-#	await GlobalLevelManager.level_loaded
-#
-#	game_loaded.emit()
 
 
 func update_player_data() -> void:
