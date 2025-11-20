@@ -9,8 +9,7 @@ var enemy_states = {}
 
 
 func _ready() -> void:
-	await get_tree().process_frame
-	level_loaded.emit()
+	pass
 
 
 func load_new_level(
@@ -26,16 +25,17 @@ func load_new_level(
 	target_transition = _target_transition
 	position_offset = _position_offset
 	
-	await get_tree().process_frame
 	level_load_started.emit()
 	
 	await get_tree().process_frame
-	get_tree().change_scene_to_file(level_path)
+	await get_tree().change_scene_to_file(level_path)
 	
 	await get_tree().process_frame
 	get_tree().paused = false
 	
+	get_tree().paused = false
 	await get_tree().process_frame
+	
 	level_loaded.emit()
 	ScreenFader.fade_in(0.5)
 

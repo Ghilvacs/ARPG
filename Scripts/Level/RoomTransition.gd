@@ -24,16 +24,18 @@ enum SIDE {LEFT, RIGHT, TOP, BOTTOM}
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
+
 func _ready() -> void:
 	_update_area()
+	
 	if Engine.is_editor_hint():
 		return
 		
 	monitoring = false
 	
-	await GlobalLevelManager.level_loaded
-	_place_player()
+	await GlobalPlayerManager.PlayerSpawned
 	
+	_place_player()
 	monitoring = true
 	body_entered.connect(_player_entered)
 
@@ -42,13 +44,16 @@ func _player_entered(_p: Node2D) -> void:
 		if not monitoring:
 			return
 		set_deferred("monitoring", false)
+		GlobalSaveManager.soft_save()
 		GlobalLevelManager.load_new_level(level, target_transition_area, get_offset())
 
 func _place_player() -> void:
 	if name != GlobalLevelManager.target_transition:
 		return
-	GlobalPlayerManager.set_player_position(global_position + GlobalLevelManager.position_offset)
-		
+	
+	var target_position: Vector2 = global_position + GlobalLevelManager.position_offset
+	GlobalPlayerManager.teleport_player(target_position)
+
 
 func get_offset() -> Vector2:
 	var offset: Vector2 = Vector2.ZERO
