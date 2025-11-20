@@ -5,4 +5,4 @@ func _ready() -> void:
 	GlobalLevelManager.level_load_started.connect(_free_level)
 
 func _free_level() -> void:
-	hide()
+	queue_free()
