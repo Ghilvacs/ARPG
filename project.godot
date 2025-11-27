@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GameState="*res://Scripts/00_Globals/GameState.gd"
 GlobalPlayerManager="*res://Scripts/00_Globals/global_player_manager.gd"
 GlobalLevelManager="*res://Scripts/00_Globals/global_level_manager.gd"
 ScreenFader="*res://Scripts/Level/ScreenFader.gd"
