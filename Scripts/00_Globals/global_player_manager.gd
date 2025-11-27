@@ -37,7 +37,7 @@ func _spawn_player() -> void:
 		# Fallback if no spawn marker exists
 		player.global_position = GlobalLevelManager.position_offset
 	
-	player.current_health = GlobalSaveManager.current_save.player.hp
+	player.current_health = GameState.save_data.player.hp
 	player.update_health(0)
 	
 	# 4. Hook up camera, signals, bounds
