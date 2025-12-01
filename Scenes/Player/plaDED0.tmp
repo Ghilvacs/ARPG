@@ -39,7 +39,7 @@ shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
 shader_parameter/b = null
-shader_parameter/mix_color = 0.0
+shader_parameter/mix_color = null
 
 [sub_resource type="Animation" id="Animation_jlu10"]
 length = 0.001
@@ -680,7 +680,7 @@ shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
 shader_parameter/b = null
-shader_parameter/mix_color = 0.0
+shader_parameter/mix_color = null
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tipym"]
 atlas = ExtResource("3_yja34")
@@ -1031,7 +1031,6 @@ wall_min_slide_angle = 0.174533
 script = ExtResource("1_fxp67")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
 material = SubResource("ShaderMaterial_5qqql")
 texture = ExtResource("3_yja34")
 hframes = 6
@@ -1181,11 +1180,9 @@ disabled = true
 [node name="PivotLight" type="Marker2D" parent="."]
 
 [node name="PointLight" type="Marker2D" parent="PivotLight"]
-visible = false
 position = Vector2(1.52588e-05, -1.90735e-06)
 
 [node name="LineOfSight" type="PointLight2D" parent="PivotLight/PointLight" node_paths=PackedStringArray("player")]
-visible = false
 position = Vector2(241.667, 3.33334)
 scale = Vector2(24, 30.43)
 energy = 0.8

@@ -10,7 +10,7 @@ var attack_started := false
 
 func enter():
 	player.update_facing()
-	attack_started = false
+	attack_started = true
 	player.velocity = Vector2.ZERO  # Stop movement while attacking
 	_handle_attack_animation()
 
@@ -25,7 +25,6 @@ func update(_delta: float) -> PlayerState:
 			return idle
 		else:
 			return walk
-	
 	return null
 
 
@@ -34,7 +33,7 @@ func physics_update(_delta: float) -> PlayerState:
 
 
 func handle_input(_event: InputEvent) -> PlayerState:
-	if _event.is_action_pressed("dash") and player.current_stamina >= 20:
+	if _event.is_action_pressed("dash") and player.dash_cooldown == 0.0:
 		return dash
 	return null
 
@@ -60,3 +59,4 @@ func attack(animation: String) -> void:
 		await get_tree().process_frame
 	elif animation == "attack_two":
 		player.blade_area_two.get_child(0).disabled = false
+	player.resume_stamina_regen()

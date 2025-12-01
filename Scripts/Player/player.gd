@@ -17,6 +17,8 @@ var mouse_position
 var last_position
 var direction: Vector2
 var stamina_regen = false
+var dashed := false
+var dash_cooldown := 0.0
 
 @export var isAttacking = false
 
@@ -36,6 +38,7 @@ var stamina_regen = false
 @onready var dash_audio: AudioStreamPlayer2D = $DashAudio
 @onready var player_damage_taken_audio: AudioStreamPlayer2D = $PlayerDamageTakenAudio
 @onready var player_death_audio: AudioStreamPlayer2D = $PlayerDeathAudio
+@onready var hitbox_collision_shape: CollisionShape2D = $Hitbox/CollisionShape2D
 
 
 func _ready() -> void:
@@ -53,6 +56,12 @@ func _physics_process(delta: float) -> void:
 			death_sprite.visible = true
 			animation_player.play("death")
 		return
+	
+	if dashed && dash_cooldown < 1.0:
+		dash_cooldown += delta
+	if dash_cooldown >= 1.0:
+		dash_cooldown = 0.0
+		dashed = false
 	
 	if current_stamina > 99.9:
 		current_stamina = 100.0
@@ -102,7 +111,7 @@ func consume_stamina(amount: float) -> void:
 
 func resume_stamina_regen() -> void:
 	if timer_stamina_regen_start.is_stopped():
-		timer_stamina_regen_start.start()	
+		timer_stamina_regen_start.start()
 
 
 func take_hit(hurtbox: Hurtbox) -> void:

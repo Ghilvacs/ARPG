@@ -24,7 +24,7 @@ shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
 shader_parameter/b = null
-shader_parameter/mix_color = null
+shader_parameter/mix_color = 0.0
 
 [sub_resource type="Animation" id="Animation_54xf7"]
 length = 0.001
@@ -249,7 +249,7 @@ shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
 shader_parameter/b = null
-shader_parameter/mix_color = null
+shader_parameter/mix_color = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_66jh6"]
 atlas = ExtResource("3_xxij7")
@@ -697,6 +697,7 @@ dead_state = NodePath("../Dead")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
 script = ExtResource("10_ri2kj")
+knockback_distance = 15.0
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 
