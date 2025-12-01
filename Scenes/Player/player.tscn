@@ -1181,7 +1181,6 @@ disabled = true
 [node name="PivotLight" type="Marker2D" parent="."]
 
 [node name="PointLight" type="Marker2D" parent="PivotLight"]
-visible = false
 position = Vector2(1.52588e-05, -1.90735e-06)
 
 [node name="LineOfSight" type="PointLight2D" parent="PivotLight/PointLight" node_paths=PackedStringArray("player")]
