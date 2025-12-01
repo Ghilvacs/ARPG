@@ -105,6 +105,10 @@ func resume_stamina_regen() -> void:
 		timer_stamina_regen_start.start()	
 
 
+func take_hit(hurtbox: Hurtbox) -> void:
+	take_damage(hurtbox.damage)
+
+
 func take_damage(amount: int) -> void:
 	if timer_take_damage.is_stopped():
 		player_damage_taken_audio.play()
@@ -143,10 +147,9 @@ func death() -> void:
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("GoblinTorch"):
-		take_damage(1)
-	if area.is_in_group("GoblinTNT"):
-		take_damage(2)
+	if area is Hurtbox and area.team == 1:
+		var hurtbox := area as Hurtbox
+		take_hit(hurtbox)
 
 
 func _on_timer_take_damage_timeout() -> void:

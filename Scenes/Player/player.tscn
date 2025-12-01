@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=105 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/LineOfSight.gd" id="6_2hbxi"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStateMachine.gd" id="6_53wn1"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerIdle.gd" id="7_lfyrn"]
+[ext_resource type="Script" path="res://Scripts/General/Hitbox/Hitbox.gd" id="7_o4qkl"]
+[ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="8_f3y77"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerWalk.gd" id="8_g54q2"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerAttack.gd" id="9_h6bdn"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerDash.gd" id="10_p3q17"]
@@ -1138,6 +1140,8 @@ position = Vector2(3.33333, 16.6667)
 shape = SubResource("CapsuleShape2D_w6j5i")
 
 [node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("7_o4qkl")
+team = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(1, -9)
@@ -1165,6 +1169,8 @@ wait_time = 0.5
 position = Vector2(1, 0)
 
 [node name="BladeAreaOne" type="Area2D" parent="BladeOnePivot/BladeOneAttackPoint" groups=["BladeOne"]]
+script = ExtResource("8_f3y77")
+damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BladeOnePivot/BladeOneAttackPoint/BladeAreaOne"]
 position = Vector2(59, -16)

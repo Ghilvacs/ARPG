@@ -1,7 +1,7 @@
 extends CharacterBody2D
 signal StaminaChanged
 
-const MAX_HEALTH: int = 50
+const MAX_HEALTH: int = 4
 const MAX_STAMINA: int = 100
 
 var current_health: int
@@ -100,6 +100,10 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 
+func take_hit(hurtbox: Hurtbox) -> void:
+	take_damage(hurtbox.damage)
+
+
 func take_damage(damage: int) -> void:
 	if timer_take_damage.is_stopped() and not dead:
 		hit = true
@@ -132,10 +136,9 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	if dead:
 		return
 
-	if area.is_in_group("BladeOne"):
-		take_damage(12)
-	elif area.is_in_group("BladeTwo"):
-		take_damage(24)
+	if area is Hurtbox and area.team == 0:
+		var hurtbox := area as Hurtbox
+		take_hit(hurtbox)
 
 
 func _on_timer_take_damage_timeout() -> void:
