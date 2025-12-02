@@ -614,8 +614,9 @@ height = 56.6667
 radius = 34.0
 height = 72.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ahqda"]
-radius = 684.69
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_67jhe"]
+blend_mode = 1
+light_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jowbk"]
 radius = 92.8559
@@ -628,6 +629,7 @@ z_index = 1
 scale = Vector2(0.15, 0.15)
 motion_mode = 1
 script = ExtResource("1_dauif")
+vision_rotation_offset_deg = -90.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_d00ob")
@@ -712,14 +714,20 @@ shape = SubResource("CapsuleShape2D_khh3g")
 
 [node name="DetectionArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-visible = false
-shape = SubResource("CircleShape2D_ahqda")
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
+polygon = PackedVector2Array(-16, 0, 16, 0, 500, 800, -500, 800)
+
+[node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
+material = SubResource("CanvasItemMaterial_67jhe")
+color = Color(1, 0.772549, 0, 0.156863)
+texture = ExtResource("10_n81kv")
+texture_offset = Vector2(650, 300)
+texture_scale = Vector2(0.3, 0.3)
+polygon = PackedVector2Array(-16, 0, 16, 0, 625, 1000, -625, 1000)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-visible = false
 shape = SubResource("CircleShape2D_jowbk")
 
 [node name="TimerTakeDamage" type="Timer" parent="."]

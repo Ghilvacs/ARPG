@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6o3vkurtwxkt"]
+[gd_scene load_steps=13 format=3 uid="uid://b6o3vkurtwxkt"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/dynamite.gd" id="1_7po7m"]
 [ext_resource type="Texture2D" uid="uid://c6g562q4oyqu5" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/Dynamite.png" id="2_6rhmw"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="3_4j545"]
 [ext_resource type="Texture2D" uid="uid://b2p6o5cwq8qeh" path="res://Assets/Explosion.png" id="3_j4548"]
+[ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="4_6dxmy"]
 [ext_resource type="AudioStream" uid="uid://d21k8dhms15j7" path="res://Assets/SFX/explosion.mp3" id="5_m68p5"]
 [ext_resource type="AudioStream" uid="uid://gukwc8qygo4u" path="res://Assets/SFX/throw.mp3" id="6_pklpv"]
 
@@ -167,6 +168,9 @@ texture = ExtResource("3_j4548")
 hframes = 12
 
 [node name="DamageArea" type="Area2D" parent="." groups=["GoblinTNT"]]
+script = ExtResource("4_6dxmy")
+damage = 2
+team = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
 position = Vector2(0, -8.88889)

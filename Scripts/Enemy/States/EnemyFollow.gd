@@ -168,6 +168,8 @@ func _ensure_player_connections() -> void:
 	if atk_area and attack_state:
 		if not atk_area.is_connected("body_entered", Callable(self, "_on_attack_area_entered")):
 			atk_area.connect("body_entered", Callable(self, "_on_attack_area_entered"))
+	if not atk_area.is_connected("body_exited", Callable(self, "_on_attack_area_exited")):
+		atk_area.connect("body_exited", Callable(self, "_on_attack_area_exited"))
 
 func _reset_attack_request() -> void:
 	_attack_request_timer = -1.0
@@ -194,6 +196,12 @@ func _on_attack_area_entered(body: Node) -> void:
 				_request_attack = true
 		else:
 			_request_attack = true
+
+
+func _on_attack_area_exited(body: Node) -> void:
+	if body.is_in_group("Player") and attack_state:
+		# Player left the attack cone → cancel any pending attack transition
+		_reset_attack_request()
 
 
 func _on_player_spawned(_player: CharacterBody2D) -> void:
