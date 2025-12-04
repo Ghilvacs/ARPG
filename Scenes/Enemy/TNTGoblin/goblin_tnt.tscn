@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cimwe44bpbow"]
+[gd_scene load_steps=30 format=3 uid="uid://cimwe44bpbow"]
 
 [ext_resource type="Texture2D" uid="uid://doq7lkie3kjri" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/TNT_Red.png" id="1_2a2fw"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/goblin_tnt.gd" id="1_r1o35"]
@@ -152,12 +152,20 @@ height = 66.6667
 blend_mode = 1
 light_mode = 1
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_8qwft"]
+radius = 576.464
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1rph"]
+radius = 482.263
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_6n0mm"]
 radius = 240.924
 
 [node name="goblin_tnt" type="CharacterBody2D"]
+light_mask = 2
 z_index = 1
 scale = Vector2(0.15, 0.15)
+collision_mask = 7
 script = ExtResource("1_r1o35")
 vision_rotation_offset_deg = -90.0
 
@@ -202,7 +210,6 @@ attack_area = NodePath("../../AttackArea")
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area", "attack_state")]
 script = ExtResource("7_pl3md")
-move_speed = 60.0
 wander_state = NodePath("../Wander")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
@@ -259,7 +266,7 @@ shape = SubResource("CapsuleShape2D_80ca1")
 [node name="DetectionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
-polygon = PackedVector2Array(-16, 0, 16, 0, 700, 1000, -700, 1000)
+polygon = PackedVector2Array(-16, 0, 16, 0, 700, 800, -700, 800)
 
 [node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
 material = SubResource("CanvasItemMaterial_v4xci")
@@ -267,13 +274,15 @@ color = Color(1, 0.772549, 0, 0.156863)
 texture = ExtResource("5_5p663")
 texture_offset = Vector2(650, 300)
 texture_scale = Vector2(0.3, 0.3)
-polygon = PackedVector2Array(-16, 0, 16, 0, 700, 1000, -700, 1000)
+polygon = PackedVector2Array(-16, 0, 16, 0, 875, 1000, -875, 1000)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_8qwft")
 
 [node name="AttackArea" type="Area2D" parent="."]
-visible = false
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackArea"]
-polygon = PackedVector2Array(-16, 0, 16, 0, 425, 600, -425, 600)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_i1rph")
 
 [node name="RetreatArea" type="Area2D" parent="."]
 

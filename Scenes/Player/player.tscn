@@ -1026,6 +1026,7 @@ z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -30)
 scale = Vector2(0.15, 0.15)
+collision_mask = 7
 motion_mode = 1
 wall_min_slide_angle = 0.174533
 script = ExtResource("1_fxp67")

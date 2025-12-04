@@ -1,8 +1,10 @@
 extends EnemyState
 class_name EnemyFollow
 
+const PATHFINDER: PackedScene = preload("res://Scenes/Enemy/Pathfinder.tscn")
+
 @export_category("Movement")
-@export var move_speed: float = 80.0
+@export var move_speed: float = 60.0
 @export var wander_state: EnemyState
 @export var knockback_state: EnemyState
 @export var dead_state: EnemyState   # optional; falls back to state_machine.dead_state if null
@@ -28,14 +30,23 @@ class_name EnemyFollow
 @export var use_attack_transition_delay: bool = true
 @export var attack_transition_delay: float = 0.25
 
+@export_category("Detection Tuning")
+@export var lose_sight_time: float = 0.5  # how long we can "lose" the player before giving up
+
 var player: CharacterBody2D
+var direction: Vector2 = Vector2.ZERO
 var player_in_detection_range: bool = true
 var _attack_request_timer: float = -1.0
 var _request_attack: bool = false
 var attack_animation: String = ""
+var pathfinder: Pathfinder
+var lose_sight_timer: float = 0.0
 
 
 func enter(prev_state: EnemyState) -> void:
+	enemy.vision_mode = enemy.VisionMode.LOOK_AT_PLAYER
+	pathfinder = PATHFINDER.instantiate() as Pathfinder
+	enemy.add_child(pathfinder)
 	_ensure_player_connections()
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
 
@@ -51,6 +62,8 @@ func enter(prev_state: EnemyState) -> void:
 
 
 func exit() -> void:
+	enemy.vision_mode = enemy.VisionMode.MOVE_DIRECTION
+	pathfinder.queue_free()
 	_reset_attack_request()
 
 
@@ -84,7 +97,7 @@ func physics_update(_delta: float) -> EnemyState:
 		var attack_point := enemy.get_node("TorchPivot/TorchAttackPoint") as Node2D
 		attack_point.look_at(player.global_position)
 
-	var direction := (player.global_position - enemy.global_position)
+	direction = lerp(direction, pathfinder.move_direction, 1.5)
 
 	# --- Movement
 	enemy.velocity = direction.normalized() * move_speed
@@ -174,6 +187,7 @@ func _ensure_player_connections() -> void:
 func _reset_attack_request() -> void:
 	_attack_request_timer = -1.0
 	_request_attack = false
+
 # -------------------------------------------------------------------
 # Signals
 # -------------------------------------------------------------------

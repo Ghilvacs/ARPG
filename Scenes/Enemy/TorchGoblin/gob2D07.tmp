@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="13_poxpv"]
 [ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_duprp"]
 [ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="15_7505l"]
+[ext_resource type="PackedScene" uid="uid://da6m6vahgftw3" path="res://Scenes/Enemy/Pathfinder.tscn" id="18_2vxio"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d00ob"]
 shader = ExtResource("2_oolxi")
@@ -618,9 +619,6 @@ height = 72.0
 blend_mode = 1
 light_mode = 1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fnhlu"]
-radius = 380.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_jowbk"]
 radius = 92.8559
 
@@ -685,7 +683,6 @@ attack_area = NodePath("../../AttackArea")
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
 script = ExtResource("7_uqvvm")
-move_speed = 80.0
 wander_state = NodePath("../Wander")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
@@ -720,7 +717,7 @@ shape = SubResource("CapsuleShape2D_khh3g")
 [node name="DetectionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
-polygon = PackedVector2Array(-16, 0, 16, 0, 700, 800, -700, 800)
+polygon = PackedVector2Array(-16, 0, 16, 0, 500, 800, -500, 800)
 
 [node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
 material = SubResource("CanvasItemMaterial_67jhe")
@@ -728,11 +725,7 @@ color = Color(1, 0.772549, 0, 0.156863)
 texture = ExtResource("10_n81kv")
 texture_offset = Vector2(650, 300)
 texture_scale = Vector2(0.3, 0.3)
-polygon = PackedVector2Array(-16, 0, 16, 0, 875, 1000, -875, 1000)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
-shape = SubResource("CircleShape2D_fnhlu")
-debug_color = Color(0.984314, 0.109804, 0, 0.419608)
+polygon = PackedVector2Array(-16, 0, 16, 0, 625, 1000, -625, 1000)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
@@ -822,6 +815,8 @@ volume_db = -23.0
 stream = ExtResource("15_7505l")
 volume_db = -25.0
 attenuation = 1e-05
+
+[node name="Pathfinder" parent="." instance=ExtResource("18_2vxio")]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

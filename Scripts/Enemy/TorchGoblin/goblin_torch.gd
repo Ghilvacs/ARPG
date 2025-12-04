@@ -14,6 +14,13 @@ var isAttacking: bool = false
 var facing_direction: Vector2 = Vector2.DOWN
 @export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
 
+enum VisionMode {
+	MOVE_DIRECTION,
+	LOOK_AT_PLAYER
+}
+
+var vision_mode: int = VisionMode.MOVE_DIRECTION
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: EnemyStateMachine = $StateMachine
 @onready var torch_area: Area2D = $TorchPivot/TorchAttackPoint/TorchArea
@@ -138,16 +145,25 @@ func shader_color(
 
 
 func _update_vision_cones() -> void:
-	var direction := velocity
-	
-	if direction.length() < 0.1 and player:
-		direction = player.global_position - global_position
-	
+	var direction := Vector2.ZERO
+
+	match vision_mode:
+		VisionMode.LOOK_AT_PLAYER:
+			if player:
+				direction = player.global_position - global_position
+			if direction.length() < 0.1:
+				# fallback to movement if player very close / missing
+				direction = velocity
+
+		VisionMode.MOVE_DIRECTION:
+			direction = velocity
+
+	# common post-processing
 	if direction.length() > 0.1:
 		facing_direction = direction.normalized()
-	
+
 	var angle := facing_direction.angle() + deg_to_rad(vision_rotation_offset_deg)
-	
+
 	if detection_area:
 		detection_area.rotation = angle
 	if attack_area:

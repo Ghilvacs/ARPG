@@ -35,6 +35,12 @@ var facing_direction: Vector2 = Vector2.DOWN
 @onready var attack_area: Area2D = $AttackArea
 @onready var retreat_area: Area2D = $RetreatArea
 
+enum VisionMode {
+	MOVE_DIRECTION,
+	LOOK_AT_PLAYER
+}
+
+var vision_mode: int = VisionMode.MOVE_DIRECTION
 
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
@@ -123,16 +129,25 @@ func shader_color(
 
 
 func _update_vision_cones() -> void:
-	var direction := velocity
-	
-	if direction.length() < 0.1 and player:
-		direction = player.global_position - global_position
-	
+	var direction := Vector2.ZERO
+
+	match vision_mode:
+		VisionMode.LOOK_AT_PLAYER:
+			if player:
+				direction = player.global_position - global_position
+			if direction.length() < 0.1:
+				# fallback to movement if player very close / missing
+				direction = velocity
+
+		VisionMode.MOVE_DIRECTION:
+			direction = velocity
+
+	# common post-processing
 	if direction.length() > 0.1:
 		facing_direction = direction.normalized()
-	
+
 	var angle := facing_direction.angle() + deg_to_rad(vision_rotation_offset_deg)
-	
+
 	if detection_area:
 		detection_area.rotation = angle
 	if attack_area:
