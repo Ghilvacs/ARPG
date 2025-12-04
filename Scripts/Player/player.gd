@@ -43,7 +43,6 @@ var dash_cooldown := 0.0
 
 func _ready() -> void:
 	player_state_machine.initialize(self)
-	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	StaminaChanged.emit(current_stamina)
 

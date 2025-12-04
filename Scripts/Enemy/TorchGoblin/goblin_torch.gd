@@ -11,6 +11,15 @@ var stunned: bool = false
 var hit: bool = false
 var player: CharacterBody2D
 var isAttacking: bool = false
+var facing_direction: Vector2 = Vector2.DOWN
+@export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
+
+enum VisionMode {
+	MOVE_DIRECTION,
+	LOOK_AT_PLAYER
+}
+
+var vision_mode: int = VisionMode.MOVE_DIRECTION
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: EnemyStateMachine = $StateMachine
@@ -29,6 +38,8 @@ var isAttacking: bool = false
 @onready var timer_knockback: Timer = $TimerKnockback
 @onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
 @onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
+@onready var detection_area: Area2D = $DetectionArea
+@onready var attack_area: Area2D = $AttackArea
 
 
 func _ready() -> void:
@@ -96,7 +107,8 @@ func _physics_process(_delta: float) -> void:
 			sprite.flip_h = false
 		elif velocity.x > 0.0:
 			sprite.flip_h = true
-
+	
+	_update_vision_cones()
 	move_and_slide()
 
 
@@ -130,6 +142,32 @@ func shader_color(
 		shader_mat.set_shader_parameter('g', g)
 		shader_mat.set_shader_parameter('b', b)
 		shader_mat.set_shader_parameter('mix_color', mix_color)
+
+
+func _update_vision_cones() -> void:
+	var direction := Vector2.ZERO
+
+	match vision_mode:
+		VisionMode.LOOK_AT_PLAYER:
+			if player:
+				direction = player.global_position - global_position
+			if direction.length() < 0.1:
+				# fallback to movement if player very close / missing
+				direction = velocity
+
+		VisionMode.MOVE_DIRECTION:
+			direction = velocity
+
+	# common post-processing
+	if direction.length() > 0.1:
+		facing_direction = direction.normalized()
+
+	var angle := facing_direction.angle() + deg_to_rad(vision_rotation_offset_deg)
+
+	if detection_area:
+		detection_area.rotation = angle
+	if attack_area:
+		attack_area.rotation = angle
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
