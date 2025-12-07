@@ -1,7 +1,8 @@
-[gd_scene load_steps=105 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=106 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
+[ext_resource type="Texture2D" uid="uid://dtal6ukrmdxmg" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue2.png" id="3_7htyf"]
 [ext_resource type="Texture2D" uid="uid://bq5o17cv0lfxx" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_yja34"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_dnl75"]
 [ext_resource type="Texture2D" uid="uid://ce7aevx27rvhx" path="res://Assets/line_of_sight.png" id="5_mo2at"]
@@ -1019,7 +1020,7 @@ height = 88.0
 size = Vector2(46.2045, 123.709)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rq7l8"]
-size = Vector2(50, 108)
+size = Vector2(72.6667, 110)
 
 [node name="player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
@@ -1034,7 +1035,7 @@ script = ExtResource("1_fxp67")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 material = SubResource("ShaderMaterial_5qqql")
-texture = ExtResource("3_yja34")
+texture = ExtResource("3_7htyf")
 hframes = 6
 vframes = 8
 
@@ -1171,11 +1172,12 @@ wait_time = 0.5
 position = Vector2(1, 0)
 
 [node name="BladeAreaOne" type="Area2D" parent="BladeOnePivot/BladeOneAttackPoint" groups=["BladeOne"]]
+position = Vector2(5.66666, 13.3333)
 script = ExtResource("8_f3y77")
 damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BladeOnePivot/BladeOneAttackPoint/BladeAreaOne"]
-position = Vector2(59, -16)
+position = Vector2(70.3334, -15)
 shape = SubResource("RectangleShape2D_rq7l8")
 disabled = true
 

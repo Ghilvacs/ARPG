@@ -14,6 +14,7 @@ var tween: Tween
 
 
 func enter():
+	player.isAttacking = false
 	player.hitbox_collision_shape.disabled = true
 	player.dashed = true
 	effect_timer = 0.0
