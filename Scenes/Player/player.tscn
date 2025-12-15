@@ -1371,8 +1371,6 @@ script = ExtResource("8_g54q2")
 
 [node name="Attack" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("9_h6bdn")
-dash_attack_dash_distance = 40.0
-dash_attack_dash_duration = 0.1
 
 [node name="Dash" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_p3q17")
