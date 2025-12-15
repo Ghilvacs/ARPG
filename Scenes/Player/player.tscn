@@ -1,8 +1,8 @@
-[gd_scene load_steps=106 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=111 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
-[ext_resource type="Texture2D" uid="uid://dtal6ukrmdxmg" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue2.png" id="3_7htyf"]
+[ext_resource type="Texture2D" uid="uid://deu5vd6lrw6tg" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue4.png" id="3_6lvub"]
 [ext_resource type="Texture2D" uid="uid://bq5o17cv0lfxx" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_yja34"]
 [ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_dnl75"]
 [ext_resource type="Texture2D" uid="uid://ce7aevx27rvhx" path="res://Assets/line_of_sight.png" id="5_mo2at"]
@@ -352,6 +352,10 @@ _data = {
 "crystal_spin": SubResource("Animation_et0dh")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w6j5i"]
+radius = 25.0
+height = 50.0
+
 [sub_resource type="Animation" id="Animation_gskdi"]
 length = 0.001
 tracks/0/type = "value"
@@ -401,6 +405,208 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BladeOnePivot/BladeOneAttackPoint/BladeAreaOne/CollisionShape2D2:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_vrrpg"]
+resource_name = "attack_dash_buildup"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [49, 50, 51]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:isAttacking")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_5v6t8"]
+resource_name = "attack_dash_down"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [58, 59, 60]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:isAttacking")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BladeOnePivot/BladeOneAttackPoint/BladeAreaOne/CollisionShape2D2:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SwordSwingAudio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_ieh3p"]
+resource_name = "attack_dash"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [52, 53, 54]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:isAttacking")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BladeOnePivot/BladeOneAttackPoint/BladeAreaOne/CollisionShape2D2:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SwordSwingAudio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_8uc1g"]
+resource_name = "attack_dash_up"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [55, 56, 57]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:isAttacking")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BladeOnePivot/BladeOneAttackPoint/BladeAreaOne/CollisionShape2D2:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SwordSwingAudio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_sword_swing"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_vf7w0"]
@@ -666,6 +872,10 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_12tow"]
 _data = {
 "RESET": SubResource("Animation_gskdi"),
+"attack_dash_buildup": SubResource("Animation_vrrpg"),
+"attack_dash_down": SubResource("Animation_5v6t8"),
+"attack_dash_side": SubResource("Animation_ieh3p"),
+"attack_dash_up": SubResource("Animation_8uc1g"),
 "attack_one": SubResource("Animation_vf7w0"),
 "attack_one_down": SubResource("Animation_okm0s"),
 "attack_one_up": SubResource("Animation_vcbbn"),
@@ -1008,19 +1218,18 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w6j5i"]
-radius = 25.0
-height = 50.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ano3o"]
 radius = 43.0
 height = 88.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_eurrb"]
-size = Vector2(46.2045, 123.709)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rq7l8"]
 size = Vector2(72.6667, 110)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0t8r"]
+size = Vector2(193.333, 113.333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eurrb"]
+size = Vector2(46.2045, 123.709)
 
 [node name="player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
@@ -1035,9 +1244,9 @@ script = ExtResource("1_fxp67")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 material = SubResource("ShaderMaterial_5qqql")
-texture = ExtResource("3_7htyf")
+texture = ExtResource("3_6lvub")
 hframes = 6
-vframes = 8
+vframes = 11
 
 [node name="CrystalSprite1" type="Sprite2D" parent="Sprite2D"]
 position = Vector2(-70, -30)
@@ -1120,6 +1329,10 @@ libraries = {
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3.33333, 16.6667)
+shape = SubResource("CapsuleShape2D_w6j5i")
+
 [node name="DeathSprite2D" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("4_dnl75")
@@ -1138,10 +1351,6 @@ sprite_frames = SubResource("SpriteFrames_c2ap4")
 animation = &"death"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3.33333, 16.6667)
-shape = SubResource("CapsuleShape2D_w6j5i")
-
 [node name="Hitbox" type="Area2D" parent="."]
 script = ExtResource("7_o4qkl")
 team = 0
@@ -1150,36 +1359,41 @@ team = 0
 position = Vector2(1, -9)
 shape = SubResource("CapsuleShape2D_ano3o")
 
-[node name="TimerDeath" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("6_53wn1")
+initial_state = NodePath("Idle")
 
-[node name="BladeAreaTwo" type="Area2D" parent="." groups=["BladeTwo"]]
-visible = false
+[node name="Idle" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_lfyrn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BladeAreaTwo"]
-position = Vector2(40.5334, 10.5434)
-rotation = 0.872665
-shape = SubResource("RectangleShape2D_eurrb")
-disabled = true
+[node name="Walk" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_g54q2")
 
-[node name="TimerTakeDamage" type="Timer" parent="."]
-wait_time = 0.5
+[node name="Attack" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_h6bdn")
+dash_attack_dash_distance = 40.0
+dash_attack_dash_duration = 0.1
+
+[node name="Dash" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("10_p3q17")
+dash_distance = 40.0
 
 [node name="BladeOnePivot" type="Marker2D" parent="."]
 
 [node name="BladeOneAttackPoint" type="Marker2D" parent="BladeOnePivot"]
-position = Vector2(1, 0)
 
 [node name="BladeAreaOne" type="Area2D" parent="BladeOnePivot/BladeOneAttackPoint" groups=["BladeOne"]]
-position = Vector2(5.66666, 13.3333)
+position = Vector2(73.3333, 0)
 script = ExtResource("8_f3y77")
 damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BladeOnePivot/BladeOneAttackPoint/BladeAreaOne"]
-position = Vector2(70.3334, -15)
 shape = SubResource("RectangleShape2D_rq7l8")
 disabled = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BladeOnePivot/BladeOneAttackPoint/BladeAreaOne"]
+position = Vector2(-56.6666, 3.33334)
+shape = SubResource("RectangleShape2D_r0t8r")
 
 [node name="PivotLight" type="Marker2D" parent="."]
 
@@ -1196,31 +1410,25 @@ texture_scale = 0.1
 script = ExtResource("6_2hbxi")
 player = NodePath("../../..")
 
-[node name="TimerStaminaRegenStart" type="Timer" parent="."]
+[node name="BladeAreaTwo" type="Area2D" parent="." groups=["BladeTwo"]]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BladeAreaTwo"]
+position = Vector2(40.5334, 10.5434)
+rotation = 0.872665
+shape = SubResource("RectangleShape2D_eurrb")
+disabled = true
+
+[node name="TimerDeath" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 
-[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("6_53wn1")
-initial_state = NodePath("Idle")
+[node name="TimerTakeDamage" type="Timer" parent="."]
+wait_time = 0.5
 
-[node name="Idle" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("7_lfyrn")
-
-[node name="Walk" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("8_g54q2")
-
-[node name="Attack" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("9_h6bdn")
-
-[node name="Dash" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("10_p3q17")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(6, 6)
-limit_smoothed = true
-position_smoothing_enabled = true
-position_smoothing_speed = 7.0
+[node name="TimerStaminaRegenStart" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [node name="StaminaBar" type="ProgressBar" parent="." node_paths=PackedStringArray("player")]
 offset_left = -50.0
@@ -1236,6 +1444,12 @@ player = NodePath("..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(6, 6)
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
 
 [node name="FootstepAudio" parent="." instance=ExtResource("15_7ltm0")]
 volume_db = -25.0
