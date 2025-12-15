@@ -8,20 +8,6 @@ signal PlayerDied
 const MAX_HEALTH = 5
 const MAX_STAMINA = 100
 
-var current_health
-var current_stamina = MAX_STAMINA
-var enemy: CharacterBody2D
-var dead = false
-var attack_speed
-var mouse_position
-var last_position
-var direction: Vector2
-var stamina_regen = false
-var dashed := false
-var dash_cooldown := 0.0
-
-@export var isAttacking = false
-
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var death_sprite: Sprite2D = $DeathSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -39,12 +25,38 @@ var dash_cooldown := 0.0
 @onready var player_damage_taken_audio: AudioStreamPlayer2D = $PlayerDamageTakenAudio
 @onready var player_death_audio: AudioStreamPlayer2D = $PlayerDeathAudio
 @onready var hitbox_collision_shape: CollisionShape2D = $Hitbox/CollisionShape2D
+@onready var camera: Camera2D = $Camera2D
+
+@export var isAttacking = false
+
+@export_category("Dash Effect")
+@export var dash_effect_delay: float = 0.01
+@export var dash_effect_fade_time: float = 0.2
+@export var dash_effect_shader: Shader = preload("res://Scenes/Shaders/player_ghost.gdshader")
+
+var current_health
+var current_stamina = MAX_STAMINA
+var enemy: CharacterBody2D
+var dead = false
+var attack_speed
+var mouse_position
+var last_position
+var direction: Vector2
+var stamina_regen = false
+var dashed := false
+var dash_cooldown := 0.0
+var camera_zoom_tween: Tween
+var normal_camera_zoom: Vector2
 
 
 func _ready() -> void:
 	player_state_machine.initialize(self)
+	if camera:
+		normal_camera_zoom = camera.zoom
 	current_stamina = MAX_STAMINA
 	StaminaChanged.emit(current_stamina)
+	var dash_shape := blade_area_one.get_child(1) as CollisionShape2D
+	dash_shape.disabled = true
 
 
 func _physics_process(delta: float) -> void:
@@ -76,7 +88,6 @@ func _physics_process(delta: float) -> void:
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	
 	update_facing()
-	
 	move_and_slide()
 
 
@@ -127,6 +138,28 @@ func take_damage(amount: int) -> void:
 		timer_take_damage.start(0)
 
 
+func spawn_dash_effect() -> void:
+	var effect := Node2D.new()
+	get_parent().add_child(effect)
+	effect.global_position = global_position
+
+	var sprite_copy: Sprite2D = sprite.duplicate()
+	sprite_copy.scale = scale
+	for child in sprite_copy.get_children():
+		child.visible = false
+	effect.add_child(sprite_copy)
+
+	var ghost_mat := ShaderMaterial.new()
+	ghost_mat.shader = dash_effect_shader
+	ghost_mat.set_shader_parameter("opacity", 1.0)
+	sprite_copy.material = ghost_mat
+
+	var t := create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.tween_property(ghost_mat, "shader_parameter/opacity", 0.0, dash_effect_fade_time)
+	t.chain().tween_callback(effect.queue_free)
+
+
 func shader_color(
 	opacity: float,
 	r: float, 
@@ -152,6 +185,18 @@ func death() -> void:
 	blade_area_one.get_child(0).disabled = true
 	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
 	dead = true
+
+
+func tween_camera_zoom(target_zoom: Vector2, duration: float) -> void:
+	if !camera:
+		return
+	if camera_zoom_tween and camera_zoom_tween.is_running():
+		camera_zoom_tween.kill()
+
+	camera_zoom_tween = create_tween()
+	camera_zoom_tween.set_trans(Tween.TRANS_QUAD)
+	camera_zoom_tween.set_ease(Tween.EASE_OUT)
+	camera_zoom_tween.tween_property(camera, "zoom", target_zoom, duration)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:

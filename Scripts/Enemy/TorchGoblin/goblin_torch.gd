@@ -67,8 +67,6 @@ func _ready() -> void:
 	# Initial player reference if already spawned
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
 
-	# Make sure the state machine has a reference to this enemy,
-	# even if you forgot to set it in the inspector.
 	if state_machine:
 		state_machine.enemy = self
 
