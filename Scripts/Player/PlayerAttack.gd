@@ -2,15 +2,13 @@ class_name StateAttack extends PlayerState
 
 @export var stamina_cost: float = 5.0
 @export var dash_attack_stamina_cost: float = 10.0
-
-# How long the "charge pose" is (portion of attack_dash in seconds)
+@export var attack_distance: float = 8.0
+@export var attack_duration: float = 0.1
+@export var dash_distance: float = 60.0
+@export var dash_duration: float = 0.12
 @export var dash_attack_charge_duration: float = 0.2
-# How slow the animation plays during the charge phase
 @export var dash_attack_slow_speed: float = 0.25
-# How long the player must hold attack before we decide to use dash attack at all
 @export var dash_attack_hold_time: float = 0.2
-@export var dash_attack_dash_distance: float = 60.0
-@export var dash_attack_dash_duration: float = 0.12
 @export var dash_buildup_zoom: Vector2 = Vector2(7.0, 7.0) # zoom in (bigger values = closer)
 @export var dash_zoom_in_time: float = 0.5
 @export var dash_zoom_out_time: float = 0.1
@@ -26,7 +24,7 @@ var hold_time := 0.0
 var dash_charge_time := 0.0
 var dash_moving := false
 var dash_tween: Tween
-var dash_direction: Vector2
+var attack_direction: Vector2
 var dash_release_started := false
 var dash_release_anim := ""
 var effect_timer := 0.0
@@ -116,6 +114,7 @@ func _start_normal_attack() -> void:
 
 	attack_started = true
 
+	_start_base_attack_movement()
 	_handle_attack_animation()
 
 
@@ -180,6 +179,28 @@ func _update_dash_attack(delta: float) -> PlayerState:
 	return null
 
 
+func _start_base_attack_movement() -> void:
+	var mouse_global := player.get_global_mouse_position()
+	var mouse_local := player.to_local(mouse_global)
+
+#	# 🔁 Force blade + light to look at the mouse even while attacking
+#	player.blade_one_attack_point.look_at(mouse_global)
+#	player.point_light.look_at(mouse_global)
+#	player.sprite.flip_h = mouse_local.x < 0
+
+	# Dash direction = towards mouse
+	attack_direction = (mouse_global - player.global_position).normalized()
+	if attack_direction == Vector2.ZERO:
+		attack_direction = Vector2.RIGHT  # fallback
+
+	var target_position := player.global_position + attack_direction * attack_distance
+
+	dash_tween = player.create_tween()
+	dash_tween.set_trans(Tween.TRANS_QUAD)
+	dash_tween.set_ease(Tween.EASE_OUT)
+	dash_tween.tween_property(player, "global_position", target_position, attack_duration)
+
+
 func _start_dash_attack_movement() -> void:
 	var mouse_global := player.get_global_mouse_position()
 	var mouse_local := player.to_local(mouse_global)
@@ -192,16 +213,16 @@ func _start_dash_attack_movement() -> void:
 	player.sprite.flip_h = mouse_local.x < 0
 
 	# Dash direction = towards mouse
-	dash_direction = (mouse_global - player.global_position).normalized()
-	if dash_direction == Vector2.ZERO:
-		dash_direction = Vector2.RIGHT  # fallback
+	attack_direction = (mouse_global - player.global_position).normalized()
+	if attack_direction == Vector2.ZERO:
+		attack_direction = Vector2.RIGHT  # fallback
 
-	var target_position := player.global_position + dash_direction * dash_attack_dash_distance
+	var target_position := player.global_position + attack_direction * dash_distance
 
 	dash_tween = player.create_tween()
 	dash_tween.set_trans(Tween.TRANS_QUAD)
 	dash_tween.set_ease(Tween.EASE_OUT)
-	dash_tween.tween_property(player, "global_position", target_position, dash_attack_dash_duration)
+	dash_tween.tween_property(player, "global_position", target_position, dash_duration)
 	dash_tween.tween_callback(func():
 		dash_moving = false
 	)
