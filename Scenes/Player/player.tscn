@@ -1374,7 +1374,6 @@ script = ExtResource("9_h6bdn")
 
 [node name="Dash" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_p3q17")
-dash_distance = 40.0
 
 [node name="BladeOnePivot" type="Marker2D" parent="."]
 
