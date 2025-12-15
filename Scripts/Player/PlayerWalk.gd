@@ -27,7 +27,7 @@ func update(_delta: float) -> PlayerState:
 func physics_update(_delta: float) -> PlayerState:
 	if Input.is_action_pressed("sprint") and player.current_stamina > 0.0:
 		if player.sprite.flip_h && player.direction.x < 0 || !player.sprite.flip_h && player.direction.x > 0:
-				player.consume_stamina(0.1)
+				player.consume_stamina(0.2)
 				current_speed = MAX_SPEED
 		else:
 			current_speed = MAX_SPEED / 1.5

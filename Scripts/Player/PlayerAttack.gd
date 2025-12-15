@@ -1,7 +1,7 @@
 class_name StateAttack extends PlayerState
 
 @export var stamina_cost: float = 5.0
-@export var dash_attack_stamina_cost: float = 10.0
+@export var dash_attack_stamina_cost: float = 20.0
 @export var attack_distance: float = 8.0
 @export var attack_duration: float = 0.1
 @export var dash_distance: float = 60.0
@@ -183,11 +183,6 @@ func _start_base_attack_movement() -> void:
 	var mouse_global := player.get_global_mouse_position()
 	var mouse_local := player.to_local(mouse_global)
 
-#	# 🔁 Force blade + light to look at the mouse even while attacking
-#	player.blade_one_attack_point.look_at(mouse_global)
-#	player.point_light.look_at(mouse_global)
-#	player.sprite.flip_h = mouse_local.x < 0
-
 	# Dash direction = towards mouse
 	attack_direction = (mouse_global - player.global_position).normalized()
 	if attack_direction == Vector2.ZERO:
@@ -265,7 +260,5 @@ func attack(animation: String) -> void:
 
 	if animation in ["attack_one", "attack_one_up", "attack_one_down", "attack_dash"]:
 		await get_tree().process_frame
-#	elif animation == "attack_two":
-#		player.blade_area_two.get_child(0).disabled = false
-
+	
 	player.resume_stamina_regen()
