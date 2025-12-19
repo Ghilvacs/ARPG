@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://p2tl4q6yn0j4"]
+[gd_scene load_steps=21 format=3 uid="uid://p2tl4q6yn0j4"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_2papx"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_tcxjb"]
@@ -10,6 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cimwe44bpbow" path="res://Scenes/Enemy/TNTGoblin/goblin_tnt.tscn" id="9_pij28"]
 [ext_resource type="PackedScene" uid="uid://3ykcticb56fb" path="res://Scenes/Level/InteractableArea.tscn" id="10_aqmps"]
 [ext_resource type="PackedScene" uid="uid://kfuf7grbl6e0" path="res://Scenes/Interactables/TreasureChest/TreasureChest.tscn" id="10_kd78v"]
+[ext_resource type="PackedScene" uid="uid://ctmywl83hdu76" path="res://Scenes/Items/ItemPickup/ItemPickup.tscn" id="11_m4ru7"]
+[ext_resource type="Resource" uid="uid://opk8poxc0ksa" path="res://Data/ItemData/apple.tres" id="12_dr6fa"]
+[ext_resource type="Resource" uid="uid://d0x8gw82fd6kb" path="res://Data/ItemData/gem.tres" id="13_yqx0i"]
+[ext_resource type="Resource" uid="uid://pwbv1mr4s7id" path="res://Data/ItemData/potion.tres" id="14_3nlua"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_tcxjb")
@@ -2688,3 +2692,18 @@ position = Vector2(190, -78)
 
 [node name="TreasureChest3" parent="." instance=ExtResource("10_kd78v")]
 position = Vector2(239, -79)
+
+[node name="ItemPickup" parent="." instance=ExtResource("11_m4ru7")]
+position = Vector2(270, -28)
+scale = Vector2(0.5, 0.5)
+item_data = ExtResource("12_dr6fa")
+
+[node name="ItemPickup2" parent="." instance=ExtResource("11_m4ru7")]
+position = Vector2(220, 0)
+scale = Vector2(0.5, 0.5)
+item_data = ExtResource("13_yqx0i")
+
+[node name="ItemPickup3" parent="." instance=ExtResource("11_m4ru7")]
+position = Vector2(244, -49)
+scale = Vector2(0.5, 0.5)
+item_data = ExtResource("14_3nlua")
