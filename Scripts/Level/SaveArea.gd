@@ -1,8 +1,11 @@
-extends Area2D
+class_name InteractableArea extends Area2D
 
 @onready var label_save_game: Label = $LabelSaveGame
 @onready var game_is_saved_label: Label = $GameIsSavedLabel
 
+@export var save_area: bool = false
+@export var chest: bool = false
+@export var door: bool = false
 
 func _ready() -> void:
 	GlobalSaveManager.connect("game_saved", Callable(self, "_on_game_saved"))
@@ -12,8 +15,9 @@ func _ready() -> void:
 
 func _player_entered(_p: Node2D) -> void:
 	if _p.is_in_group("Player"):
-		label_save_game.visible = true
-		GlobalSaveManager.can_save = true
+		if save_area:
+			label_save_game.visible = true
+			GlobalSaveManager.can_save = true
 
 
 func _player_exited(_p: Node2D) -> void:

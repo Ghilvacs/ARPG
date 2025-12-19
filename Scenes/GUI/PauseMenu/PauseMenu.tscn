@@ -1,13 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8lhlsvt53qms"]
+[gd_scene load_steps=8 format=3 uid="uid://b8lhlsvt53qms"]
 
 [ext_resource type="Script" path="res://Scripts/GUI/PauseMenu/PauseMenu.gd" id="1_3ju5t"]
+[ext_resource type="Texture2D" uid="uid://bp4ryai1epp2j" path="res://Assets/MichaelAssets/items.png" id="2_us8li"]
+[ext_resource type="PackedScene" uid="uid://cu2lcn87a8431" path="res://Scenes/GUI/Inventory/InventorySlot.tscn" id="3_akj6a"]
+[ext_resource type="Script" path="res://Scripts/GUI/Inventory/InventoryUI.gd" id="3_spaqa"]
+[ext_resource type="Resource" uid="uid://c7x5p1xvoboqy" path="res://Scenes/GUI/Inventory/PlayerInventory.tres" id="4_6314i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jytxa"]
+atlas = ExtResource("2_us8li")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y7xq5"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+texture = SubResource("AtlasTexture_jytxa")
+texture_margin_left = 14.0
+texture_margin_top = 14.0
+texture_margin_right = 14.0
+texture_margin_bottom = 14.0
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 visible = false
 script = ExtResource("1_3ju5t")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,29 +43,98 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.243137, 0.243137, 0.243137, 0.698039)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -123.0
-offset_top = -64.0
-offset_right = 123.0
-offset_bottom = 64.0
+offset_left = -83.0
+offset_top = 100.0
+offset_right = 83.0
+offset_bottom = 158.0
 grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="VBoxContainer"]
-layout_mode = 2
+theme_override_font_sizes/font_size = 40
 text = "[Paused]"
 horizontal_alignment = 1
 
-[node name="ButtonReload" type="Button" parent="VBoxContainer"]
+[node name="ItemDescriptionLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -502.0
+offset_top = -22.0
+offset_right = -152.0
+offset_bottom = 23.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "A valuable gem!"
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -123.0
+offset_top = -148.0
+offset_right = 123.0
+offset_bottom = -106.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="ButtonReload" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Reload"
 
-[node name="ButtonQuit" type="Button" parent="VBoxContainer"]
+[node name="ButtonQuit" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Quit"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 250.0
+offset_top = -39.0
+offset_right = 436.0
+offset_bottom = 39.0
+grow_vertical = 2
+scale = Vector2(2, 2)
+theme_override_styles/panel = SubResource("StyleBoxTexture_y7xq5")
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 5
+script = ExtResource("3_spaqa")
+data = ExtResource("4_6314i")
+
+[node name="InventorySlot" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_akj6a")]
+layout_mode = 2

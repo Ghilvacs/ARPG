@@ -4,6 +4,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 signal PlayerDied
+signal DirectionChanged
 
 const MAX_HEALTH = 5
 const MAX_STAMINA = 100
@@ -47,6 +48,7 @@ var dashed := false
 var dash_cooldown := 0.0
 var camera_zoom_tween: Tween
 var normal_camera_zoom: Vector2
+var current_direction: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -97,6 +99,7 @@ func update_animation(state: String) -> void:
 
 func update_facing() -> void:
 	mouse_position = get_local_mouse_position()
+	DirectionChanged.emit(direction)
 	if !isAttacking:
 		blade_one_attack_point.look_at(get_global_mouse_position())
 		point_light.look_at(get_global_mouse_position())

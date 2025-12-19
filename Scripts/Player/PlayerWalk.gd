@@ -45,4 +45,6 @@ func handle_input(_event: InputEvent) -> PlayerState:
 		return attack
 	if _event.is_action_pressed("dash") and player.dash_cooldown == 0.0:
 		return dash
+	if _event.is_action_pressed("interact"):
+		GlobalPlayerManager.InteractPressed.emit()
 	return null

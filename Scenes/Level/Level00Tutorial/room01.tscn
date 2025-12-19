@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://p2tl4q6yn0j4"]
+[gd_scene load_steps=17 format=3 uid="uid://p2tl4q6yn0j4"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_2papx"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_tcxjb"]
@@ -8,7 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://dxgc6jaofntpi" path="res://Scenes/Level/LevelTransition.tscn" id="7_x2avf"]
 [ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/TorchGoblin/goblin_torch.tscn" id="9_jwrih"]
 [ext_resource type="PackedScene" uid="uid://cimwe44bpbow" path="res://Scenes/Enemy/TNTGoblin/goblin_tnt.tscn" id="9_pij28"]
-[ext_resource type="PackedScene" uid="uid://3ykcticb56fb" path="res://Scenes/Level/SaveArea.tscn" id="10_aqmps"]
+[ext_resource type="PackedScene" uid="uid://3ykcticb56fb" path="res://Scenes/Level/InteractableArea.tscn" id="10_aqmps"]
+[ext_resource type="PackedScene" uid="uid://kfuf7grbl6e0" path="res://Scenes/Interactables/TreasureChest/TreasureChest.tscn" id="10_kd78v"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_tcxjb")
@@ -2666,8 +2667,9 @@ target_transition_area = "RoomTransition"
 side = 3
 size = 4
 
-[node name="SaveArea" parent="." instance=ExtResource("10_aqmps")]
-position = Vector2(192, -128)
+[node name="InteractableArea" parent="." instance=ExtResource("10_aqmps")]
+position = Vector2(192, -119)
+save_area = true
 
 [node name="goblin_torch" parent="." instance=ExtResource("9_jwrih")]
 position = Vector2(-300, 7)
@@ -2677,3 +2679,12 @@ position = Vector2(194, -44)
 
 [node name="goblin_tnt" parent="." instance=ExtResource("9_pij28")]
 position = Vector2(-88, -8)
+
+[node name="TreasureChest" parent="." instance=ExtResource("10_kd78v")]
+position = Vector2(142, -79)
+
+[node name="TreasureChest2" parent="." instance=ExtResource("10_kd78v")]
+position = Vector2(190, -78)
+
+[node name="TreasureChest3" parent="." instance=ExtResource("10_kd78v")]
+position = Vector2(239, -79)

@@ -10,6 +10,7 @@ var saved_stamina: float = -1.0
 
 signal PlayerSpawned(player: CharacterBody2D)
 signal PlayerDespawned
+signal InteractPressed
 
 
 func _ready() -> void:

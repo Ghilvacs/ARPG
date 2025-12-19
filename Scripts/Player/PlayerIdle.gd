@@ -24,4 +24,6 @@ func physics_update(_delta: float) -> PlayerState:
 func handle_input(_event: InputEvent) -> PlayerState:
 	if _event.is_action_pressed("attack") and player.current_stamina >= 5.0:
 		return attack
+	if _event.is_action_pressed("interact"):
+		GlobalPlayerManager.InteractPressed.emit()
 	return null

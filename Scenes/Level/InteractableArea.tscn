@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://3ykcticb56fb"]
 
-[ext_resource type="Script" path="res://Scripts/Level/SaveArea.gd" id="1_ldhle"]
+[ext_resource type="Script" path="res://Scripts/Level/SaveArea.gd" id="1_jchwf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xapsy"]
-size = Vector2(50, 42)
+size = Vector2(50, 21)
 
 [sub_resource type="LabelSettings" id="LabelSettings_xw6p3"]
 line_spacing = 1.0
@@ -17,8 +17,8 @@ font_size = 14
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
-[node name="SaveArea" type="Area2D"]
-script = ExtResource("1_ldhle")
+[node name="InteractableArea" type="Area2D"]
+script = ExtResource("1_jchwf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xapsy")
