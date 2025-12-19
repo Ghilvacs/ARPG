@@ -25,7 +25,7 @@ func set_slot_data(value: SlotData) -> void:
 func item_focused() -> void:
 	if slot_data:
 		if slot_data.item_data:
-			PauseMenu.update_item_description(slot_data.item_data.description)
+			InventoryMenu.update_item_description(slot_data.item_data.description)
 
 func item_unfocused() -> void:
-	PauseMenu.update_item_description("")
+	InventoryMenu.update_item_description("")

@@ -6,8 +6,8 @@ const INVENTORY_SLOT = preload("res://Scenes/GUI/Inventory/InventorySlot.tscn")
 
 
 func _ready() -> void:
-	PauseMenu.Shown.connect(update_inventory)
-	PauseMenu.Hidden.connect(clear_inventory)
+	InventoryMenu.InventoryShown.connect(update_inventory)
+	InventoryMenu.InventoryHidden.connect(clear_inventory)
 	clear_inventory()
 
 
