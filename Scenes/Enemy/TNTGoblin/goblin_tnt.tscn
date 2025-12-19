@@ -163,8 +163,10 @@ radius = 240.924
 
 [node name="goblin_tnt" type="CharacterBody2D"]
 light_mask = 2
-z_index = 1
+z_index = 2
+y_sort_enabled = true
 scale = Vector2(0.15, 0.15)
+collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_r1o35")
 vision_rotation_offset_deg = -90.0

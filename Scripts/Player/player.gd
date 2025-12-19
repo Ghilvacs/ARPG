@@ -4,6 +4,7 @@ signal EnemyDamaged
 signal HealthChanged
 signal StaminaChanged
 signal PlayerDied
+signal DirectionChanged
 
 const MAX_HEALTH = 5
 const MAX_STAMINA = 100
@@ -47,6 +48,8 @@ var dashed := false
 var dash_cooldown := 0.0
 var camera_zoom_tween: Tween
 var normal_camera_zoom: Vector2
+var current_direction: Vector2 = Vector2.ZERO
+var input_locked := false
 
 
 func _ready() -> void:
@@ -60,6 +63,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if input_locked:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
 	if dead:
 		point_light.visible = false
 		if animation_player.is_playing() && animation_player.current_animation != "death":
@@ -97,6 +104,7 @@ func update_animation(state: String) -> void:
 
 func update_facing() -> void:
 	mouse_position = get_local_mouse_position()
+	DirectionChanged.emit(direction)
 	if !isAttacking:
 		blade_one_attack_point.look_at(get_global_mouse_position())
 		point_light.look_at(get_global_mouse_position())
@@ -185,6 +193,23 @@ func death() -> void:
 	blade_area_one.get_child(0).disabled = true
 	get_node("BladeAreaTwo/CollisionShape2D").disabled = true
 	dead = true
+
+
+func set_input_locked(value: bool) -> void:
+	input_locked = value
+	if input_locked:
+		cancel_current_action()
+
+
+func cancel_current_action() -> void:
+	velocity = Vector2.ZERO
+
+	isAttacking = false
+	dashed = false
+	dash_cooldown = 0.0
+
+	hitbox_collision_shape.disabled = true
+	animation_player.play("idle")
 
 
 func tween_camera_zoom(target_zoom: Vector2, duration: float) -> void:

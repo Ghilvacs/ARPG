@@ -1,6 +1,8 @@
 extends Node
 
 const PLAYER = preload("res://Scenes/Player/player.tscn")
+const INVENTORY_DATA: InventoryData = preload("res://Scenes/GUI/Inventory/PlayerInventory.tres")
+
 var player: CharacterBody2D
 var camera: Camera2D
 var player_spawned: bool = false
@@ -10,6 +12,7 @@ var saved_stamina: float = -1.0
 
 signal PlayerSpawned(player: CharacterBody2D)
 signal PlayerDespawned
+signal InteractPressed
 
 
 func _ready() -> void:

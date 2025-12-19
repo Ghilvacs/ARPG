@@ -1,0 +1,114 @@
+[gd_scene load_steps=8 format=3 uid="uid://bs80bsv2vqscw"]
+
+[ext_resource type="Script" path="res://Scripts/GUI/Inventory/InventoryMenu.gd" id="1_xjvgu"]
+[ext_resource type="Texture2D" uid="uid://bp4ryai1epp2j" path="res://Assets/MichaelAssets/items.png" id="2_m2fhk"]
+[ext_resource type="Script" path="res://Scripts/GUI/Inventory/InventoryUI.gd" id="3_4gs52"]
+[ext_resource type="Resource" uid="uid://c7x5p1xvoboqy" path="res://Scenes/GUI/Inventory/PlayerInventory.tres" id="4_whg3p"]
+[ext_resource type="PackedScene" uid="uid://cu2lcn87a8431" path="res://Scenes/GUI/Inventory/InventorySlot.tscn" id="5_0a0jr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jytxa"]
+atlas = ExtResource("2_m2fhk")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y7xq5"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+texture = SubResource("AtlasTexture_jytxa")
+texture_margin_left = 14.0
+texture_margin_top = 14.0
+texture_margin_right = 14.0
+texture_margin_bottom = 14.0
+
+[node name="InventoryMenu" type="CanvasLayer"]
+process_mode = 3
+visible = false
+script = ExtResource("1_xjvgu")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.243137, 0.243137, 0.243137, 0.698039)
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -83.0
+offset_top = 100.0
+offset_right = 83.0
+offset_bottom = 158.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "Inventory"
+horizontal_alignment = 1
+
+[node name="ItemDescriptionLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -502.0
+offset_top = -22.0
+offset_right = -152.0
+offset_bottom = 23.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+autowrap_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 250.0
+offset_top = -39.0
+offset_right = 436.0
+offset_bottom = 39.0
+grow_vertical = 2
+scale = Vector2(2, 2)
+theme_override_styles/panel = SubResource("StyleBoxTexture_y7xq5")
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 5
+script = ExtResource("3_4gs52")
+data = ExtResource("4_whg3p")
+
+[node name="InventorySlot" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="Control/PanelContainer/GridContainer" instance=ExtResource("5_0a0jr")]
+layout_mode = 2

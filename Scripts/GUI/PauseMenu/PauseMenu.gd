@@ -1,8 +1,10 @@
 extends CanvasLayer
 
+signal Shown
+signal Hidden
 
-@onready var button_reload: Button = $VBoxContainer/ButtonReload
-@onready var button_quit: Button = $VBoxContainer/ButtonQuit
+@onready var button_reload: Button = $Control/HBoxContainer/ButtonReload
+@onready var button_quit: Button = $Control/HBoxContainer/ButtonQuit
 
 var is_paused: bool = false
 
@@ -13,10 +15,13 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
-		if not is_paused:
-			show_pause_menu()
+		if !InventoryMenu.in_inventory:
+			if not is_paused:
+				show_pause_menu()
+			else:
+				hide_pause_menu()
 		else:
-			hide_pause_menu()
+			InventoryMenu.hide_inventory_menu()
 		get_viewport().set_input_as_handled()
 
 
@@ -24,13 +29,14 @@ func show_pause_menu() -> void:
 	get_tree().paused = true
 	visible = true
 	is_paused = true
-	button_reload.grab_focus()
+	Shown.emit()
 
 
 func hide_pause_menu() -> void:
 	get_tree().paused = false
 	visible = false
 	is_paused = false
+	Hidden.emit()
 
 
 func _on_load_button_pressed() -> void:

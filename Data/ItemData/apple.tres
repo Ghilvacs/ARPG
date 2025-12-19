@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://opk8poxc0ksa"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemData.gd" id="1_qcd28"]
+[ext_resource type="Texture2D" uid="uid://bp4ryai1epp2j" path="res://Assets/MichaelAssets/items.png" id="2_oa51k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ksvc"]
+atlas = ExtResource("2_oa51k")
+region = Rect2(192, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_qcd28")
+name = ""
+description = "A delicious red apple!"
+texture = SubResource("AtlasTexture_7ksvc")

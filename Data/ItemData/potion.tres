@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=6 format=3 uid="uid://pwbv1mr4s7id"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemEffects/ItemEffectHeal.gd" id="1_3u7lc"]
+[ext_resource type="Script" path="res://Scripts/Items/ItemData.gd" id="1_7btsr"]
+[ext_resource type="Texture2D" uid="uid://cp3l755bhcv8k" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/Props.png" id="2_xuoia"]
+
+[sub_resource type="Resource" id="Resource_itk1p"]
+script = ExtResource("1_3u7lc")
+heal_amount = 1
+use_description = ""
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lc0ky"]
+atlas = ExtResource("2_xuoia")
+region = Rect2(17, 228, 13, 13)
+
+[resource]
+script = ExtResource("1_7btsr")
+name = "Potion"
+description = "A health potion!"
+texture = SubResource("AtlasTexture_lc0ky")
+effects = Array[Resource("res://Scripts/Items/ItemEffects/ItemEffect.gd")]([SubResource("Resource_itk1p")])
