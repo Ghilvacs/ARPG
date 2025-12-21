@@ -42,4 +42,3 @@ func slot_changed() -> void:
 				var index = slots.find(slot)
 				slots [index] = null
 				emit_changed()
-	pass

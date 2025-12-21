@@ -4,6 +4,15 @@ class_name ItemEffectHeal extends ItemEffect
 @export var sound: AudioStream
 
 
-func use() -> void:
-	GlobalPlayerManager.player.update_health(heal_amount)
-	#PlaySound
+func use() -> bool:
+	var player = GlobalPlayerManager.player
+	
+	if not player:
+		return false
+		
+	if player.current_health >= player.MAX_HEALTH:
+		return false
+		
+	player.update_health(heal_amount)
+	
+	return true

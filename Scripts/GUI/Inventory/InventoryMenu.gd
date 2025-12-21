@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inventory") and !PauseMenu.is_paused:
+	if event.is_action_pressed("inventory"):
 		if not in_inventory:
 			show_inventory_menu()
 		else:
@@ -22,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func show_inventory_menu() -> void:
+	if PauseMenu.is_paused:
+		PauseMenu.hide_pause_menu()
 	visible = true
 	in_inventory = true
 	GlobalPlayerManager.player.set_input_locked(true)

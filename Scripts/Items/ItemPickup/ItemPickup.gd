@@ -18,9 +18,9 @@ func _ready() -> void:
 
 func item_picked_up() -> void:
 	area_2d.body_entered.disconnect(_on_body_entered)
-#	audio_stream_player.play()
-#	visible = false
-#	await audio_stream_player.finished
+	audio_stream_player.play()
+	visible = false
+	await audio_stream_player.finished
 	queue_free()
 
 
