@@ -10,7 +10,8 @@ var save_data: Dictionary = {
 		pos_y = 0.0,
 	},
 	items = [],
-	persistence = [],
+	enemy_persistence = [],
+	item_persistence = [],
 	quests = [],
 }
 

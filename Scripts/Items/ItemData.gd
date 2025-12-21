@@ -12,9 +12,11 @@ func use() -> bool:
 	if effects.size() == 0:
 		return false
 	
+	var applied: bool = false
+	
 	for effect in effects:
-		if effect:
-			effect.use()
-	return true
+		if effect and effect.use():
+			applied = true
+	return applied
 
 

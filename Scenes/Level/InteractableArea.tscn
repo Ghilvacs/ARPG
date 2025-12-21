@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://3ykcticb56fb"]
+[gd_scene load_steps=5 format=3 uid="uid://bvde6jiut4pih"]
 
 [ext_resource type="Script" path="res://Scripts/Level/SaveArea.gd" id="1_jchwf"]
 

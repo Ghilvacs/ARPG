@@ -6,5 +6,5 @@ class_name SlotData extends Resource
 
 func set_quantity(value: int) -> void:
 	quantity = value
-	if quantity < 1:
-		emit_changed()
+#	if quantity < 1:
+	emit_changed()
