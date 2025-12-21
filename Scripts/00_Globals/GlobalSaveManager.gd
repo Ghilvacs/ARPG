@@ -10,6 +10,7 @@ var can_save: bool = false
 func save_game() -> void:
 	update_scene_path()
 	update_player_data()
+	update_item_data()
 	GameState.save_data.persistence = GlobalLevelManager.enemy_states
 	var file := FileAccess.open(SAVE_PATH + "save.sav", FileAccess.WRITE)
 	var save_json = JSON.stringify(GameState.save_data)
@@ -37,6 +38,8 @@ func load_game() -> void:
 		"",
 		Vector2.ZERO
 	)
+	
+	GlobalPlayerManager.INVENTORY_DATA.parse_save_data(GameState.save_data.items)
 	
 	await GlobalLevelManager.level_loaded
 	
@@ -72,9 +75,14 @@ func update_scene_path() -> void:
 	GameState.save_data.scene_path = path
 
 
+func update_item_data() -> void:
+	GameState.save_data.items = GlobalPlayerManager.INVENTORY_DATA.get_save_data()
+
+
 func soft_save() -> void:
 	update_scene_path()
 	update_player_data()
+	update_item_data()
 
 
 func reset_game() -> void:
