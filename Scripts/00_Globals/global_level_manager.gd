@@ -6,6 +6,7 @@ signal level_loaded
 var target_transition: String
 var position_offset: Vector2
 var enemy_states = {}
+var item_states = {}
 
 
 func _ready() -> void:
@@ -46,3 +47,11 @@ func record_enemy_state(id: String, alive: bool) -> void:
 
 func is_enemy_alive(id: String) -> bool:
 	return enemy_states.get(id, true)
+
+
+func record_item_state(id: String, in_place: bool) -> void:
+	item_states[id] = in_place
+
+
+func is_item_in_place(id: String) -> bool:
+	return item_states.get(id, true)

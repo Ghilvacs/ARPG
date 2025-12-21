@@ -11,7 +11,8 @@ func save_game() -> void:
 	update_scene_path()
 	update_player_data()
 	update_item_data()
-	GameState.save_data.persistence = GlobalLevelManager.enemy_states
+	GameState.save_data.enemy_persistence = GlobalLevelManager.enemy_states
+	GameState.save_data.item_persistence = GlobalLevelManager.item_states
 	var file := FileAccess.open(SAVE_PATH + "save.sav", FileAccess.WRITE)
 	var save_json = JSON.stringify(GameState.save_data)
 	file.store_line(save_json)
@@ -28,10 +29,15 @@ func load_game() -> void:
 	var save_dictionary: Dictionary = json.get_data() as Dictionary
 	GameState.save_data = save_dictionary
 	
-	if GameState.save_data.has("persistence"):
-		GlobalLevelManager.enemy_states = GameState.save_data.persistence
+	if GameState.save_data.has("enemy_persistence"):
+		GlobalLevelManager.enemy_states = GameState.save_data.enemy_persistence
 	else:
 		GlobalLevelManager.enemy_states = {}
+	
+	if GameState.save_data.has("item_persistence"):
+		GlobalLevelManager.item_states = GameState.save_data.item_persistence
+	else:
+		GlobalLevelManager.item_states = {}
 	
 	GlobalLevelManager.load_new_level(
 		GameState.save_data.scene_path,
@@ -100,6 +106,7 @@ func reset_game() -> void:
 	}
 
 	GlobalLevelManager.enemy_states.clear()
+	GlobalLevelManager.item_states.clear()
 
 	GlobalLevelManager.load_new_level(
 		FIRST_LEVEL_PATH,
