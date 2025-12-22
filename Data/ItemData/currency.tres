@@ -10,6 +10,7 @@ region = Rect2(0, 0, 32, 32)
 [resource]
 script = ExtResource("1_l0phg")
 name = "Currency"
-description = "Shiny!"
+description = ""
 texture = SubResource("AtlasTexture_nx7lp")
+scale = Vector2(0.2, 0.2)
 effects = Array[Resource("res://Scripts/Items/ItemEffects/ItemEffect.gd")]([])

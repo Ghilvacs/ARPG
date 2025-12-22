@@ -1,7 +1,7 @@
 extends CharacterBody2D
 signal StaminaChanged
 
-const MAX_HEALTH = 50
+const MAX_HEALTH = 4
 const MAX_STAMINA = 100
 
 var current_health
@@ -157,9 +157,9 @@ func _update_vision_cones() -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if not dead:
 		if area.is_in_group("BladeOne"):
-			take_damage(12)
+			take_damage(1)
 		elif area.is_in_group("BladeTwo"):
-			take_damage(24)
+			take_damage(2)
 
 
 func _on_timer_take_damage_timeout() -> void:
