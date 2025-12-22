@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://kfuf7grbl6e0"]
+[gd_scene load_steps=12 format=3 uid="uid://kfuf7grbl6e0"]
 
 [ext_resource type="Script" path="res://Scripts/Interactables/TreasureChest/TreasureChest.gd" id="1_656fx"]
 [ext_resource type="Texture2D" uid="uid://bod4ve6nvot1q" path="res://Assets/19.07c - Treasure Chests 1.2a/treasure chests.png" id="2_1s4rd"]
 [ext_resource type="Texture2D" uid="uid://dddpl3tbc8pi3" path="res://Assets/Tiny Swords (Update 010)/Deco/01.png" id="3_07d5d"]
-[ext_resource type="PackedScene" uid="uid://3ykcticb56fb" path="res://Scenes/Level/InteractableArea.tscn" id="4_7guql"]
+[ext_resource type="PackedScene" uid="uid://bvde6jiut4pih" path="res://Scenes/Level/InteractableArea.tscn" id="4_7guql"]
+[ext_resource type="PackedScene" uid="uid://mj68w2koetf3" path="res://Scenes/General/PersistentDataHandler/PersistentDataHandler.tscn" id="5_wyri5"]
 
 [sub_resource type="Animation" id="Animation_ug7ri"]
 length = 0.001
@@ -204,14 +205,13 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_07d5d")
 
 [node name="Label" type="Label" parent="ItemSprite"]
-offset_left = 13.75
-offset_top = -8.75
-offset_right = 53.75
-offset_bottom = 17.25
+offset_left = 11.6667
+offset_top = -13.3333
+offset_right = 51.6667
+offset_bottom = 12.6667
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 12
-text = "x99"
 vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -231,4 +231,6 @@ shape = SubResource("RectangleShape2D_6oluv")
 
 [node name="InteractableArea" parent="." instance=ExtResource("4_7guql")]
 position = Vector2(0, 11)
-chest = true
+container = true
+
+[node name="IsOpen" parent="." instance=ExtResource("5_wyri5")]

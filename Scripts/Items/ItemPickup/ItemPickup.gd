@@ -10,9 +10,6 @@ class_name ItemPickup extends Node2D
 
 
 func _ready() -> void:
-	if not GlobalLevelManager.is_item_in_place(name):
-		queue_free()
-		return
 	_update_texture()
 	
 	if Engine.is_editor_hint():
@@ -24,7 +21,6 @@ func item_picked_up() -> void:
 	audio_stream_player.play()
 	visible = false
 	await audio_stream_player.finished
-	GlobalLevelManager.record_item_state(name, false)
 	queue_free()
 
 
@@ -33,7 +29,6 @@ func _on_body_entered(body) -> void:
 		if item_data:
 			if GlobalPlayerManager.INVENTORY_DATA.add_item(item_data):
 				item_picked_up()
-	
 
 
 func _set_item_data(value: ItemData) -> void:
