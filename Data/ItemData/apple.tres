@@ -12,3 +12,4 @@ script = ExtResource("1_qcd28")
 name = ""
 description = "A delicious red apple!"
 texture = SubResource("AtlasTexture_7ksvc")
+effects = Array[Resource("res://Scripts/Items/ItemEffects/ItemEffect.gd")]([])

@@ -11,8 +11,8 @@ var save_data: Dictionary = {
 	},
 	items = [],
 	enemy_persistence = [],
-	item_persistence = [],
-	quests = [],
+	persistence = [],
+	quests = []
 }
 
 func to_dict() -> Dictionary:

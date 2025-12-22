@@ -12,7 +12,6 @@ func save_game() -> void:
 	update_player_data()
 	update_item_data()
 	GameState.save_data.enemy_persistence = GlobalLevelManager.enemy_states
-	GameState.save_data.item_persistence = GlobalLevelManager.item_states
 	var file := FileAccess.open(SAVE_PATH + "save.sav", FileAccess.WRITE)
 	var save_json = JSON.stringify(GameState.save_data)
 	file.store_line(save_json)
@@ -33,11 +32,7 @@ func load_game() -> void:
 		GlobalLevelManager.enemy_states = GameState.save_data.enemy_persistence
 	else:
 		GlobalLevelManager.enemy_states = {}
-	
-	if GameState.save_data.has("item_persistence"):
-		GlobalLevelManager.item_states = GameState.save_data.item_persistence
-	else:
-		GlobalLevelManager.item_states = {}
+
 	
 	GlobalLevelManager.load_new_level(
 		GameState.save_data.scene_path,
@@ -85,6 +80,16 @@ func update_item_data() -> void:
 	GameState.save_data.items = GlobalPlayerManager.INVENTORY_DATA.get_save_data()
 
 
+func add_persistent_value(value: String) -> void:
+	if check_persistent_value(value) == false:
+		GameState.save_data.persistence.append(value)
+
+
+func check_persistent_value(value: String) -> bool:
+	var peristent_item = GameState.save_data.persistence as Array
+	return peristent_item.has(value)
+
+
 func soft_save() -> void:
 	update_scene_path()
 	update_player_data()
@@ -101,7 +106,8 @@ func reset_game() -> void:
 			pos_y = 0
 		},
 		items = [],
-		persistence = {},
+		enemy_persistence = [],
+		persistence = [],
 		quests = []
 	}
 

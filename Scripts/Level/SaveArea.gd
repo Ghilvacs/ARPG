@@ -4,7 +4,7 @@ class_name InteractableArea extends Area2D
 @onready var game_is_saved_label: Label = $GameIsSavedLabel
 
 @export var save_area: bool = false
-@export var chest: bool = false
+@export var container: bool = false
 @export var door: bool = false
 
 func _ready() -> void:
@@ -28,5 +28,6 @@ func _player_exited(_p: Node2D) -> void:
 
 
 func _on_game_saved() -> void:
-	label_save_game.visible = false
-	game_is_saved_label.visible = true
+	if save_area:
+		label_save_game.visible = false
+		game_is_saved_label.visible = true

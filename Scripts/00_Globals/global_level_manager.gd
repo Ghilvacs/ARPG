@@ -8,7 +8,6 @@ var position_offset: Vector2
 var enemy_states = {}
 var item_states = {}
 
-
 func _ready() -> void:
 	pass
 
