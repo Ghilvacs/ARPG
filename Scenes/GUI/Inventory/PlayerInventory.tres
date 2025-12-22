@@ -5,3 +5,4 @@
 [resource]
 script = ExtResource("1_58dgj")
 slots = Array[Resource("res://Scripts/GUI/Inventory/SlotData.gd")]([null, null, null, null, null, null, null, null, null, null])
+currency = 0

@@ -9,7 +9,7 @@ region = Rect2(192, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_qcd28")
-name = ""
+name = "Apple"
 description = "A delicious red apple!"
 texture = SubResource("AtlasTexture_7ksvc")
 effects = Array[Resource("res://Scripts/Items/ItemEffects/ItemEffect.gd")]([])

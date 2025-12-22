@@ -18,5 +18,3 @@ func use() -> bool:
 		if effect and effect.use():
 			applied = true
 	return applied
-
-

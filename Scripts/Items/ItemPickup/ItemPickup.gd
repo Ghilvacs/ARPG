@@ -16,7 +16,7 @@ func _ready() -> void:
 		return
 	area_2d.body_entered.connect(_on_body_entered)
 
-func item_picked_up() -> void:
+func item_picked_up() -> void:	
 	area_2d.body_entered.disconnect(_on_body_entered)
 	audio_stream_player.play()
 	visible = false
@@ -27,8 +27,12 @@ func item_picked_up() -> void:
 func _on_body_entered(body) -> void:
 	if body.is_in_group("Player"):
 		if item_data:
-			if GlobalPlayerManager.INVENTORY_DATA.add_item(item_data):
+			if item_data.name == "Currency":
+				GlobalPlayerManager.INVENTORY_DATA.add_currency(1)
 				item_picked_up()
+			else:
+				if GlobalPlayerManager.INVENTORY_DATA.add_item(item_data):
+					item_picked_up()
 
 
 func _set_item_data(value: ItemData) -> void:
