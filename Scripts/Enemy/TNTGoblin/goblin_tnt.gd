@@ -13,6 +13,7 @@ var player: CharacterBody2D
 var isAttacking = false
 var inCooldown = false
 var facing_direction: Vector2 = Vector2.DOWN
+var vision_mode: int = VisionMode.MOVE_DIRECTION
 @export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
 
 @onready var state_machine: Node = $StateMachine
@@ -40,7 +41,6 @@ enum VisionMode {
 	LOOK_AT_PLAYER
 }
 
-var vision_mode: int = VisionMode.MOVE_DIRECTION
 
 func _ready() -> void:
 	GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
@@ -82,7 +82,6 @@ func _physics_process(_delta: float) -> void:
 		sprite.flip_h = velocity.x > 0
 	
 	_update_vision_cones()
-
 	move_and_slide()
 
 
