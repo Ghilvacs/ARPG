@@ -716,7 +716,6 @@ dead_state = NodePath("../Dead")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
 script = ExtResource("10_ri2kj")
-knockback_distance = 20.0
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 
