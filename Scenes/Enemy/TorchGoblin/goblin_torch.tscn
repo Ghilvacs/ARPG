@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=84 format=3 uid="uid://ftqqj6113t28"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/TorchGoblin/goblin_torch.gd" id="1_dauif"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyFollow.gd" id="7_uqvvm"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyDead.gd" id="8_07poj"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyStun.gd" id="9_errv7"]
+[ext_resource type="Resource" uid="uid://bx4pdsq6ssm5n" path="res://Data/ItemData/currency.tres" id="9_nv56i"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
+[ext_resource type="Script" path="res://Scripts/Enemy/DropData.gd" id="10_q8ogp"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyKnockback.gd" id="10_ri2kj"]
 [ext_resource type="Script" path="res://Scripts/General/Hitbox/Hitbox.gd" id="11_awy5v"]
 [ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="12_iomp7"]
@@ -610,6 +612,13 @@ animations = [{
 radius = 25.0
 height = 56.6667
 
+[sub_resource type="Resource" id="Resource_2fwkc"]
+script = ExtResource("10_q8ogp")
+item = ExtResource("9_nv56i")
+probability = 100.0
+min_amount = 1
+max_amount = 10
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_khh3g"]
 radius = 34.0
 height = 72.0
@@ -697,6 +706,7 @@ use_attack_transition_delay = false
 
 [node name="Dead" type="Node" parent="StateMachine"]
 script = ExtResource("8_07poj")
+drops = Array[ExtResource("10_q8ogp")]([SubResource("Resource_2fwkc"), null])
 
 [node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "dead_state")]
 script = ExtResource("9_errv7")

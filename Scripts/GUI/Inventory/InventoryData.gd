@@ -1,13 +1,25 @@
 class_name InventoryData extends Resource
 
+signal currency_changed(new_value: int)
+
 @export var slots: Array[SlotData]
+@export var currency: int = 0: set = set_currency
 
 
 func _init() -> void:
 	connect_slots()
 
 
-func add_item(item: ItemData, quantity: int = 1) -> bool:
+func set_currency(value: int) -> void:
+	currency = max(0, value)
+	currency_changed.emit(currency)
+
+
+func add_currency(amount: int) -> void:
+	set_currency(currency + amount)
+
+
+func add_item(item: ItemData, quantity: int = 1) -> bool:	
 	for slot in slots:
 		if slot:
 			if slot.item_data == item:
@@ -42,13 +54,16 @@ func slot_changed() -> void:
 				emit_changed()
 
 
-func get_save_data() -> Array:
+func get_save_data() -> Dictionary:
 	var item_save: Array = []
 	
 	for index in slots.size():
 		item_save.append(item_to_save(slots[index]))
 	
-	return item_save
+	return {
+		"slots": item_save,
+		"currency": currency
+		}
 
 
 func item_to_save(slot: SlotData) -> Dictionary:
@@ -65,14 +80,19 @@ func item_to_save(slot: SlotData) -> Dictionary:
 	return result
 
 
-func parse_save_data(save_data: Array) -> void:
+func parse_save_data(save_data: Dictionary) -> void:
+	# currency
+	set_currency(int(save_data.get("currency", 0)))
+
+	# slots
+	var slots_data: Array = save_data.get("slots", [])
 	var array_size = slots.size()
 	slots.clear()
 	slots.resize(array_size)
-	
-	for index in save_data.size():
-		slots[index] = item_from_save(save_data[index])
-	
+
+	for index in min(slots_data.size(), array_size):
+		slots[index] = item_from_save(slots_data[index])
+
 	connect_slots()
 
 func item_from_save(save_object: Dictionary) -> SlotData:

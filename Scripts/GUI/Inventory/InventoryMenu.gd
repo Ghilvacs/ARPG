@@ -4,12 +4,15 @@ signal InventoryShown
 signal InventoryHidden
 
 @onready var item_description_label: Label = $Control/ItemDescriptionLabel
+@onready var currency_label: Label = $Control/Label2/CurrencyLabel
 
 var in_inventory: bool = false
 
 
 func _ready() -> void:
-	pass
+	var inv := GlobalPlayerManager.INVENTORY_DATA
+	inv.currency_changed.connect(_update_currency_label)
+	_update_currency_label(inv.currency)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -39,3 +42,7 @@ func hide_inventory_menu() -> void:
 
 func update_item_description(new_text: String) -> void:
 	item_description_label.text = new_text
+
+
+func _update_currency_label(value: int) -> void:
+	currency_label.text = str(value)

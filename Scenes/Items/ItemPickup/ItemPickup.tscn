@@ -1,22 +1,71 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctmywl83hdu76"]
+[gd_scene load_steps=8 format=3 uid="uid://dnjj44wqjhek5"]
 
-[ext_resource type="Script" path="res://Scripts/Items/ItemPickup/ItemPickup.gd" id="1_ybp2i"]
-[ext_resource type="AudioStream" uid="uid://uvapydghyge4" path="res://Assets/SFX/item_pickup.mp3" id="2_sf3cj"]
+[ext_resource type="AudioStream" uid="uid://uvapydghyge4" path="res://Assets/SFX/item_pickup.mp3" id="1_4w0kj"]
+[ext_resource type="Script" path="res://Scripts/Items/ItemPickup/ItemPickup.gd" id="1_ibyk8"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_x7f4t"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_al682"]
 
-[node name="ItemPickup" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_fukk4"]
+
+[sub_resource type="Animation" id="Animation_f63pw"]
+resource_name = "bounce"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 0), Vector2(0, -3), Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bax8t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hh480"]
+_data = {
+"RESET": SubResource("Animation_bax8t"),
+"bounce": SubResource("Animation_f63pw")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
 z_index = 1
 y_sort_enabled = true
-script = ExtResource("1_ybp2i")
+collision_layer = 0
+motion_mode = 1
+script = ExtResource("1_ibyk8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_al682")
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_x7f4t")
+shape = SubResource("CircleShape2D_fukk4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_sf3cj")
+stream = ExtResource("1_4w0kj")
 volume_db = -20.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "bounce"
+libraries = {
+"": SubResource("AnimationLibrary_hh480")
+}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cimwe44bpbow"]
+[gd_scene load_steps=35 format=3 uid="uid://cimwe44bpbow"]
 
 [ext_resource type="Texture2D" uid="uid://doq7lkie3kjri" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Red/TNT_Red.png" id="1_2a2fw"]
 [ext_resource type="Script" path="res://Scripts/Enemy/TNTGoblin/goblin_tnt.gd" id="1_r1o35"]
@@ -13,8 +13,11 @@
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyKnockback.gd" id="10_amoa7"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyStun.gd" id="11_n5c0g"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyDead.gd" id="12_n7530"]
+[ext_resource type="Resource" uid="uid://d0x8gw82fd6kb" path="res://Data/ItemData/gem.tres" id="13_6tbxj"]
+[ext_resource type="Script" path="res://Scripts/Enemy/DropData.gd" id="14_pf0fp"]
 [ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_wyvik"]
 [ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="14_ywnjk"]
+[ext_resource type="Resource" uid="uid://bx4pdsq6ssm5n" path="res://Data/ItemData/currency.tres" id="15_h00i5"]
 [ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="16_1bety"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_apgfj"]
@@ -144,6 +147,20 @@ _data = {
 radius = 20.0
 height = 40.0
 
+[sub_resource type="Resource" id="Resource_6fvkb"]
+script = ExtResource("14_pf0fp")
+item = ExtResource("13_6tbxj")
+probability = 33.0
+min_amount = 1
+max_amount = 2
+
+[sub_resource type="Resource" id="Resource_2mfqj"]
+script = ExtResource("14_pf0fp")
+item = ExtResource("15_h00i5")
+probability = 100.0
+min_amount = 1
+max_amount = 10
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_80ca1"]
 radius = 33.3333
 height = 66.6667
@@ -257,6 +274,7 @@ dead_state = NodePath("../Dead")
 
 [node name="Dead" type="Node" parent="StateMachine"]
 script = ExtResource("12_n7530")
+drops = Array[ExtResource("14_pf0fp")]([SubResource("Resource_6fvkb"), SubResource("Resource_2mfqj")])
 
 [node name="Hitbox" type="Area2D" parent="."]
 position = Vector2(0, 20)
@@ -301,8 +319,9 @@ offset_left = -46.6667
 offset_top = -66.6667
 offset_right = 43.3333
 offset_bottom = -54.6667
-max_value = 50.0
-value = 50.0
+max_value = 4.0
+step = 1.0
+value = 4.0
 rounded = true
 show_percentage = false
 
