@@ -261,7 +261,6 @@ retreat_area = NodePath("../../RetreatArea")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
 script = ExtResource("10_amoa7")
-knockback_distance = 18.0
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 

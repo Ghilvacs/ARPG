@@ -1,16 +1,16 @@
 extends EnemyState
 class_name EnemyKnockback
 
-@export var knockback_distance: float = 8.0
+@export var knockback_distance: float = 10.0
 @export var knockback_duration: float = 0.2
 @export var stun_state: EnemyState
 @export var dead_state: EnemyState
 
 var player: CharacterBody2D
-var tween: Tween
 var knockback_time: float = 0.0
 var _knockback_finished: bool = false
 
+var knockback_velocity: Vector2 = Vector2.ZERO
 
 func enter(_prev_state: EnemyState) -> void:
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
@@ -18,28 +18,22 @@ func enter(_prev_state: EnemyState) -> void:
 	_knockback_finished = false
 
 	if enemy == null or player == null:
+		_knockback_finished = true
 		return
 
-	if tween and tween.is_valid():
-		tween.kill()
-
+	# Direction away from player
 	var direction := (enemy.global_position - player.global_position).normalized()
-	var target_position := enemy.global_position + direction * knockback_distance
 
-	tween = enemy.create_tween()
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(enemy, "global_position", target_position, knockback_duration)
+	# speed = distance / time
+	var knockback_speed = knockback_distance / max(0.001, knockback_duration)
+	knockback_velocity = direction * knockback_speed
 
-	if not tween.is_connected("finished", Callable(self, "_on_knockback_finished")):
-		tween.connect("finished", Callable(self, "_on_knockback_finished"))
-
+	# If you use friction/accel elsewhere, you may want to zero out any steering here
+	# enemy.velocity = Vector2.ZERO
 
 func exit() -> void:
-	if tween and tween.is_valid():
-		tween.kill()
-	tween = null
-
+	knockback_velocity = Vector2.ZERO
+	# Don't kill tweens anymore (we removed them)
 
 func update(delta: float) -> EnemyState:
 	if enemy == null:
@@ -47,14 +41,14 @@ func update(delta: float) -> EnemyState:
 
 	knockback_time += delta
 
+	# Dead should override everything
 	if enemy.dead and dead_state:
 		enemy.hit = false
 		enemy.stunned = false
-		if tween and tween.is_valid():
-			tween.kill()
 		return dead_state
 
-	if ( _knockback_finished or knockback_time >= knockback_duration ) and stun_state:
+	# End knockback -> go stun
+	if (_knockback_finished or knockback_time >= knockback_duration) and stun_state:
 		enemy.hit = false
 		enemy.stunned = true
 		enemy.velocity = Vector2.ZERO
@@ -62,10 +56,22 @@ func update(delta: float) -> EnemyState:
 
 	return null
 
+func physics_update(delta: float) -> EnemyState:
+	if enemy == null or _knockback_finished:
+		return null
 
-func physics_update(_delta: float) -> EnemyState:
+	# Apply knockback through physics so walls block it
+	enemy.velocity = knockback_velocity
+	enemy.move_and_slide()
+
+	# If we collide, stop the knockback early (prevents "pushing into wall")
+	if enemy.get_slide_collision_count() > 0:
+		_knockback_finished = true
+		enemy.velocity = Vector2.ZERO
+
+	# Time-based stop (if no collision)
+	if knockback_time >= knockback_duration:
+		_knockback_finished = true
+		enemy.velocity = Vector2.ZERO
+
 	return null
-
-
-func _on_knockback_finished() -> void:
-	_knockback_finished = true
