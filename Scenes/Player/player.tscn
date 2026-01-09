@@ -1396,6 +1396,7 @@ position = Vector2(-56.6666, 3.33334)
 shape = SubResource("RectangleShape2D_r0t8r")
 
 [node name="PivotLight" type="Marker2D" parent="."]
+visible = false
 
 [node name="PointLight" type="Marker2D" parent="PivotLight"]
 position = Vector2(1.52588e-05, -1.90735e-06)
@@ -1446,7 +1447,7 @@ player = NodePath("..")
 visible = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(6, 6)
+zoom = Vector2(7, 7)
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
