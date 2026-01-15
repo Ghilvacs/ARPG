@@ -3575,7 +3575,7 @@ sources/3 = SubResource("TileSetAtlasSource_unp1s")
 sources/5 = SubResource("TileSetAtlasSource_ype6w")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5a2wx"]
-size = Vector2(334, 529)
+size = Vector2(439, 242)
 
 [node name="room03" type="Node2D"]
 script = ExtResource("1_p1f50")
@@ -3602,13 +3602,12 @@ blend_mode = 1
 position = Vector2(1, -1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds"]
-visible = false
-position = Vector2(-136, 88.5)
+position = Vector2(-77.5, -15)
 shape = SubResource("RectangleShape2D_5a2wx")
 
 [node name="RoomTransition" parent="." instance=ExtResource("7_ohu50")]
-position = Vector2(32, 0)
-level = "res://Scenes/Level/Level00Tutorial/room01.tscn"
+position = Vector2(121, 0)
+level = "res://Scenes/Level/Level00Tutorial/room02.tscn"
 target_transition_area = "RoomTransition2"
 side = 1
 size = 5
