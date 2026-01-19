@@ -1502,7 +1502,6 @@ hframes = 6
 vframes = 11
 
 [node name="CrystalSprite1" type="Sprite2D" parent="Sprite2D"]
-visible = false
 position = Vector2(-70, -30)
 scale = Vector2(0.5, 0.45)
 texture = ExtResource("12_c4vsp")
@@ -1520,7 +1519,6 @@ texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
 [node name="CrystalSprite2" type="Sprite2D" parent="Sprite2D"]
-visible = false
 position = Vector2(-35, -60)
 scale = Vector2(0.5, 0.45)
 texture = ExtResource("12_c4vsp")
@@ -1537,7 +1535,6 @@ texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
 [node name="CrystalSprite3" type="Sprite2D" parent="Sprite2D"]
-visible = false
 position = Vector2(0, -80)
 scale = Vector2(0.5, 0.45)
 texture = ExtResource("12_c4vsp")
@@ -1554,7 +1551,6 @@ texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
 [node name="CrystalSprite4" type="Sprite2D" parent="Sprite2D"]
-visible = false
 position = Vector2(35, -60)
 scale = Vector2(0.5, 0.45)
 texture = ExtResource("12_c4vsp")
@@ -1571,7 +1567,6 @@ texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
 [node name="CrystalSprite5" type="Sprite2D" parent="Sprite2D"]
-visible = false
 position = Vector2(70, -30)
 scale = Vector2(0.5, 0.45)
 texture = ExtResource("12_c4vsp")

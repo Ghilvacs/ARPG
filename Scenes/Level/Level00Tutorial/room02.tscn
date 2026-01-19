@@ -21,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://cp3l755bhcv8k" path="res://Assets/Pixel Crawler - FREE - 1.8/Environment/Dungeon Prison/Assets/Props.png" id="14_5ox5l"]
 [ext_resource type="Texture2D" uid="uid://upsqtokjka0p" path="res://Assets/PlacheholderAssets/sewage_assets2.png" id="16_gwmkx"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="16_t3r7b"]
-[ext_resource type="Texture2D" uid="uid://fssl2fg7dh0d" path="res://Assets/LightTexture/sewer_grate_light.png" id="22_oicer"]
+[ext_resource type="Texture2D" path="res://Assets/LightTexture/sewer_grate_light.png" id="22_oicer"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_6vl06")

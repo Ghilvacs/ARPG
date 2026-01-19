@@ -21,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://g0dm86es71lj" path="res://Assets/PlacheholderAssets/ground_scratches.png" id="14_ke0h7"]
 [ext_resource type="Resource" uid="uid://d0x8gw82fd6kb" path="res://Data/ItemData/gem.tres" id="15_in6wc"]
 [ext_resource type="Texture2D" uid="uid://cqunrfd0svvwm" path="res://Assets/LightTexture/light_from_crack.png" id="16_jvak3"]
-[ext_resource type="Texture2D" uid="uid://cyebq654j4j15" path="res://Assets/LightTexture/light_from_grate.png" id="17_crife"]
+[ext_resource type="Texture2D" path="res://Assets/LightTexture/light_from_grate.png" id="17_crife"]
 [ext_resource type="Script" path="res://Scripts/Tools/GradientBaker/GradientBaker.gd" id="18_qc2xx"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="19_jxk7g"]
 
