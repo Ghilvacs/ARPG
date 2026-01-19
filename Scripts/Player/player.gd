@@ -37,7 +37,7 @@ const MAX_STAMINA = 100
 @export var dash_effect_fade_time: float = 0.2
 @export var dash_effect_shader: Shader = preload("res://Scenes/Shaders/player_ghost.gdshader")
 
-var current_health
+var current_health = MAX_HEALTH
 var current_stamina = MAX_STAMINA
 var enemy: CharacterBody2D
 var dead = false
