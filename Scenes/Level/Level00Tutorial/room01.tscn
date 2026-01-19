@@ -9545,6 +9545,7 @@ item_data = ExtResource("13_yqx0i")
 quantity = 10
 
 [node name="GradientEffect" type="PointLight2D" parent="."]
+visible = false
 texture_filter = 2
 texture_repeat = 1
 position = Vector2(-231, -12)
@@ -9556,6 +9557,7 @@ shadow_filter = 1
 texture = ExtResource("15_01se7")
 
 [node name="GradientEffect2" type="PointLight2D" parent="."]
+visible = false
 texture_filter = 2
 texture_repeat = 1
 position = Vector2(103, -23)

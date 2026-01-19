@@ -12,6 +12,7 @@ class_name StateAttack extends PlayerState
 @export var dash_buildup_zoom: Vector2 = Vector2(7.0, 7.0) # zoom in (bigger values = closer)
 @export var dash_zoom_in_time: float = 0.5
 @export var dash_zoom_out_time: float = 0.1
+@export var combo_window_time: float = 0.25
 
 @onready var idle: PlayerState = $"../Idle"
 @onready var walk: PlayerState = $"../Walk"
@@ -28,18 +29,32 @@ var attack_direction: Vector2
 var dash_release_started := false
 var dash_release_anim := ""
 var effect_timer := 0.0
+var combo_buffered := false
+var combo_paused := false
+var combo_timer := 0.0
+var last_attack_variant := "side"
+var _moved_this_attack := false
 
 
 func enter():
 	player.update_facing()
 	attack_started = false
+	_moved_this_attack = false
 	
 	used_dash_attack = false
 	is_charging_dash = false
 	hold_time = 0.0
 	dash_charge_time = 0.0
 	
+	combo_buffered = false
+	combo_paused = false
+	combo_timer = 0.0
+	last_attack_variant = "side"
+	
 	player.velocity = Vector2.ZERO  # stop movement while attacking
+	
+	if !player.ComboPauseRequested.is_connected(_on_combo_pause_requested):
+		player.ComboPauseRequested.connect(_on_combo_pause_requested)
 
 
 func exit():
@@ -48,6 +63,18 @@ func exit():
 	is_charging_dash = false
 	hold_time = 0.0
 	dash_charge_time = 0.0
+	
+	combo_buffered = false
+	combo_paused = false
+	combo_timer = 0.0
+
+	if player and player.ComboPauseRequested.is_connected(_on_combo_pause_requested):
+		player.ComboPauseRequested.disconnect(_on_combo_pause_requested)
+
+	# Safety: if we paused the animation during combo hold, unpause it
+	if player and player.animation_player:
+		_resume_animation()
+	
 	player.tween_camera_zoom(player.normal_camera_zoom, dash_zoom_out_time)
 	
 	# Reset time and animation speed on any exit, just to be safe
@@ -88,7 +115,28 @@ func update(delta: float) -> PlayerState:
 			return idle
 		else:
 			return walk
+	
+	if attack_started and !used_dash_attack and Input.is_action_just_pressed("attack"):
+		combo_buffered = true
 
+	# If we are paused on the last frame waiting for combo input
+	if combo_paused:
+		combo_timer -= delta
+
+		# If press happens during the window (or was buffered), chain
+		if combo_buffered:
+			_start_attack_two()
+			return null
+
+		# Window expired -> return to locomotion
+		if combo_timer <= 0.0:
+			_end_combo_hold()
+			if player.direction == Vector2.ZERO:
+				return idle
+			return walk
+
+		return null
+	
 	return null
 
 
@@ -180,13 +228,18 @@ func _update_dash_attack(delta: float) -> PlayerState:
 
 
 func _start_base_attack_movement() -> void:
-	var mouse_global := player.get_global_mouse_position()
-	var mouse_local := player.to_local(mouse_global)
+	if _moved_this_attack:
+		return
+	_moved_this_attack = true
 
-	# Dash direction = towards mouse
+	# kill previous tween so we don't stack movement
+	if dash_tween and dash_tween.is_valid():
+		dash_tween.kill()
+
+	var mouse_global := player.get_global_mouse_position()
 	attack_direction = (mouse_global - player.global_position).normalized()
 	if attack_direction == Vector2.ZERO:
-		attack_direction = Vector2.RIGHT  # fallback
+		attack_direction = Vector2.RIGHT
 
 	var target_position := player.global_position + attack_direction * attack_distance
 
@@ -239,19 +292,84 @@ func _start_dash_release_attack(mouse_local: Vector2) -> void:
 	player.animation_player.play(anim)
 
 
+func _on_combo_pause_requested(window: float) -> void:
+	# Only allow this for normal attack_one, not dash attacks
+	if used_dash_attack:
+		return
+	if !attack_started:
+		return
+
+	combo_paused = true
+	combo_timer = max(0.0, window)
+
+	# Freeze on last frame
+	player.animation_player.pause()
+
+	# If the player already buffered the input, chain immediately
+	if combo_buffered:
+		_start_attack_two()
+
+
+func _start_attack_two() -> void:
+	combo_paused = false
+	combo_timer = 0.0
+	combo_buffered = false
+	
+	_moved_this_attack = false
+
+	var anim := "attack_two"
+	if last_attack_variant == "up":
+		anim = "attack_two_up"
+	elif last_attack_variant == "down":
+		anim = "attack_two_down"
+	if !player.animation_player.has_animation(anim):
+		anim = "attack_two"
+
+	player.consume_stamina(stamina_cost)
+	player.animation_player.play(anim)
+
+
+func _end_combo_hold() -> void:
+	combo_paused = false
+	combo_timer = 0.0
+	combo_buffered = false
+
+	# Unpause and snap out to idle/walk. Idle anim should keep hitboxes disabled.
+	_resume_animation()
+	player.isAttacking = false
+	player.animation_player.play("idle")
+
+
 func _handle_attack_animation():
 	if player.current_stamina < stamina_cost:
 		return
 
 	var mouse_pos = player.get_local_mouse_position()
+
 	var anim_name := "attack_one"
+	last_attack_variant = "side"
 
 	if mouse_pos.y < -30 and abs(mouse_pos.x) < 150:
 		anim_name = "attack_one_up"
+		last_attack_variant = "up"
 	elif mouse_pos.y > 30 and abs(mouse_pos.x) < 150:
 		anim_name = "attack_one_down"
+		last_attack_variant = "down"
 
 	attack(anim_name)
+
+
+func _resume_animation() -> void:
+	if !player or !player.animation_player:
+		return
+
+	var ap = player.animation_player
+	var anim = ap.current_animation
+	var pos = ap.current_animation_position
+
+	# Calling play() resumes if paused, but it restarts unless we restore position.
+	ap.play(anim)
+	ap.seek(pos, true)
 
 
 func attack(animation: String) -> void:

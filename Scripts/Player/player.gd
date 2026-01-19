@@ -5,6 +5,7 @@ signal HealthChanged
 signal StaminaChanged
 signal PlayerDied
 signal DirectionChanged
+signal ComboPauseRequested(window: float)
 
 const MAX_HEALTH = 5
 const MAX_STAMINA = 100
@@ -222,6 +223,10 @@ func tween_camera_zoom(target_zoom: Vector2, duration: float) -> void:
 	camera_zoom_tween.set_trans(Tween.TRANS_QUAD)
 	camera_zoom_tween.set_ease(Tween.EASE_OUT)
 	camera_zoom_tween.tween_property(camera, "zoom", target_zoom, duration)
+
+
+func animation_combo_pause(window: float = 0.5) -> void:
+	ComboPauseRequested.emit(window)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
