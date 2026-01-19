@@ -28,6 +28,7 @@ const MAX_STAMINA = 100
 @onready var player_death_audio: AudioStreamPlayer2D = $PlayerDeathAudio
 @onready var hitbox_collision_shape: CollisionShape2D = $Hitbox/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
+@onready var sword_swing_audio: AudioStreamPlayer2D = $SwordSwingAudio
 
 @export var isAttacking = false
 
@@ -110,6 +111,13 @@ func update_facing() -> void:
 		blade_one_attack_point.look_at(get_global_mouse_position())
 		point_light.look_at(get_global_mouse_position())
 		sprite.flip_h = mouse_position.x < 0
+
+
+func force_update_facing() -> void:
+	mouse_position = get_local_mouse_position()
+	blade_one_attack_point.look_at(get_global_mouse_position())
+	point_light.look_at(get_global_mouse_position())
+	sprite.flip_h = mouse_position.x < 0
 
 
 func update_health(amount: int) -> void:

@@ -4,7 +4,7 @@ const MAX_SPEED = 100.0
 var current_speed
 
 @onready var idle: PlayerState = $"../Idle"
-@onready var attack: PlayerState = $"../Attack"
+@onready var attack: PlayerState = $"../DashAttackCharge"
 @onready var dash: PlayerState = $"../Dash"
 
 
