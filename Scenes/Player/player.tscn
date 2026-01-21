@@ -1492,7 +1492,6 @@ collision_mask = 7
 motion_mode = 1
 wall_min_slide_angle = 0.174533
 script = ExtResource("1_fxp67")
-isAttacking = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
@@ -1624,6 +1623,7 @@ script = ExtResource("8_g54q2")
 
 [node name="Dash" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_p3q17")
+dash_distance = 15.0
 
 [node name="AttackCombo" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("14_jb1wl")

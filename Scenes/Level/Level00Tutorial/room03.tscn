@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://bcbbsjbvxslg3" path="res://Assets/free-2d-top-down-pixel-dungeon-asset-pack/PNG/walls_floor2.png" id="6_lkwv1"]
 [ext_resource type="Texture2D" uid="uid://b1uxny215t30l" path="res://Assets/free-2d-top-down-pixel-dungeon-asset-pack/PNG/Water_coasts_animation.png" id="6_wmb3e"]
 [ext_resource type="PackedScene" uid="uid://dxgc6jaofntpi" path="res://Scenes/Level/LevelTransition.tscn" id="7_ohu50"]
-[ext_resource type="PackedScene" uid="uid://dqus222up43m0" path="res://Scenes/Player/player.tscn" id="8_kiuou"]
 [ext_resource type="Texture2D" uid="uid://upsqtokjka0p" path="res://Assets/PlacheholderAssets/sewage_assets2.png" id="8_kn7pm"]
 [ext_resource type="Texture2D" uid="uid://d1f6wamyevqg2" path="res://Assets/PlacheholderAssets/sewage_assets.png" id="9_v1mvk"]
+[ext_resource type="PackedScene" uid="uid://dmbyfr52cbw3a" path="res://Scenes/Enemy/MeleeMushroom/MeleeMushroom.tscn" id="12_yo11w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_cj76e")
@@ -6239,5 +6239,5 @@ target_transition_area = "RoomTransition2"
 side = 1
 size = 3
 
-[node name="player" parent="." instance=ExtResource("8_kiuou")]
-position = Vector2(9, -816)
+[node name="MeleeMushroom" parent="." instance=ExtResource("12_yo11w")]
+position = Vector2(0, -584)

@@ -74,6 +74,7 @@ func update(delta: float) -> EnemyState:
 
 func physics_update(_delta: float) -> EnemyState:
 	if enemy == null:
+		print("Wander: enemy is null")
 		return null
 
 	# --- Highest priority: death / knockback ---

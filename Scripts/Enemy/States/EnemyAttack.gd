@@ -2,153 +2,149 @@ extends EnemyState
 class_name EnemyAttack
 
 @export_category("State Transitions")
-@export var follow_state: EnemyState              # go here when attack area is left
-@export var retreat_state: EnemyState             # go here if retreat area is entered
-@export var knockback_state: EnemyState           # optional
-@export var dead_state: EnemyState                # optional, defaults to state_machine.dead_state
+@export var follow_state: EnemyState
+@export var knockback_state: EnemyState
+@export var dead_state: EnemyState
 
-@export_category("Attack Logic")
+@export_category("Animation")
 @export var attack_animation: String = "attack"
-@export var can_move_during_attack: bool = true
-@export var attack_move_speed: float = 0.0        # if 0, enemy stands still during attack
 
+@export_category("Cooldown")
 @export var requires_cooldown: bool = true
-@export var cooldown_flag_name: String = "inCooldown"  # uses enemy.inCooldown if it exists
+@export var cooldown_flag_name: String = "inCooldown"
 
-@export_category("Areas")
-@export var attack_area: Area2D                   # leaving this area -> follow
-@export var retreat_area: Area2D                  # entering this area -> retreat
+@export_category("Phases")
+@export var prepare_time: float = 0.25
+@export var lunge_speed: float = 220.0
+@export var lunge_duration: float = 0.12
+@export var recover_time: float = 0.38
+@export var recover_move_speed: float = 10.0
+@export var recover_turn_lerp: float = 4.0
 
-@export_category("Attack ↔ Follow delay")
-@export var use_follow_transition_delay: bool = true
-@export var follow_transition_delay: float = 0.25
+@export_category("Lunge Tuning")
+@export var lunge_lock_direction: bool = true
+@export var lunge_stop_after: bool = true
+@export var lunge_drag: float = 0.0
 
 var player: CharacterBody2D
-var _connected: bool = false
-var _follow_request_timer: float = -1.0
-var _retreat_requested: bool = false
+
+enum Phase { PREPARE, LUNGE, RECOVER }
+var _phase: int = Phase.PREPARE
+var _t: float = 0.0
+
+var _lunge_dir := Vector2.ZERO
+var _recover_dir := Vector2.ZERO
 
 
-func enter(previous_state: EnemyState) -> void:
+func enter(_prev: EnemyState) -> void:
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
-	_connect_areas()
-	
-	
-	_follow_request_timer = -1.0
-	_retreat_requested = false
 
-	# Only play animation if not cooling down
-	if not _enemy_in_cooldown():
-		enemy.animation_player.play(attack_animation)
-	
 	enemy.isAttacking = true
+
+	# play anim once
+	if enemy.animation_player:
+		enemy.animation_player.play(attack_animation)
+
+	# start cooldown NOW (one attack = one cooldown)
+	if requires_cooldown and (cooldown_flag_name in enemy):
+		enemy.set(cooldown_flag_name, true)
+		_start_attack_timer_if_present()
+
+	# init phases
+	_phase = Phase.PREPARE
+	_t = prepare_time
+
+	_snapshot_dirs()
 
 
 func exit() -> void:
-	_follow_request_timer = -1.0
-	_retreat_requested = false
+	enemy.isAttacking = false
 
 
 func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
-	# death
 	if enemy.dead and dead_state:
 		enemy.isAttacking = false
 		return dead_state
 
-	# knockback
 	if enemy.hit and knockback_state:
 		return knockback_state
 
-	# invalid player -> back to follow if possible
 	if not _player_valid():
-		if follow_state:
-			enemy.isAttacking = false
-			_reset_follow_request()
-			return follow_state
-		_reset_follow_request()
-		return null
-	
-	if _retreat_requested and retreat_state:
-		_retreat_requested = false
 		enemy.isAttacking = false
-		return retreat_state
+		return follow_state if follow_state else null
 
-	if follow_state:
-		if use_follow_transition_delay:
-			if _follow_request_timer > 0.0:
-				_follow_request_timer -= delta
-				if _follow_request_timer <= 0.0:
-					_follow_request_timer = -1.0
-					if "isAttacking" in enemy:
-						enemy.isAttacking = false
-					return follow_state
-
-	# orientation
+	# face player
 	if enemy.sprite:
 		enemy.sprite.flip_h = player.global_position.x < enemy.global_position.x
 
-	# optional movement during attack
-	if can_move_during_attack and attack_move_speed > 0.0 and "velocity" in enemy:
-		var dir := (player.global_position - enemy.global_position).normalized()
-		enemy.velocity = dir * attack_move_speed
-	elif "velocity" in enemy:
-		enemy.velocity = Vector2.ZERO
+	match _phase:
+		Phase.PREPARE:
+			enemy.velocity = Vector2.ZERO
+			_t -= delta
+			if _t <= 0.0:
+				_phase = Phase.LUNGE
+				_t = lunge_duration
+				if not lunge_lock_direction:
+					_snapshot_dirs()
 
-	# animation replay if cooldown ended
-	if not _enemy_in_cooldown():
-		if enemy.animation_player and enemy.animation_player.current_animation != attack_animation:
-			enemy.animation_player.play(attack_animation)
+		Phase.LUNGE:
+			_apply_lunge(delta)
+			_t -= delta
+			if _t <= 0.0:
+				_phase = Phase.RECOVER
+				_t = recover_time
+				if lunge_stop_after:
+					enemy.velocity = Vector2.ZERO
+
+		Phase.RECOVER:
+			_apply_recovery(delta)
+			_t -= delta
+			if _t <= 0.0:
+				enemy.isAttacking = false
+				return follow_state if follow_state else null
 
 	return null
 
-# -------------------------------------------------------------------
-# AREA SIGNALS
-# -------------------------------------------------------------------
 
-func _on_attack_area_exited(body: Node) -> void:
-	if body.is_in_group("Player") and follow_state:
-		enemy.isAttacking = false
-		if use_follow_transition_delay:
-			if _follow_request_timer < 0.0:
-				_follow_request_timer = follow_transition_delay
-
-
-func _on_retreat_area_entered(body: Node) -> void:
-	if body.is_in_group("Player") and retreat_state:
-		_retreat_requested = true
-
-# -------------------------------------------------------------------
-# HELPERS
-# -------------------------------------------------------------------
-
-func _connect_areas() -> void:
-	if _connected:
+func _apply_lunge(delta: float) -> void:
+	if _lunge_dir == Vector2.ZERO:
+		enemy.velocity = Vector2.ZERO
 		return
-	_connected = true
 
-	if attack_area:
-		if not attack_area.is_connected("body_exited", Callable(self, "_on_attack_area_exited")):
-			attack_area.connect("body_exited", Callable(self, "_on_attack_area_exited"))
-
-	if retreat_area:
-		if not retreat_area.is_connected("body_entered", Callable(self, "_on_retreat_area_entered")):
-			retreat_area.connect("body_entered", Callable(self, "_on_retreat_area_entered"))
+	enemy.velocity = _lunge_dir * lunge_speed
+	if lunge_drag > 0.0:
+		enemy.velocity = enemy.velocity.move_toward(Vector2.ZERO, lunge_drag * delta)
 
 
-func _enemy_in_cooldown() -> bool:
-	if not requires_cooldown:
-		return false
-	if cooldown_flag_name in enemy:
-		return enemy.get(cooldown_flag_name)
-	return false
+func _apply_recovery(delta: float) -> void:
+	if _player_valid():
+		var desired := player.global_position - enemy.global_position
+		if desired.length() > 0.001:
+			_recover_dir = _recover_dir.lerp(desired.normalized(), recover_turn_lerp * delta)
+
+	enemy.velocity = _recover_dir * recover_move_speed
+
+
+func _snapshot_dirs() -> void:
+	if not _player_valid():
+		_lunge_dir = Vector2.ZERO
+		_recover_dir = Vector2.ZERO
+		return
+
+	var dir := player.global_position - enemy.global_position
+	_lunge_dir = dir.normalized() if dir.length() > 0.001 else Vector2.ZERO
+	_recover_dir = _lunge_dir
+
+
+func _start_attack_timer_if_present() -> void:
+	if enemy.has_node("TimerAttack"):
+		var t := enemy.get_node("TimerAttack") as Timer
+		if t and t.is_stopped():
+			t.start()
 
 
 func _player_valid() -> bool:
 	return player != null and player.current_health > 0
-
-
-func _reset_follow_request() -> void:
-	_follow_request_timer = -1.0
