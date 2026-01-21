@@ -7,12 +7,16 @@ const PATHFINDER: PackedScene = preload("res://Scenes/Enemy/Pathfinder.tscn")
 @export var move_speed: float = 60.0
 @export var wander_state: EnemyState
 @export var knockback_state: EnemyState
-@export var dead_state: EnemyState   # optional; falls back to state_machine.dead_state if null
+@export var dead_state: EnemyState
 
-@export_category("Detection / Attack Areas")
-@export var detection_area: Area2D        # if null, will try enemy.DetectionArea
-@export var attack_area: Area2D           # if set AND attack_state set => can switch to Attack state
-@export var attack_state: EnemyState      # for enemies with a separate Attack state (e.g. TNT goblin)
+@export_category("Areas")
+@export var detection_area: Area2D
+@export var attack_area: Area2D
+@export var attack_state: EnemyState
+
+@export_category("Follow → Attack delay")
+@export var use_attack_transition_delay: bool = true
+@export var attack_transition_delay: float = 0.20
 
 @export_category("Melee while following")
 @export var melee_while_following: bool = true
@@ -21,57 +25,49 @@ const PATHFINDER: PackedScene = preload("res://Scenes/Enemy/Pathfinder.tscn")
 @export var attack_up_animation: String = "attack_up"
 @export var attack_down_animation: String = "attack_down"
 
-@export_category("Auto-throw")
-@export var auto_throw: bool = false
-@export var throw_chance_per_frame: float = 0.02
-@export var throw_charge_time: float = 0.6
-
-@export_category("Follow ↔ Attack delay")
-@export var use_attack_transition_delay: bool = true
-@export var attack_transition_delay: float = 0.25
-
-@export_category("Detection Tuning")
-@export var lose_sight_time: float = 0.5  # how long we can "lose" the player before giving up
-
 var player: CharacterBody2D
-var direction: Vector2 = Vector2.ZERO
-var player_in_detection_range: bool = true
-var _attack_request_timer: float = -1.0
-var _request_attack: bool = false
-var attack_animation: String = ""
 var pathfinder: Pathfinder
-var lose_sight_timer: float = 0.0
+var direction: Vector2 = Vector2.ZERO
+
+var player_in_detection_range := true
+var player_in_attack_range := false
+
+var _attack_request_timer := -1.0
+var _connected := false
+var _attack_anim := ""
 
 
 func enter(prev_state: EnemyState) -> void:
 	enemy.vision_mode = enemy.VisionMode.LOOK_AT_PLAYER
+
 	pathfinder = PATHFINDER.instantiate() as Pathfinder
 	enemy.add_child(pathfinder)
-	_ensure_player_connections()
+	pathfinder.position = Vector2.ZERO
+
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
+	_attack_request_timer = -1.0
 
-	# Only play detection once when we start actively following
-	if not enemy.isAttacking and melee_while_following:
-		enemy.isAttacking = true
-	if prev_state is EnemyWander:
-		enemy.player_detected_audio.play()
+	_connect_areas()
 
+	# optional “threat anim” while following
 	if melee_while_following:
 		_update_attack_animation()
-		enemy.animation_player.play(attack_animation)
+		if enemy.animation_player:
+			enemy.animation_player.play(_attack_anim)
 
 
 func exit() -> void:
 	enemy.vision_mode = enemy.VisionMode.MOVE_DIRECTION
-	pathfinder.queue_free()
-	_reset_attack_request()
+	if pathfinder:
+		pathfinder.queue_free()
+		pathfinder = null
+	_attack_request_timer = -1.0
 
 
-func physics_update(_delta: float) -> EnemyState:
+func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
-	# --- Death / Knockback ---
 	if enemy.dead and dead_state:
 		enemy.isAttacking = false
 		return dead_state
@@ -79,150 +75,118 @@ func physics_update(_delta: float) -> EnemyState:
 	if enemy.hit and knockback_state:
 		return knockback_state
 
-	# --- Lost player / back to wander ---
 	if (not player_in_detection_range or not _is_player_valid()) and wander_state:
 		enemy.isAttacking = false
-		_reset_attack_request()
 		return wander_state
 
 	if not _is_player_valid():
-		_reset_attack_request()
 		return null
 
-	# --- Orientation ---
+	# face player
 	if enemy.sprite:
 		enemy.sprite.flip_h = player.global_position.x < enemy.global_position.x
 	
-	if enemy.has_node("TorchPivot/TorchAttackPoint"):
-		var attack_point := enemy.get_node("TorchPivot/TorchAttackPoint") as Node2D
-		attack_point.look_at(player.global_position)
+	if enemy.has_node("TorchPivot") and player:
+		var pivot := enemy.get_node("TorchPivot") as Node2D
+		pivot.look_at(player.global_position)
+	
+	# steer
+	if pathfinder:
+		direction = direction.lerp(pathfinder.move_direction, min(1.0, 8.0 * delta))
 
-	direction = lerp(direction, pathfinder.move_direction, 1.5)
+	# move
+	enemy.velocity = direction.normalized() * move_speed if direction.length() > 0.01 else Vector2.ZERO
 
-	# --- Movement
-	enemy.velocity = direction.normalized() * move_speed
-
-	# --- Melee attack while following (torch enemy) ---
+	# optional “threat anim” while following
 	if melee_while_following:
 		_update_attack_animation()
 
-		# --- auto-throw for ranged enemies (TNT, archers, etc.) ---
-	if auto_throw and enemy.has_method("throw"):
-		if randf() < throw_chance_per_frame:
-			enemy.throw(throw_charge_time)
-	
-	if attack_state:
-			if use_attack_transition_delay:
-				if _attack_request_timer > 0.0:
-					_attack_request_timer -= _delta
-					if _attack_request_timer <= 0.0:
-						_attack_request_timer = -1.0
-						_request_attack = false
-						if enemy.isAttacking == false:
-							enemy.isAttacking = true
-						return attack_state
-			else:
-				if _request_attack:
-					_request_attack = false
-					if enemy.isAttacking == false:
-						enemy.isAttacking = true
-					return attack_state
+	# attack decision (only place where we go to Attack)
+	if attack_state and player_in_attack_range and not enemy.inCooldown:
+		if not use_attack_transition_delay:
+			return attack_state
+
+		# start countdown once
+		if _attack_request_timer < 0.0:
+			_attack_request_timer = attack_transition_delay
+		else:
+			_attack_request_timer -= delta
+			if _attack_request_timer <= 0.0:
+				_attack_request_timer = -1.0
+				return attack_state
+	else:
+		_attack_request_timer = -1.0
+
 	return null
 
-# -------------------------------------------------------------------
-# Helpers
-# -------------------------------------------------------------------
 
 func _update_attack_animation() -> void:
 	if not melee_while_following or not _is_player_valid() or enemy == null:
 		return
+	
+	enemy.isAttacking = true
+	
 	var distance := player.global_position.y - enemy.global_position.y
 	if use_vertical_attack_anims:
 		if distance < -5.0:
-			attack_animation = attack_up_animation
+			_attack_anim = attack_up_animation
 		elif distance > 5.0:
-			attack_animation = attack_down_animation
+			_attack_anim = attack_down_animation
 		else:
-			attack_animation = base_attack_animation
+			_attack_anim = base_attack_animation
 	else:
-		attack_animation = base_attack_animation
+		_attack_anim = base_attack_animation
 
-	if enemy.animation_player and enemy.animation_player.current_animation != attack_animation:
-		enemy.animation_player.play(attack_animation)
-
-
-func _is_player_valid() -> bool:
-	return player != null and player.current_health > 0
+	if enemy.animation_player and enemy.animation_player.current_animation != _attack_anim:
+		enemy.animation_player.play(_attack_anim)
 
 
-func _ensure_player_connections() -> void:
-	if not GlobalPlayerManager.is_connected("PlayerSpawned", Callable(self, "_on_player_spawned")):
-		GlobalPlayerManager.connect("PlayerSpawned", Callable(self, "_on_player_spawned"))
+func _connect_areas() -> void:
+	if _connected:
+		return
+	_connected = true
 
-	if not GlobalPlayerManager.is_connected("PlayerDespawned", Callable(self, "_on_player_despawned")):
-		GlobalPlayerManager.connect("PlayerDespawned", Callable(self, "_on_player_despawned"))
-		
-	# DetectionArea (can come from export or child node)
-	var det_area: Area2D = detection_area
-	if det_area == null and enemy and enemy.has_node("DetectionArea"):
-		det_area = enemy.get_node("DetectionArea") as Area2D
+	var det := detection_area
+	if det == null and enemy.has_node("DetectionArea"):
+		det = enemy.get_node("DetectionArea") as Area2D
+	if det:
+		if not det.body_entered.is_connected(_on_detection_entered):
+			det.body_entered.connect(_on_detection_entered)
+		if not det.body_exited.is_connected(_on_detection_exited):
+			det.body_exited.connect(_on_detection_exited)
 
-	if det_area:
-		if not det_area.is_connected("body_exited", Callable(self, "_on_detection_area_exited")):
-			det_area.connect("body_exited", Callable(self, "_on_detection_area_exited"))
-		if not det_area.is_connected("body_entered", Callable(self, "_on_detection_area_entered")):
-			det_area.connect("body_entered", Callable(self, "_on_detection_area_entered"))
-
-	# AttackArea (only relevant if we have an attack_state)
-	var atk_area: Area2D = attack_area
-	if atk_area == null and enemy and enemy.has_node("AttackArea"):
-		atk_area = enemy.get_node("AttackArea") as Area2D
-
-	if atk_area and attack_state:
-		if not atk_area.is_connected("body_entered", Callable(self, "_on_attack_area_entered")):
-			atk_area.connect("body_entered", Callable(self, "_on_attack_area_entered"))
-	if not atk_area.is_connected("body_exited", Callable(self, "_on_attack_area_exited")):
-		atk_area.connect("body_exited", Callable(self, "_on_attack_area_exited"))
-
-func _reset_attack_request() -> void:
-	_attack_request_timer = -1.0
-	_request_attack = false
-
-# -------------------------------------------------------------------
-# Signals
-# -------------------------------------------------------------------
-
-func _on_detection_area_exited(body: Node) -> void:
-	if body.is_in_group("Player"):
-		player_in_detection_range = false
+	var atk := attack_area
+	if atk == null and enemy.has_node("AttackArea"):
+		atk = enemy.get_node("AttackArea") as Area2D
+	if atk:
+		if not atk.body_entered.is_connected(_on_attack_entered):
+			atk.body_entered.connect(_on_attack_entered)
+		if not atk.body_exited.is_connected(_on_attack_exited):
+			atk.body_exited.connect(_on_attack_exited)
 
 
-func _on_detection_area_entered(body: Node) -> void:
+func _on_detection_entered(body: Node) -> void:
 	if body.is_in_group("Player"):
 		player_in_detection_range = true
 
 
-func _on_attack_area_entered(body: Node) -> void:
-	if body.is_in_group("Player") and _is_player_valid() and attack_state:
-		if use_attack_transition_delay:
-			if _attack_request_timer < 0.0:
-				_attack_request_timer = attack_transition_delay
-				_request_attack = true
-		else:
-			_request_attack = true
+func _on_detection_exited(body: Node) -> void:
+	if body.is_in_group("Player"):
+		player_in_detection_range = false
+		player_in_attack_range = false
+		_attack_request_timer = -1.0
 
 
-func _on_attack_area_exited(body: Node) -> void:
-	if body.is_in_group("Player") and attack_state:
-		# Player left the attack cone → cancel any pending attack transition
-		_reset_attack_request()
+func _on_attack_entered(body: Node) -> void:
+	if body.is_in_group("Player"):
+		player_in_attack_range = true
 
 
-func _on_player_spawned(_player: CharacterBody2D) -> void:
-	player = _player
-	player_in_detection_range = true
+func _on_attack_exited(body: Node) -> void:
+	if body.is_in_group("Player"):
+		player_in_attack_range = false
+		_attack_request_timer = -1.0
 
 
-func _on_player_despawned() -> void:
-	player = null
-	player_in_detection_range = false
+func _is_player_valid() -> bool:
+	return player != null and player.current_health > 0

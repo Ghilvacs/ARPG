@@ -1,27 +1,28 @@
-[gd_scene load_steps=84 format=3 uid="uid://ftqqj6113t28"]
+[gd_scene load_steps=85 format=3 uid="uid://dmbyfr52cbw3a"]
 
-[ext_resource type="Script" path="res://Scripts/Enemy/TorchGoblin/goblin_torch.gd" id="1_dauif"]
-[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_oolxi"]
-[ext_resource type="Texture2D" uid="uid://b0q2abkqxi5xa" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="3_xxij7"]
-[ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="4_c7y5k"]
-[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="5_r0864"]
-[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyWander.gd" id="6_yix5a"]
-[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyFollow.gd" id="7_uqvvm"]
-[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyDead.gd" id="8_07poj"]
-[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyStun.gd" id="9_errv7"]
-[ext_resource type="Resource" uid="uid://bx4pdsq6ssm5n" path="res://Data/ItemData/currency.tres" id="9_nv56i"]
-[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="10_n81kv"]
-[ext_resource type="Script" path="res://Scripts/Enemy/DropData.gd" id="10_q8ogp"]
-[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyKnockback.gd" id="10_ri2kj"]
-[ext_resource type="Script" path="res://Scripts/General/Hitbox/Hitbox.gd" id="11_awy5v"]
-[ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="12_iomp7"]
-[ext_resource type="PackedScene" uid="uid://cng6qu26gskpd" path="res://Scenes/Enemy/TorchGoblin/TorchWooshAudio/TorchWooshAudio.tscn" id="13_bni6b"]
-[ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="13_poxpv"]
-[ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="14_duprp"]
-[ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="15_7505l"]
+[ext_resource type="Script" path="res://Scripts/Enemy/MeleeMushroom/MeleeMushroom.gd" id="1_8ditj"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="1_sce35"]
+[ext_resource type="Texture2D" uid="uid://b0q2abkqxi5xa" path="res://Assets/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="2_v64xr"]
+[ext_resource type="Texture2D" uid="uid://rp2jr6y4kehn" path="res://Assets/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="3_2l85f"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStateMachine.gd" id="4_q1hco"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyWander.gd" id="5_5rgoe"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyFollow.gd" id="6_eut3x"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyDead.gd" id="7_tdtna"]
+[ext_resource type="Resource" uid="uid://bx4pdsq6ssm5n" path="res://Data/ItemData/currency.tres" id="8_vhfuu"]
+[ext_resource type="Script" path="res://Scripts/Enemy/DropData.gd" id="9_qachr"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyStun.gd" id="10_cxqkd"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyKnockback.gd" id="11_qb3xp"]
+[ext_resource type="Script" path="res://Scripts/General/Hitbox/Hitbox.gd" id="12_7f1nk"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_bnwde"]
+[ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyAttack.gd" id="13_p48vk"]
+[ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="14_wgdgd"]
+[ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="15_33d1h"]
+[ext_resource type="PackedScene" uid="uid://cng6qu26gskpd" path="res://Scenes/Enemy/TorchGoblin/TorchWooshAudio/TorchWooshAudio.tscn" id="16_lep7n"]
+[ext_resource type="AudioStream" uid="uid://bgon2yy7kfinq" path="res://Assets/SFX/goblin_player_detected.mp3" id="17_tqdvu"]
+[ext_resource type="AudioStream" uid="uid://csqgapdfuyj83" path="res://Assets/SFX/goblin_follow.mp3" id="18_w83yn"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d00ob"]
-shader = ExtResource("2_oolxi")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xu2sm"]
+shader = ExtResource("1_sce35")
 shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
@@ -57,8 +58,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_lep1j"]
 resource_name = "attack"
-length = 0.6
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -66,7 +65,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.7, 0.8, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [14, 15, 16, 17, 18, 19]
@@ -78,7 +77,7 @@ tracks/1/path = NodePath("TorchWooshAudio")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0.7),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -92,7 +91,7 @@ tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.3, 0.5),
+"times": PackedFloat32Array(0.7, 0.8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -101,7 +100,6 @@ tracks/2/keys = {
 [sub_resource type="Animation" id="Animation_jn0ld"]
 resource_name = "attack_down"
 length = 0.6
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -143,8 +141,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_4ct7l"]
 resource_name = "attack_up"
-length = 0.6
-loop_mode = 1
+length = 0.9
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -152,7 +149,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [28, 29, 30, 31, 32, 33]
@@ -245,8 +242,8 @@ _data = {
 "run": SubResource("Animation_remst")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qss17"]
-shader = ExtResource("2_oolxi")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71hcd"]
+shader = ExtResource("1_sce35")
 shader_parameter/opacity = 1.0
 shader_parameter/r = null
 shader_parameter/g = null
@@ -254,190 +251,190 @@ shader_parameter/b = null
 shader_parameter/mix_color = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_66jh6"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(0, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_32so5"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(192, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h3p8l"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(384, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tb60i"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(576, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q8pim"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(768, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vk64k"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(960, 384, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_msd7o"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(0, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7eqko"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(192, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_whemj"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(384, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_una2y"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(576, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5du2"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(768, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vr1km"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(960, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dpflb"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(0, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pojf2"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(192, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d7d77"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(384, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_peiba"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(576, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpb4p"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(768, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3utio"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(960, 768, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ofw2b"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nbfo1"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(128, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e1lc7"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(256, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_axxod"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(384, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_em22s"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(512, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gi4dn"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(640, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_plxid"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(768, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_exa0o"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(0, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_grb2w"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(128, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6qbea"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(256, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5mxd1"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(384, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n6ypw"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(512, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4nbe6"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(640, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k2par"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(768, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bagok"]
-atlas = ExtResource("4_c7y5k")
+atlas = ExtResource("3_2l85f")
 region = Rect2(512, 27, 128, 3)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r0ckc"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(0, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c7eos"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(192, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w3ils"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(384, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1id87"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(576, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t2hpt"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(768, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lb0rb"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(960, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bk6k5"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(1152, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gdy76"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(0, 192, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p2h2f"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(192, 192, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q2exm"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(384, 192, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jmeci"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(576, 192, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1vo0t"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(768, 192, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58s4q"]
-atlas = ExtResource("3_xxij7")
+atlas = ExtResource("2_v64xr")
 region = Rect2(960, 192, 192, 192)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_xg5rr"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_7bold"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -608,53 +605,53 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hqfg7"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ohwr6"]
 radius = 25.0
 height = 56.6667
 
 [sub_resource type="Resource" id="Resource_2fwkc"]
-script = ExtResource("10_q8ogp")
-item = ExtResource("9_nv56i")
+script = ExtResource("9_qachr")
+item = ExtResource("8_vhfuu")
 probability = 100.0
 min_amount = 1
 max_amount = 10
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_khh3g"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2t3k4"]
 radius = 34.0
 height = 72.0
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_67jhe"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ee2ji"]
 blend_mode = 1
 light_mode = 1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fnhlu"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_f0hh8"]
 radius = 380.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jowbk"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_pmvv6"]
 radius = 92.8559
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_eysye"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tk7mg"]
 size = Vector2(44, 94)
 
-[node name="goblin_torch" type="CharacterBody2D" groups=["Enemy"]]
+[node name="MeleeMushroom" type="CharacterBody2D"]
 z_index = 2
 y_sort_enabled = true
 scale = Vector2(0.15, 0.15)
 collision_layer = 2
 collision_mask = 7
 motion_mode = 1
-script = ExtResource("1_dauif")
+script = ExtResource("1_8ditj")
 vision_rotation_offset_deg = -90.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_d00ob")
-texture = ExtResource("3_xxij7")
+material = SubResource("ShaderMaterial_xu2sm")
+texture = ExtResource("2_v64xr")
 hframes = 7
 vframes = 6
 
 [node name="DeathSprite2D" type="Sprite2D" parent="."]
 visible = false
-texture = ExtResource("4_c7y5k")
+texture = ExtResource("3_2l85f")
 hframes = 7
 vframes = 2
 
@@ -667,9 +664,9 @@ libraries = {
 visible = false
 z_index = 1
 y_sort_enabled = true
-material = SubResource("ShaderMaterial_qss17")
+material = SubResource("ShaderMaterial_71hcd")
 position = Vector2(0, -17)
-sprite_frames = SubResource("SpriteFrames_xg5rr")
+sprite_frames = SubResource("SpriteFrames_7bold")
 animation = &"attack"
 autoplay = "idle"
 
@@ -678,77 +675,94 @@ visible = false
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, 10)
-shape = SubResource("CapsuleShape2D_hqfg7")
+shape = SubResource("CapsuleShape2D_ohwr6")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "enemy", "dead_state")]
-script = ExtResource("5_r0864")
+script = ExtResource("4_q1hco")
 initial_state = NodePath("Wander")
 enemy = NodePath("..")
 dead_state = NodePath("Dead")
 
 [node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
-script = ExtResource("6_yix5a")
+script = ExtResource("5_5rgoe")
+move_speed = 20.0
 follow_state = NodePath("../Follow")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
 
-[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
-script = ExtResource("7_uqvvm")
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area", "attack_state")]
+script = ExtResource("6_eut3x")
+move_speed = 40.0
 wander_state = NodePath("../Wander")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
+attack_state = NodePath("../Attack")
+melee_while_following = false
+use_vertical_attack_anims = false
 use_attack_transition_delay = false
 
 [node name="Dead" type="Node" parent="StateMachine"]
-script = ExtResource("8_07poj")
-drops = Array[ExtResource("10_q8ogp")]([SubResource("Resource_2fwkc"), null])
+script = ExtResource("7_tdtna")
+drops = Array[ExtResource("9_qachr")]([SubResource("Resource_2fwkc"), null])
 
 [node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "dead_state")]
-script = ExtResource("9_errv7")
+script = ExtResource("10_cxqkd")
 wander_state = NodePath("../Wander")
 follow_state = NodePath("../Follow")
 dead_state = NodePath("../Dead")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
-script = ExtResource("10_ri2kj")
+script = ExtResource("11_qb3xp")
+knockback_distance = 4.0
+knockback_duration = 0.1
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state", "attack_area")]
+script = ExtResource("13_p48vk")
+follow_state = NodePath("../Follow")
+knockback_state = NodePath("../Knockback")
+dead_state = NodePath("../Dead")
+attack_move_speed = 10.0
+attack_area = NodePath("../../AttackArea")
+
 [node name="Hitbox" type="Area2D" parent="."]
 position = Vector2(3.33333, 18.3333)
-script = ExtResource("11_awy5v")
+script = ExtResource("12_7f1nk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
 position = Vector2(-4, -19)
-shape = SubResource("CapsuleShape2D_khh3g")
+shape = SubResource("CapsuleShape2D_2t3k4")
 
 [node name="DetectionArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
 visible = false
 polygon = PackedVector2Array(-16, 0, 16, 0, 700, 800, -700, 800)
 
 [node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
-material = SubResource("CanvasItemMaterial_67jhe")
+material = SubResource("CanvasItemMaterial_ee2ji")
 color = Color(1, 0.772549, 0, 0.156863)
-texture = ExtResource("10_n81kv")
+texture = ExtResource("13_bnwde")
 texture_offset = Vector2(650, 300)
 texture_scale = Vector2(0.3, 0.3)
 polygon = PackedVector2Array(-16, 0, 16, 0, 875, 1000, -875, 1000)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
-shape = SubResource("CircleShape2D_fnhlu")
+shape = SubResource("CircleShape2D_f0hh8")
 debug_color = Color(0.984314, 0.109804, 0, 0.419608)
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-shape = SubResource("CircleShape2D_jowbk")
+shape = SubResource("CircleShape2D_pmvv6")
 
 [node name="TimerTakeDamage" type="Timer" parent="."]
 wait_time = 0.3
@@ -788,20 +802,20 @@ position = Vector2(-3, -25)
 scale = Vector2(1.015, 1.015)
 color = Color(1, 0.835294, 0, 1)
 energy = 0.8
-texture = ExtResource("10_n81kv")
+texture = ExtResource("13_bnwde")
 
 [node name="TorchPivot" type="Marker2D" parent="."]
 
 [node name="TorchAttackPoint" type="Marker2D" parent="TorchPivot"]
 
 [node name="TorchArea" type="Area2D" parent="TorchPivot/TorchAttackPoint" groups=["GoblinTorch"]]
-script = ExtResource("13_poxpv")
+script = ExtResource("14_wgdgd")
 damage = 1
 team = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TorchPivot/TorchAttackPoint/TorchArea"]
 position = Vector2(53.3333, -13.3333)
-shape = SubResource("RectangleShape2D_eysye")
+shape = SubResource("RectangleShape2D_tk7mg")
 disabled = true
 
 [node name="TimerStaminaRegen" type="Timer" parent="."]
@@ -819,23 +833,22 @@ wait_time = 0.2
 [node name="KnockbackTween" type="Node" parent="."]
 
 [node name="SwordHitAudio" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("12_iomp7")
+stream = ExtResource("15_33d1h")
 volume_db = -20.0
 
-[node name="TorchWooshAudio" parent="." instance=ExtResource("13_bni6b")]
+[node name="TorchWooshAudio" parent="." instance=ExtResource("16_lep7n")]
 volume_db = -30.0
 
 [node name="PlayerDetectedAudio" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("14_duprp")
+stream = ExtResource("17_tqdvu")
 volume_db = -23.0
 
 [node name="GoblinFollowAudio" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("15_7505l")
+stream = ExtResource("18_w83yn")
 volume_db = -25.0
 attenuation = 1e-05
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
 [connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]

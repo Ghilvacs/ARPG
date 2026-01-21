@@ -28,8 +28,8 @@ func _ready() -> void:
 		if child is RayCast2D:
 			rays.append(child)
 	
-	for vector in vectors:
-		vector = vector.normalized()
+	for index in vectors.size():
+		vectors[index] = vectors[index].normalized()
 	
 	set_path()
 
@@ -41,7 +41,12 @@ func _process(delta: float) -> void:
 func set_path() -> void:
 	if GlobalPlayerManager.player == null:
 		return
+	
 	var player_direction: Vector2 = GlobalPlayerManager.player.global_position - global_position
+	
+	if player_direction.length() < 0.001:
+		path = Vector2.ZERO
+		return
 	
 	for index in 8:
 		obstacles[index] = 0
@@ -53,11 +58,11 @@ func set_path() -> void:
 			obstacles[get_next_index(index)] += 1
 			obstacles[get_previous_index(index)] += 1
 	
-	if obstacles.max() == 0:
-		path = player_direction
-		return
-
 	interests.clear()
+	
+	if obstacles.max() == 0.0:
+		path = player_direction.normalized()
+		return
 	
 	for vector in vectors:
 		interests.append(vector.dot(player_direction))

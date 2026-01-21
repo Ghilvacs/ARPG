@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://p2tl4q6yn0j4"]
+[gd_scene load_steps=40 format=3 uid="uid://p2tl4q6yn0j4"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_le20a"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_3825h"]
@@ -15,13 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://c1bp88v0nyydj" path="res://Assets/free-2d-top-down-pixel-dungeon-asset-pack/PNG/water_detilazation_v2.png" id="9_th82q"]
 [ext_resource type="PackedScene" uid="uid://dxgc6jaofntpi" path="res://Scenes/Level/LevelTransition.tscn" id="10_7n74v"]
 [ext_resource type="PackedScene" uid="uid://bvde6jiut4pih" path="res://Scenes/Level/InteractableArea.tscn" id="11_ewyk4"]
-[ext_resource type="PackedScene" uid="uid://ftqqj6113t28" path="res://Scenes/Enemy/TorchGoblin/goblin_torch.tscn" id="12_fgt8n"]
 [ext_resource type="PackedScene" uid="uid://kfuf7grbl6e0" path="res://Scenes/Interactables/TreasureChest/TreasureChest.tscn" id="13_vcx5n"]
 [ext_resource type="Resource" uid="uid://pwbv1mr4s7id" path="res://Data/ItemData/potion.tres" id="14_d283a"]
 [ext_resource type="Texture2D" uid="uid://g0dm86es71lj" path="res://Assets/PlacheholderAssets/ground_scratches.png" id="14_ke0h7"]
 [ext_resource type="Resource" uid="uid://d0x8gw82fd6kb" path="res://Data/ItemData/gem.tres" id="15_in6wc"]
 [ext_resource type="Texture2D" uid="uid://cqunrfd0svvwm" path="res://Assets/LightTexture/light_from_crack.png" id="16_jvak3"]
-[ext_resource type="Texture2D" path="res://Assets/LightTexture/light_from_grate.png" id="17_crife"]
+[ext_resource type="Texture2D" uid="uid://cyebq654j4j15" path="res://Assets/LightTexture/light_from_grate.png" id="17_crife"]
 [ext_resource type="Script" path="res://Scripts/Tools/GradientBaker/GradientBaker.gd" id="18_qc2xx"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="19_jxk7g"]
 
@@ -15670,6 +15669,7 @@ layer_5/z_index = 0
 layer_5/tile_data = PackedInt32Array(-262137, 1310736, 1, -196601, 1310736, 2, -262136, 1376272, 1, -196600, 1376272, 2, -262135, 1441808, 1, -196599, 1441808, 2, -196618, 983056, 12, -131082, 983056, 13, -196617, 1048592, 12, -131081, 1048592, 13, -196616, 1114128, 12, -131080, 1114128, 13)
 
 [node name="Shadow" type="DirectionalLight2D" parent="."]
+visible = false
 energy = 0.9
 blend_mode = 1
 
@@ -15702,9 +15702,6 @@ size = 1
 [node name="InteractableArea" parent="." instance=ExtResource("11_ewyk4")]
 position = Vector2(192, -119)
 save_area = true
-
-[node name="goblin_torch" parent="." instance=ExtResource("12_fgt8n")]
-position = Vector2(-286, 441)
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 y_sort_enabled = true

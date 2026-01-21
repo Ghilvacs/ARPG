@@ -235,21 +235,15 @@ dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
 attack_state = NodePath("../Attack")
-melee_while_following = false
-use_vertical_attack_anims = false
-auto_throw = true
 attack_transition_delay = 0.15
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "retreat_state", "knockback_state", "dead_state", "attack_area", "retreat_area")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state")]
 script = ExtResource("8_0d4tv")
 follow_state = NodePath("../Follow")
-retreat_state = NodePath("../Retreat")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
-can_move_during_attack = false
-attack_area = NodePath("../../AttackArea")
-retreat_area = NodePath("../../RetreatArea")
-follow_transition_delay = 0.1
+lunge_lock_direction = false
+lunge_stop_after = false
 
 [node name="Retreat" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_state", "wander_state", "knockback_state", "dead_state", "retreat_area")]
 script = ExtResource("9_lymt2")

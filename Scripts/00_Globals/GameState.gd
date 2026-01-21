@@ -3,8 +3,8 @@ extends Node
 var save_data: Dictionary = {
 	scene_path = "",
 	player = {
-		hp = 5,
-		max_hp = 5,
+		hp = 100,
+		max_hp = 100,
 		stamina = 100,
 		pos_x = 0.0,
 		pos_y = 0.0,
