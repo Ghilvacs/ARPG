@@ -1623,7 +1623,7 @@ script = ExtResource("8_g54q2")
 
 [node name="Dash" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_p3q17")
-dash_distance = 10.0
+dash_distance = 15.0
 
 [node name="AttackCombo" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("14_jb1wl")
