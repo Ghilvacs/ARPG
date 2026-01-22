@@ -15728,7 +15728,6 @@ shadow_filter = 1
 texture = ExtResource("16_jvak3")
 
 [node name="GradientEffect2" type="PointLight2D" parent="."]
-visible = false
 texture_filter = 2
 texture_repeat = 1
 position = Vector2(-52, -2)
