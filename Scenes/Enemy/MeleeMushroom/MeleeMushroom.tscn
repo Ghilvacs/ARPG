@@ -628,10 +628,10 @@ blend_mode = 1
 light_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f0hh8"]
-radius = 380.0
+radius = 506.667
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pmvv6"]
-radius = 300.074
+radius = 400.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tk7mg"]
 size = Vector2(75.3334, 94)
@@ -740,13 +740,13 @@ position = Vector2(3.33334, -4.99996)
 shape = SubResource("CapsuleShape2D_2t3k4")
 
 [node name="DetectionArea" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
 visible = false
 polygon = PackedVector2Array(-16, 0, 16, 0, 700, 800, -700, 800)
 
 [node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
+visible = false
 material = SubResource("CanvasItemMaterial_ee2ji")
 color = Color(1, 0.772549, 0, 0.156863)
 texture = ExtResource("13_bnwde")
@@ -830,7 +830,7 @@ wait_time = 0.2
 wait_time = 0.2
 
 [node name="TimerAttack" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 1.35
 
 [node name="KnockbackTween" type="Node" parent="."]
 
