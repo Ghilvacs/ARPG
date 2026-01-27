@@ -105,7 +105,6 @@ func _start_normal_attack() -> void:
 	_moved_this_attack = false
 	_played_attack_sound = false
 
-	_start_base_attack_movement()
 	_play_attack_one_variant()
 
 
