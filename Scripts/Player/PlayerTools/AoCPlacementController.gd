@@ -84,6 +84,7 @@ func cancel() -> void:
 	if player.has_method("set_is_placing"):
 		player.call("set_is_placing", false)
 
+
 func try_confirm() -> void:
 	if not is_instance_valid(ghost):
 		cancel()
@@ -112,6 +113,7 @@ func try_confirm() -> void:
 	if player.has_method("set_is_placing"):
 		player.call("set_is_placing", false)
 
+
 func update_ghost_position() -> void:
 	var mouse_world := player.get_global_mouse_position()
 	var from := player.global_position
@@ -127,6 +129,7 @@ func update_ghost_position() -> void:
 	# Optional: change color based on valid/invalid placement
 	var ok := _can_place_at(position)
 	_set_ghost_valid(ghost, ok)
+
 
 func _can_place_at(pos: Vector2) -> bool:
 	# Basic rule: inside range already ensured by clamping.
@@ -146,6 +149,7 @@ func _can_place_at(pos: Vector2) -> bool:
 	return hits.is_empty()
 	return true
 
+
 func _clip_to_los(from: Vector2, to: Vector2) -> Vector2:
 	var space := player.get_world_2d().direct_space_state
 	var query := PhysicsRayQueryParameters2D.create(from, to)
@@ -157,11 +161,13 @@ func _clip_to_los(from: Vector2, to: Vector2) -> Vector2:
 	# stop a bit before the wall
 	return (hit.position as Vector2) - (to - from).normalized() * 8.0
 
+
 func _set_ghost_visual(node: Node, is_ghost: bool) -> void:
 	# If you have a Sprite2D or a ring child, change modulate/alpha here.
 	# This is intentionally generic.
 	if node is CanvasItem:
 		(node as CanvasItem).modulate.a = 0.5 if is_ghost else 1.0
+
 
 func _set_ghost_valid(node: Node, ok: bool) -> void:
 	# Optional: green/red feedback (still diegetic enough if subtle)

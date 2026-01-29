@@ -33,12 +33,14 @@ var _inside := {} # instance_id -> Node
 @onready var ghost_ring: Sprite2D = $GhostRing
 @onready var light_ring: Sprite2D = $LightRing
 
+
 func _ready() -> void:
 	# Just connect to whatever the manager already built.
 	if area:
 		area.body_entered.connect(_on_body_entered)
 		area.body_exited.connect(_on_body_exited)
 	_update_phase(true)
+
 
 func _physics_process(delta: float) -> void:
 	if phase == Phase.DEPLETED:
@@ -51,8 +53,10 @@ func _physics_process(delta: float) -> void:
 	if exposure <= 0.0 or _ratio() <= low_threshold:
 		_set_depleted()
 
+
 func _ratio() -> float:
 	return exposure / max(exposure_max, 0.0001)
+
 
 func _update_phase(force: bool = false) -> void:
 	var ratio := _ratio()
@@ -71,6 +75,7 @@ func _update_phase(force: bool = false) -> void:
 		phase = new_phase
 		emit_signal("phase_changed", int(phase), ratio)
 
+
 func _drain(delta: float) -> void:
 	var drain := 0.0
 	match phase:
@@ -81,6 +86,7 @@ func _drain(delta: float) -> void:
 
 	exposure = max(exposure - drain * delta, 0.0)
 
+
 func _multiplier() -> float:
 	match phase:
 		Phase.MAX: return mult_max
@@ -89,11 +95,13 @@ func _multiplier() -> float:
 		Phase.DEPLETED: return 0.0
 	return 1.0
 
+
 func _on_body_entered(body: Node) -> void:
 	var actor := _get_actor_root(body)
 	if actor:
 		_inside[actor.get_instance_id()] = actor
 		_apply_enter_effects(actor)
+
 
 func _on_body_exited(body: Node) -> void:
 	var actor := _get_actor_root(body)
@@ -121,8 +129,10 @@ func _apply_enter_effects(body: Node) -> void:
 			if body.has_method("apply_stun"):
 				body.call("apply_stun", 1.5 * multiplier)
 
+
 func _apply_exit_effects(_body: Node) -> void:
 	pass
+
 
 func _apply_continuous_effects(delta: float) -> void:
 	var multiplier := _multiplier()
@@ -157,6 +167,7 @@ func _apply_continuous_effects(delta: float) -> void:
 		if node.is_in_group("organic"):
 			if node.has_method("accelerate_growth"):
 				node.call("accelerate_growth", 1.0 * multiplier, delta)
+
 
 func _set_depleted() -> void:
 	phase = Phase.DEPLETED
