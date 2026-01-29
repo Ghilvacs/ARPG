@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=120 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -36,6 +36,8 @@
 [ext_resource type="AudioStream" uid="uid://cxicn7ifkh4ob" path="res://Assets/SFX/player_death.mp3" id="29_4qfrn"]
 [ext_resource type="AudioStream" uid="uid://b5lr1fewyxeru" path="res://Assets/SFX/creature-in-the-sewer-17657.mp3" id="30_d300b"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerInteractionsHost.gd" id="34_yafd7"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerTools/AoCPlacementController.gd" id="37_l74xj"]
+[ext_resource type="PackedScene" uid="uid://c66dcf4yam8y" path="res://Scenes/Player/PlayerTools/LightAoETool/LightField.tscn" id="38_0ylas"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -1791,6 +1793,12 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Area2D"]
 shape = SubResource("RectangleShape2D_fswmj")
 debug_color = Color(0, 0.65098, 0.105882, 0.419608)
+
+[node name="AoCManager" type="Node2D" parent="."]
+
+[node name="AoCPlacementController" type="Node2D" parent="AoCManager"]
+script = ExtResource("37_l74xj")
+circle_scene = ExtResource("38_0ylas")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

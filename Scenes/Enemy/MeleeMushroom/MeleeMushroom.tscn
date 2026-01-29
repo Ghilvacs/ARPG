@@ -636,11 +636,11 @@ radius = 400.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tk7mg"]
 size = Vector2(75.3334, 94)
 
-[node name="MeleeMushroom" type="CharacterBody2D"]
+[node name="MeleeMushroom" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 2
 y_sort_enabled = true
 scale = Vector2(0.15, 0.15)
-collision_layer = 2
+collision_layer = 3
 collision_mask = 7
 motion_mode = 1
 script = ExtResource("1_8ditj")
@@ -679,25 +679,28 @@ y_sort_enabled = true
 position = Vector2(6.66667, 33.3333)
 shape = SubResource("CapsuleShape2D_ohwr6")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "enemy", "dead_state")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "enemy", "dead_state", "stun_state")]
 script = ExtResource("4_q1hco")
 initial_state = NodePath("Wander")
 enemy = NodePath("..")
 dead_state = NodePath("Dead")
+stun_state = NodePath("Stun")
 
-[node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "dead_state", "detection_area", "attack_area")]
+[node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "stun_state", "dead_state", "detection_area", "attack_area")]
 script = ExtResource("5_5rgoe")
 move_speed = 20.0
 follow_state = NodePath("../Follow")
 knockback_state = NodePath("../Knockback")
+stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
 
-[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "dead_state", "detection_area", "attack_area", "attack_state")]
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "knockback_state", "stun_state", "dead_state", "detection_area", "attack_area", "attack_state")]
 script = ExtResource("6_eut3x")
 wander_state = NodePath("../Wander")
 knockback_state = NodePath("../Knockback")
+stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
@@ -710,26 +713,31 @@ use_vertical_attack_anims = false
 script = ExtResource("7_tdtna")
 drops = Array[ExtResource("9_qachr")]([SubResource("Resource_2fwkc"), null])
 
-[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "dead_state")]
+[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "knockback_state", "dead_state")]
 script = ExtResource("10_cxqkd")
 wander_state = NodePath("../Wander")
 follow_state = NodePath("../Follow")
+knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
 
-[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
-script = ExtResource("11_qb3xp")
-stun_state = NodePath("../Stun")
-dead_state = NodePath("../Dead")
-
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "dead_state")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "stun_state", "dead_state")]
 script = ExtResource("13_p48vk")
 follow_state = NodePath("../Follow")
+knockback_state = NodePath("../Knockback")
+stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 prepare_time = 0.5
 lunge_speed = 350.0
 lunge_duration = 0.15
 recover_time = 0.3
 lunge_stop_after = false
+
+[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
+script = ExtResource("11_qb3xp")
+knockback_distance = 5.0
+knockback_duration = 0.1
+stun_state = NodePath("../Stun")
+dead_state = NodePath("../Dead")
 
 [node name="Hitbox" type="Area2D" parent="."]
 position = Vector2(3.33333, 18.3333)
@@ -772,9 +780,9 @@ offset_left = -45.0
 offset_top = -81.0
 offset_right = 45.0
 offset_bottom = -69.0
-max_value = 4.0
+max_value = 5.0
 step = 1.0
-value = 4.0
+value = 5.0
 rounded = true
 show_percentage = false
 

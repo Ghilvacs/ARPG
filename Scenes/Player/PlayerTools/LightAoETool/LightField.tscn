@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://c66dcf4yam8y"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerTools/LightAoETool/LightField.gd" id="1_31g6u"]
+[ext_resource type="Texture2D" uid="uid://tk53abqcpf3e" path="res://Assets/PlacheholderAssets/magic_circle.png" id="1_yn4en"]
+[ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="2_an3hr"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gmptm"]
+light_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cno1o"]
+radius = 535.978
+
+[node name="LightField" type="Node2D"]
+z_index = 1
+scale = Vector2(0.1, 0.06)
+script = ExtResource("1_31g6u")
+
+[node name="GhostRing" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_gmptm")
+texture = ExtResource("1_yn4en")
+
+[node name="LightRing" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1_yn4en")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_cno1o")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+color = Color(1, 0.686275, 0, 1)
+texture = ExtResource("2_an3hr")
+texture_scale = 10.0

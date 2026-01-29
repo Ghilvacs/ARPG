@@ -13,6 +13,8 @@ var _knockback_finished: bool = false
 var knockback_velocity: Vector2 = Vector2.ZERO
 
 func enter(_prev_state: EnemyState) -> void:
+	enemy.hit = false
+	enemy.in_knockback = true
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
 	knockback_time = 0.0
 	_knockback_finished = false
@@ -32,6 +34,7 @@ func enter(_prev_state: EnemyState) -> void:
 	# enemy.velocity = Vector2.ZERO
 
 func exit() -> void:
+	enemy.in_knockback = false
 	knockback_velocity = Vector2.ZERO
 	# Don't kill tweens anymore (we removed them)
 
@@ -50,8 +53,8 @@ func update(delta: float) -> EnemyState:
 	# End knockback -> go stun
 	if (_knockback_finished or knockback_time >= knockback_duration) and stun_state:
 		enemy.hit = false
-		enemy.stunned = true
-		enemy.velocity = Vector2.ZERO
+#		enemy.velocity = Vector2.ZERO
+		enemy.apply_stun(0.0)
 		return stun_state
 
 	return null

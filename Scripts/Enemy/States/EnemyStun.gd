@@ -4,6 +4,7 @@ class_name EnemyStun
 @export var wander_state: EnemyState
 @export var follow_state: EnemyState
 @export var retreat_state: EnemyState
+@export var knockback_state: EnemyState
 @export var dead_state: EnemyState
 @export var min_follow_distance: float = 500.0
 @export var max_follow_distance: float = 600.0
@@ -31,7 +32,10 @@ func exit() -> void:
 func physics_update(_delta: float) -> EnemyState:
 	if enemy == null:
 		return null
-
+	
+	if enemy.hit and knockback_state:
+		return knockback_state
+	
 	if enemy.dead and dead_state:
 		return dead_state
 
@@ -55,7 +59,7 @@ func physics_update(_delta: float) -> EnemyState:
 
 	if follow_state:
 		return follow_state
-
+	
 	return null
 
 

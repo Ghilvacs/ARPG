@@ -52,6 +52,8 @@ var camera_zoom_tween: Tween
 var normal_camera_zoom: Vector2
 var current_direction: Vector2 = Vector2.ZERO
 var input_locked := false
+var _hp_regen_buffer: float = 0.0
+var is_placing_tool: = false
 
 
 func _ready() -> void:
@@ -155,6 +157,22 @@ func take_damage(amount: int) -> void:
 		timer_take_damage.start(0)
 
 
+func apply_regen(amount: float) -> void:
+	# amount is fractional HP (e.g. 0.33 per second * delta)
+	if dead:
+		return
+	if current_health >= MAX_HEALTH:
+		_hp_regen_buffer = 0.0
+		return
+
+	_hp_regen_buffer += amount
+
+	while _hp_regen_buffer >= 1.0 and current_health < MAX_HEALTH:
+		_hp_regen_buffer -= 1.0
+		update_health(1)
+		HealthChanged.emit(current_health)
+
+
 func spawn_dash_effect() -> void:
 	var effect := Node2D.new()
 	get_parent().add_child(effect)
@@ -175,6 +193,10 @@ func spawn_dash_effect() -> void:
 	t.set_ease(Tween.EASE_OUT)
 	t.tween_property(ghost_mat, "shader_parameter/opacity", 0.0, dash_effect_fade_time)
 	t.chain().tween_callback(effect.queue_free)
+
+
+func set_is_placing(v: bool) -> void:
+	is_placing_tool = v
 
 
 func shader_color(

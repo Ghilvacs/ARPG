@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dh8pvh8yna8vk"]
+[gd_scene load_steps=26 format=3 uid="uid://dh8pvh8yna8vk"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_p1f50"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_cj76e"]
@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://g0dm86es71lj" path="res://Assets/PlacheholderAssets/ground_scratches.png" id="10_n8nsx"]
 [ext_resource type="PackedScene" uid="uid://dmbyfr52cbw3a" path="res://Scenes/Enemy/MeleeMushroom/MeleeMushroom.tscn" id="12_yo11w"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_y2mtn"]
-[ext_resource type="PackedScene" uid="uid://dqus222up43m0" path="res://Scenes/Player/player.tscn" id="14_pr6gj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_cj76e")
@@ -7391,6 +7390,3 @@ texture = ExtResource("13_y2mtn")
 texture_offset = Vector2(500, 500)
 texture_scale = Vector2(0.5, 0.5)
 polygon = PackedVector2Array(-432.28, -136.429, -432.28, 223.704, -348.45, 281.887, -349.46, -38.1199, 110.09, -34.1073, 99.99, -135.426)
-
-[node name="player" parent="." instance=ExtResource("14_pr6gj")]
-position = Vector2(71, -807)
