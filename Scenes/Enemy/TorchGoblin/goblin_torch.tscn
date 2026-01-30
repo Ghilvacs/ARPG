@@ -713,10 +713,8 @@ wander_state = NodePath("../Wander")
 follow_state = NodePath("../Follow")
 dead_state = NodePath("../Dead")
 
-[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
+[node name="Knockback" type="Node" parent="StateMachine"]
 script = ExtResource("10_ri2kj")
-stun_state = NodePath("../Stun")
-dead_state = NodePath("../Dead")
 
 [node name="Hitbox" type="Area2D" parent="."]
 position = Vector2(3.33333, 18.3333)

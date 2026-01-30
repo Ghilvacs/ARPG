@@ -13,7 +13,13 @@ var player: CharacterBody2D
 var isAttacking: bool = false
 var inCooldown = false
 var facing_direction: Vector2 = Vector2.DOWN
+var in_knockback: bool = false
+var _hp_regen_buffer: float = 0.0
+
 @export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
+@export_category("Light Sensitivity")
+@export var light_sensitive: bool = true
+@export var stun_immunity_when_attacking: bool = false # optional rule
 
 enum VisionMode {
 	MOVE_DIRECTION,
@@ -36,7 +42,6 @@ var vision_mode: int = VisionMode.MOVE_DIRECTION
 @onready var timer_stamina_regen: Timer = $TimerStaminaRegen
 @onready var timer_stamina_regen_start: Timer = $TimerStaminaRegenStart
 @onready var timer_stun: Timer = $TimerStun
-@onready var timer_knockback: Timer = $TimerKnockback
 @onready var timer_attack: Timer = $TimerAttack
 @onready var sword_hit_audio: AudioStreamPlayer2D = $SwordHitAudio
 @onready var player_detected_audio: AudioStreamPlayer2D = $PlayerDetectedAudio
@@ -87,9 +92,17 @@ func _physics_process(_delta: float) -> void:
 		health_bar.visible = false
 		stamina_bar.visible = false
 		velocity = Vector2.ZERO
+		return
+	
+	if stunned and not in_knockback:
+		# Hard stop. Prevent state machine from overwriting velocity this frame.
+		velocity = Vector2.ZERO
+		isAttacking = false
+		animation_player.play("idle")
+		_update_vision_cones()
 		move_and_slide()
 		return
-
+	
 	# Basic locomotion animations (states only set velocity / isAttacking)
 	if velocity.length() > 0.0 and not isAttacking:
 		
@@ -114,22 +127,62 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 
+func update_health(amount: int) -> void:
+	current_health += amount
+	
+	if current_health < 0:
+			current_health = 0
+			
+	health_bar.value = current_health
+
 func take_hit(hurtbox: Hurtbox) -> void:
 	take_damage(hurtbox.damage)
 
 
 func take_damage(damage: int) -> void:
+	hit = true
+	
 	if timer_take_damage.is_stopped() and not dead:
-		hit = true
 		sword_hit_audio.play()
-
-		current_health -= damage
-		if current_health < 0:
-			current_health = 0
-
-		health_bar.value = current_health
+		update_health(-damage)
 		shader_color(0.9, 1.0, 0.0, 0.0, 0.5)
-		timer_take_damage.start(0.0)
+		timer_take_damage.start()
+
+
+func is_light_sensitive() -> bool:
+	# Use groups OR per-enemy toggle. This lets you mark special enemies as immune later.
+	# If you prefer pure groups, just return is_in_group("light_sensitive")
+	return light_sensitive
+
+
+func apply_regen(amount: float) -> void:
+	# amount is fractional HP (e.g. 0.33 per second * delta)
+	if dead:
+		return
+	if current_health >= MAX_HEALTH:
+		_hp_regen_buffer = 0.0
+		return
+
+	_hp_regen_buffer += amount
+	while _hp_regen_buffer >= 1.0 and current_health < MAX_HEALTH:
+		_hp_regen_buffer -= 1.0
+		update_health(1)
+#		HealthChanged.emit(current_health)
+
+
+func apply_stun(seconds: float) -> void:
+	if dead or seconds <= 0.0:
+		return
+	if stun_immunity_when_attacking and isAttacking:
+		return
+	stunned = true
+	velocity = Vector2.ZERO
+	isAttacking = false
+	inCooldown = false
+
+	# Only extend remaining stun, never shorten it
+	var remaining := timer_stun.time_left
+	timer_stun.start(max(remaining, seconds))
 
 
 func shader_color(
@@ -221,12 +274,12 @@ func _on_timer_stun_timeout() -> void:
 	timer_stun.stop()
 
 
-func _on_timer_knockback_timeout() -> void:
-	# After knockback finishes, if stun timer isn't already running, start it
-	if timer_stun.is_stopped():
-		stunned = true
-		timer_stun.start(0.0)
-	timer_knockback.stop()
+#func _on_timer_knockback_timeout() -> void:
+#	# After knockback finishes, if stun timer isn't already running, start it
+#	if timer_stun.is_stopped():
+#		stunned = true
+#		timer_stun.start(0.2)
+#	timer_knockback.stop()
 
 
 func _on_player_spawned(p: CharacterBody2D) -> void:

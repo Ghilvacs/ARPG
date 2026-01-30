@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=120 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -36,6 +36,8 @@
 [ext_resource type="AudioStream" uid="uid://cxicn7ifkh4ob" path="res://Assets/SFX/player_death.mp3" id="29_4qfrn"]
 [ext_resource type="AudioStream" uid="uid://b5lr1fewyxeru" path="res://Assets/SFX/creature-in-the-sewer-17657.mp3" id="30_d300b"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerInteractionsHost.gd" id="34_yafd7"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerTools/AoCPlacementController.gd" id="37_l74xj"]
+[ext_resource type="PackedScene" uid="uid://c66dcf4yam8y" path="res://Scenes/Player/PlayerTools/LightAoETool/LightField.tscn" id="38_0ylas"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -1528,7 +1530,7 @@ size = Vector2(46.2045, 123.709)
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -30)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.175, 0.175)
 collision_layer = 3
 collision_mask = 7
 motion_mode = 1
@@ -1556,6 +1558,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite1"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1572,6 +1575,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite2"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1588,6 +1592,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite3"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1604,6 +1609,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite4"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1620,6 +1626,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite5"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1776,7 +1783,6 @@ volume_db = -25.0
 [node name="EnviromentAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("30_d300b")
 volume_db = -15.0
-autoplay = true
 
 [node name="Interactions" type="Node2D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("34_yafd7")
@@ -1791,6 +1797,12 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Area2D"]
 shape = SubResource("RectangleShape2D_fswmj")
 debug_color = Color(0, 0.65098, 0.105882, 0.419608)
+
+[node name="AoCManager" type="Node2D" parent="."]
+
+[node name="AoCPlacementController" type="Node2D" parent="AoCManager"]
+script = ExtResource("37_l74xj")
+circle_scene = ExtResource("38_0ylas")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

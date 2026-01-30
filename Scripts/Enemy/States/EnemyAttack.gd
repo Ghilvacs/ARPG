@@ -4,6 +4,7 @@ class_name EnemyAttack
 @export_category("State Transitions")
 @export var follow_state: EnemyState
 @export var knockback_state: EnemyState
+@export var stun_state: EnemyState
 @export var dead_state: EnemyState
 
 @export_category("Animation")
@@ -65,12 +66,16 @@ func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
+	if enemy.hit and knockback_state:
+		return knockback_state
+	
 	if enemy.dead and dead_state:
 		enemy.isAttacking = false
 		return dead_state
-
-	if enemy.hit and knockback_state:
-		return knockback_state
+	
+	if enemy.stunned and stun_state:
+		enemy.isAttacking = false
+		return stun_state
 
 	if not _player_valid():
 		enemy.isAttacking = false

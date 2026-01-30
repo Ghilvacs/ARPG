@@ -41,6 +41,7 @@ func _spawn_player() -> void:
 		player.global_position = GlobalLevelManager.position_offset
 	
 	player.current_health = GameState.save_data.player.hp
+	player.exposure = GameState.save_data.player.exposure
 	player.update_health(0)
 	
 	# 4. Hook up camera, signals, bounds
@@ -59,6 +60,11 @@ func _spawn_player() -> void:
 
 func set_player_health(hp: int, max_hp: int) -> void:
 	player.current_health = hp
+	player.update_health(0)
+
+
+func set_player_exposure(exposure: float, max_exposure: float) -> void:
+	player.exposure = exposure
 	player.update_health(0)
 
 

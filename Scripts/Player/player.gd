@@ -36,6 +36,8 @@ const MAX_STAMINA = 100
 @export var dash_effect_delay: float = 0.01
 @export var dash_effect_fade_time: float = 0.2
 @export var dash_effect_shader: Shader = preload("res://Scenes/Shaders/player_ghost.gdshader")
+@export var exposure_max: float = 0.9
+@export var exposure: float = 0.9
 
 var current_health = MAX_HEALTH
 var current_stamina = MAX_STAMINA
@@ -52,6 +54,8 @@ var camera_zoom_tween: Tween
 var normal_camera_zoom: Vector2
 var current_direction: Vector2 = Vector2.ZERO
 var input_locked := false
+var _hp_regen_buffer: float = 0.0
+var is_placing_tool: = false
 
 
 func _ready() -> void:
@@ -65,6 +69,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	print(exposure)
 	if input_locked:
 		velocity = Vector2.ZERO
 		move_and_slide()
@@ -155,6 +160,22 @@ func take_damage(amount: int) -> void:
 		timer_take_damage.start(0)
 
 
+func apply_regen(amount: float) -> void:
+	# amount is fractional HP (e.g. 0.33 per second * delta)
+	if dead:
+		return
+	if current_health >= MAX_HEALTH:
+		_hp_regen_buffer = 0.0
+		return
+
+	_hp_regen_buffer += amount
+
+	while _hp_regen_buffer >= 1.0 and current_health < MAX_HEALTH:
+		_hp_regen_buffer -= 1.0
+		update_health(1)
+		HealthChanged.emit(current_health)
+
+
 func spawn_dash_effect() -> void:
 	var effect := Node2D.new()
 	get_parent().add_child(effect)
@@ -175,6 +196,10 @@ func spawn_dash_effect() -> void:
 	t.set_ease(Tween.EASE_OUT)
 	t.tween_property(ghost_mat, "shader_parameter/opacity", 0.0, dash_effect_fade_time)
 	t.chain().tween_callback(effect.queue_free)
+
+
+func set_is_placing(v: bool) -> void:
+	is_placing_tool = v
 
 
 func shader_color(

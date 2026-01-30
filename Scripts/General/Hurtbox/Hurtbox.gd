@@ -7,17 +7,21 @@ class_name Hurtbox
 
 var _already_hit: = []
 
+
 func _ready() -> void:
 	monitoring = false  # off by default, turned on by animation
 	connect("area_entered", Callable(self, "_on_area_entered"))
+
 
 func start_attack() -> void:
 	_already_hit.clear()
 	monitoring = true
 
+
 func end_attack() -> void:
 	monitoring = false
 	_already_hit.clear()
+
 
 func _on_area_entered(area: Area2D) -> void:
 	if not monitoring:

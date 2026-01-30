@@ -24,6 +24,7 @@ class_name EnemyWander
 @export var follow_state: EnemyState      # chase state (EnemyFollow)
 @export var attack_state: EnemyState      # optional: direct Attack from idle (TNT / others)
 @export var knockback_state: EnemyState
+@export var stun_state: EnemyState
 @export var dead_state: EnemyState        # optional, falls back to state_machine.dead_state
 
 @export_category("Areas")
@@ -80,7 +81,10 @@ func physics_update(_delta: float) -> EnemyState:
 	# --- Highest priority: death / knockback ---
 	if enemy.dead and dead_state:
 		return dead_state
-
+	
+	if enemy.stunned and stun_state:
+		return stun_state
+	
 	if enemy.hit and knockback_state:
 		return knockback_state
 

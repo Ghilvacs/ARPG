@@ -253,10 +253,8 @@ knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
 retreat_area = NodePath("../../RetreatArea")
 
-[node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
+[node name="Knockback" type="Node" parent="StateMachine"]
 script = ExtResource("10_amoa7")
-stun_state = NodePath("../Stun")
-dead_state = NodePath("../Dead")
 
 [node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "retreat_state", "dead_state")]
 script = ExtResource("11_n5c0g")

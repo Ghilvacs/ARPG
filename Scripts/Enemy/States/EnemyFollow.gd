@@ -7,6 +7,7 @@ const PATHFINDER: PackedScene = preload("res://Scenes/Enemy/Pathfinder.tscn")
 @export var move_speed: float = 60.0
 @export var wander_state: EnemyState
 @export var knockback_state: EnemyState
+@export var stun_state: EnemyState
 @export var dead_state: EnemyState
 
 @export_category("Areas")
@@ -68,12 +69,16 @@ func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
+	if enemy.hit and knockback_state:
+		return knockback_state
+	
 	if enemy.dead and dead_state:
 		enemy.isAttacking = false
 		return dead_state
-
-	if enemy.hit and knockback_state:
-		return knockback_state
+	
+	if enemy.stunned and stun_state:
+		enemy.isAttacking = false
+		return stun_state
 
 	if (not player_in_detection_range or not _is_player_valid()) and wander_state:
 		enemy.isAttacking = false

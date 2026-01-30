@@ -8,6 +8,7 @@ class_name EnemyStateMachine
 		_assign_enemy_to_states()
 
 @export var dead_state: EnemyState
+@export var stun_state: EnemyState
 
 var current_state: EnemyState
 var states: Array[EnemyState] = []
@@ -47,7 +48,17 @@ func _assign_enemy_to_states() -> void:
 func _process(delta: float) -> void:
 	if current_state == null:
 		return
-
+	
+	if enemy:
+		if enemy.dead and dead_state and current_state != dead_state:
+			_change_state(dead_state)
+			return
+			
+		if enemy.stunned and stun_state and current_state != stun_state:
+			enemy.isAttacking = false
+			_change_state(stun_state)
+			return
+	
 	var next_state := current_state.update(delta)
 	_change_state(next_state)
 
@@ -55,7 +66,16 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if current_state == null:
 		return
-
+	
+	if enemy:
+		if enemy.dead and dead_state and current_state != dead_state:
+			_change_state(dead_state)
+			return
+			
+		if enemy.stunned and stun_state and current_state != stun_state:
+			_change_state(stun_state)
+			return
+	
 	var next_state := current_state.physics_update(delta)
 	_change_state(next_state)
 

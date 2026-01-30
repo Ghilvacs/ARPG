@@ -63,6 +63,7 @@ func update_player_data() -> void:
 	GameState.save_data.player.hp = player.current_health
 	GameState.save_data.player.max_hp = player.MAX_HEALTH
 	GameState.save_data.player.stamina = player.current_stamina
+	GameState.save_data.player.exposure = player.exposure
 	GameState.save_data.player.pos_x = player.global_position.x
 	GameState.save_data.player.pos_y = player.global_position.y
 
