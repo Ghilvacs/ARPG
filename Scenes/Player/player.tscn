@@ -1530,7 +1530,7 @@ size = Vector2(46.2045, 123.709)
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -30)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.175, 0.175)
 collision_layer = 3
 collision_mask = 7
 motion_mode = 1
@@ -1558,6 +1558,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite1"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1574,6 +1575,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite2"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1590,6 +1592,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite3"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1606,6 +1609,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite4"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1622,6 +1626,7 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="Sprite2D/CrystalSprite5"]
+color = Color(0.945098, 0.407843, 1, 1)
 texture = ExtResource("13_mhh83")
 texture_scale = 0.5
 
@@ -1778,7 +1783,6 @@ volume_db = -25.0
 [node name="EnviromentAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("30_d300b")
 volume_db = -15.0
-autoplay = true
 
 [node name="Interactions" type="Node2D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("34_yafd7")

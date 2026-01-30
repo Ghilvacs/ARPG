@@ -639,7 +639,7 @@ size = Vector2(75.3334, 94)
 [node name="MeleeMushroom" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 2
 y_sort_enabled = true
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.175, 0.175)
 collision_layer = 3
 collision_mask = 7
 motion_mode = 1

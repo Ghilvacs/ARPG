@@ -36,6 +36,8 @@ const MAX_STAMINA = 100
 @export var dash_effect_delay: float = 0.01
 @export var dash_effect_fade_time: float = 0.2
 @export var dash_effect_shader: Shader = preload("res://Scenes/Shaders/player_ghost.gdshader")
+@export var exposure_max: float = 0.9
+@export var exposure: float = 0.9
 
 var current_health = MAX_HEALTH
 var current_stamina = MAX_STAMINA
@@ -67,6 +69,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	print(exposure)
 	if input_locked:
 		velocity = Vector2.ZERO
 		move_and_slide()

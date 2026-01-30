@@ -1,8 +1,20 @@
 extends Node
 
+signal depleted(field_position: Vector2)
+
+enum Phase { MAX, MEDIUM, LOW, DEPLETED }
+
 @export var circle_scene: PackedScene
 @export var max_place_distance: float = 220.0
 @export var allow_place_through_walls := false
+
+# Ratio thresholds (exposure / exposure_max)
+@export var max_threshold: float = 0.6
+@export var medium_threshold: float = 0.3
+@export var low_threshold: float = 0.1 # <= this => DEPLETED
+
+# Drain per second by phase (MAX drains fastest)
+@export var cost: float = 0.3
 
 const WALL_LAYER := 1 << 2
 
@@ -10,7 +22,8 @@ var placing: bool = false
 var ghost: Node2D
 var player: Node2D
 var world: Node
-
+var phase: Phase = Phase.MAX
+var can_place: bool = true
 
 func _ready() -> void:
 	player = owner as Node2D
@@ -45,10 +58,17 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(_delta: float) -> void:
 	if not placing:
 		return
+	
 	update_ghost_position()
 
 
 func start() -> void:
+	if not can_place:
+		return
+		
+	if player.exposure < 0.3:
+		return
+		
 	placing = true
 
 	# Optional: pause player attacks / movement via a flag on the player
@@ -94,20 +114,27 @@ func try_confirm() -> void:
 	if not _can_place_at(target_position):
 		# Optional: play error sound / flash red
 		return
-
+	
+	if player.exposure < 0.3:
+		return
+	
 	# Replace ghost with the real field
 	ghost.queue_free()
 	ghost = null
-
+	
+	can_place = false
+	
 	var field := circle_scene.instantiate() as Node2D
 	world.add_child(field)
 	field.global_position = target_position
 	field.ghost_ring.visible = false
 	field.light_ring.visible = true
 	field.light_2d.visible = true
+	_drain()
 	# If you need to initialize exposure from the player/tool resource, do it here:
 	# field.exposure = owner.current_exposure
 	# field.exposure_max = owner.exposure_max
+	field.connect("depleted", Callable(self, "_on_circle_depleted"))
 
 	placing = false
 	if player.has_method("set_is_placing"):
@@ -150,6 +177,12 @@ func _can_place_at(pos: Vector2) -> bool:
 	return true
 
 
+func _drain() -> void:
+	player.exposure = player.exposure - cost
+	if player.exposure <= 0:
+		player.exposure = 0
+
+
 func _clip_to_los(from: Vector2, to: Vector2) -> Vector2:
 	var space := player.get_world_2d().direct_space_state
 	var query := PhysicsRayQueryParameters2D.create(from, to)
@@ -179,3 +212,7 @@ func _set_ghost_valid(node: Node, ok: bool) -> void:
 		c.g = 1.0 if ok else 0.6
 		c.b = 1.0 if ok else 0.6
 		(node as CanvasItem).modulate = c
+
+
+func _on_circle_depleted() -> void:
+	can_place = true

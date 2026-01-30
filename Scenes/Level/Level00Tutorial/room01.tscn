@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://p2tl4q6yn0j4"]
+[gd_scene load_steps=42 format=3 uid="uid://p2tl4q6yn0j4"]
 
 [ext_resource type="Script" path="res://Scripts/Level/RoomScript.gd" id="1_le20a"]
 [ext_resource type="Texture2D" uid="uid://dwf2u80ih6jcf" path="res://Assets/P_P_FREE_RPG_TILESET/Dungeon_24x24.png" id="2_3825h"]
@@ -24,6 +24,7 @@
 [ext_resource type="Script" path="res://Scripts/Tools/GradientBaker/GradientBaker.gd" id="18_qc2xx"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="19_jxk7g"]
 [ext_resource type="PackedScene" uid="uid://dmbyfr52cbw3a" path="res://Scenes/Enemy/MeleeMushroom/MeleeMushroom.tscn" id="25_q4l50"]
+[ext_resource type="AudioStream" uid="uid://b5lr1fewyxeru" path="res://Assets/SFX/creature-in-the-sewer-17657.mp3" id="25_vuja6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whllm"]
 texture = ExtResource("2_3825h")
@@ -25731,6 +25732,7 @@ layer_5/tile_data = PackedInt32Array(-262137, 1310736, 1, -196601, 1310736, 2, -
 [node name="Shadow" type="DirectionalLight2D" parent="."]
 energy = 0.9
 blend_mode = 1
+shadow_color = Color(0, 1, 0, 0)
 
 [node name="CameraBounds" type="Node2D" parent="."]
 
@@ -25811,13 +25813,15 @@ dither = 0.02
 position = Vector2(-42, -6)
 scale = Vector2(1.26791, 0.856914)
 energy = 0.4
+shadow_color = Color(1, 0, 0, 1)
+shadow_item_cull_mask = 7
 texture = ExtResource("19_jxk7g")
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
 position = Vector2(-139, 54.5)
 scale = Vector2(0.215, 0.1325)
-color = Color(0, 0.745098, 0.176471, 1)
-energy = 0.15
+color = Color(0, 0.890196, 0.176471, 1)
+energy = 0.18
 texture = ExtResource("19_jxk7g")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
@@ -25831,5 +25835,12 @@ texture_offset = Vector2(400, 500)
 texture_scale = Vector2(0.4, 0.4)
 polygon = PackedVector2Array(-69, 15, -70, 19, -69, 23, -68, 25, -68, 27, -67, 28, -66, 29, -64, 31, -60, 33, -54, 36, -51, 37, -47, 38, -41, 38, -38, 39, -37, 39, -35, 39, -33, 39, -29, 39, -25, 39, -15, 37, -5, 34, 1, 30, 3, 28, 5, 26, 10, 18, 14, 11, 101.7, -218.811, 90.59, -218.811, -67, 13)
 
+[node name="EnviromentAudio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(-140, 58)
+stream = ExtResource("25_vuja6")
+volume_db = -3.0
+autoplay = true
+max_distance = 100.0
+
 [node name="MeleeMushroom" parent="." instance=ExtResource("25_q4l50")]
-position = Vector2(-60, 22)
+position = Vector2(-327, 71)
