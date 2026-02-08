@@ -49,6 +49,7 @@ func _on_body_entered(body: Node) -> void:
 func _on_body_exited(body: Node) -> void:
 	var actor := _get_actor_root(body)
 	if actor:
+		_apply_exit_effects(actor)
 		_inside.erase(actor.get_instance_id())
 
 
@@ -63,13 +64,15 @@ func _get_actor_root(node: Node) -> Node:
 
 func _apply_enter_effects(body: Node) -> void:
 	if body.is_in_group("Enemy"):
+		body.in_circle = true
 		if body.has_method("is_light_sensitive") and body.call("is_light_sensitive"):
 			if body.has_method("apply_stun"):
-				body.call("apply_stun", 1.5)
+				body.call("apply_stun", 1.0)
 
 
-func _apply_exit_effects(_body: Node) -> void:
-	pass
+func _apply_exit_effects(body: Node) -> void:
+	if body.is_in_group("Enemy"):
+		body.in_circle = false
 
 
 func _apply_continuous_effects(delta: float) -> void:

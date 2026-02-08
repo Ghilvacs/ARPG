@@ -25843,4 +25843,4 @@ autoplay = true
 max_distance = 100.0
 
 [node name="MeleeMushroom" parent="." instance=ExtResource("25_q4l50")]
-position = Vector2(-327, 71)
+position = Vector2(-96, 34)

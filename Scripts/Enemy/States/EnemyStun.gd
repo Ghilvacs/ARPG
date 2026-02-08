@@ -4,13 +4,17 @@ class_name EnemyStun
 @export var wander_state: EnemyState
 @export var follow_state: EnemyState
 @export var retreat_state: EnemyState
+@export var attack_state: EnemyState
 @export var knockback_state: EnemyState
 @export var dead_state: EnemyState
+@export var use_attack_transition_delay: bool = true
 @export var min_follow_distance: float = 500.0
 @export var max_follow_distance: float = 600.0
 
 var player: CharacterBody2D
 var direction: Vector2 = Vector2.ZERO
+var player_in_attack_range: bool = false
+var player_in_detection_range: bool = false
 
 
 func enter(_prev_state: EnemyState) -> void:
@@ -33,7 +37,7 @@ func physics_update(_delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 	
-	if enemy.hit and knockback_state:
+	if enemy.hit and knockback_state and enemy.in_circle:
 		return knockback_state
 	
 	if enemy.dead and dead_state:
@@ -56,7 +60,10 @@ func physics_update(_delta: float) -> EnemyState:
 
 	if distance < min_follow_distance and retreat_state:
 		return retreat_state
-
+	
+	if distance < min_follow_distance and attack_state and not enemy.inCooldown:
+		return attack_state
+	
 	if follow_state:
 		return follow_state
 	

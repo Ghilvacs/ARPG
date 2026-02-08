@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://dmbyfr52cbw3a"]
+[gd_scene load_steps=85 format=3 uid="uid://dmbyfr52cbw3a"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/MeleeMushroom/MeleeMushroom.gd" id="1_8ditj"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="1_sce35"]
@@ -94,7 +94,7 @@ tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.5, 0.7),
+"times": PackedFloat32Array(0.5, 0.8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -627,14 +627,11 @@ height = 146.667
 blend_mode = 1
 light_mode = 1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_f0hh8"]
-radius = 506.667
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_pmvv6"]
 radius = 400.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tk7mg"]
-size = Vector2(75.3334, 94)
+size = Vector2(106.667, 171.429)
 
 [node name="MeleeMushroom" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 2
@@ -689,6 +686,8 @@ stun_state = NodePath("Stun")
 [node name="Wander" type="Node" parent="StateMachine" node_paths=PackedStringArray("follow_state", "knockback_state", "stun_state", "dead_state", "detection_area", "attack_area")]
 script = ExtResource("5_5rgoe")
 move_speed = 20.0
+min_idle_time = 2.5
+max_idle_time = 5.0
 follow_state = NodePath("../Follow")
 knockback_state = NodePath("../Knockback")
 stun_state = NodePath("../Stun")
@@ -705,7 +704,7 @@ dead_state = NodePath("../Dead")
 detection_area = NodePath("../../DetectionArea")
 attack_area = NodePath("../../AttackArea")
 attack_state = NodePath("../Attack")
-use_attack_transition_delay = false
+attack_transition_delay = 0.1
 melee_while_following = false
 use_vertical_attack_anims = false
 
@@ -713,10 +712,11 @@ use_vertical_attack_anims = false
 script = ExtResource("7_tdtna")
 drops = Array[ExtResource("9_qachr")]([SubResource("Resource_2fwkc"), null])
 
-[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "knockback_state", "dead_state")]
+[node name="Stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("wander_state", "follow_state", "attack_state", "knockback_state", "dead_state")]
 script = ExtResource("10_cxqkd")
 wander_state = NodePath("../Wander")
 follow_state = NodePath("../Follow")
+attack_state = NodePath("../Attack")
 knockback_state = NodePath("../Knockback")
 dead_state = NodePath("../Dead")
 
@@ -750,21 +750,18 @@ shape = SubResource("CapsuleShape2D_2t3k4")
 [node name="DetectionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="DetectionArea"]
-visible = false
-polygon = PackedVector2Array(-16, 0, 16, 0, 700, 800, -700, 800)
+polygon = PackedVector2Array(-16, 0, 16, 0, 500, 700, -500, 700)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
+polygon = PackedVector2Array(0, -137.143, 440, -251.429, 485.714, -131.429, 508.571, -5.71429, 485.714, 137.143, 440, 262.857, 354.286, 354.286, 262.857, 434.286, 114.286, 491.429, 5.71429, 514.286, -120, 491.429, -251.429, 440, -354.286, 365.714, -434.286, 262.857, -491.429, 137.143, -508.571, 5.71429, -491.429, -131.429, -428.571, -262.857)
 
 [node name="Polygon2D" type="Polygon2D" parent="DetectionArea"]
-visible = false
 material = SubResource("CanvasItemMaterial_ee2ji")
 color = Color(1, 0.772549, 0, 0.156863)
 texture = ExtResource("13_bnwde")
 texture_offset = Vector2(650, 300)
 texture_scale = Vector2(0.3, 0.3)
 polygon = PackedVector2Array(-16, 0, 16, 0, 875, 1000, -875, 1000)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
-shape = SubResource("CircleShape2D_f0hh8")
-debug_color = Color(0.984314, 0.109804, 0, 0.419608)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
@@ -818,7 +815,7 @@ damage = 1
 team = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TorchPivot/TorchAttackPoint/TorchArea"]
-position = Vector2(69, -13.3333)
+position = Vector2(53.3333, 5.71428)
 shape = SubResource("RectangleShape2D_tk7mg")
 disabled = true
 
@@ -832,9 +829,6 @@ wait_time = 0.2
 one_shot = true
 
 [node name="TimerStun" type="Timer" parent="."]
-wait_time = 0.2
-
-[node name="TimerKnockback" type="Timer" parent="."]
 wait_time = 0.2
 
 [node name="TimerAttack" type="Timer" parent="."]
@@ -859,11 +853,32 @@ stream = ExtResource("18_w83yn")
 volume_db = -25.0
 attenuation = 1e-05
 
+[node name="DebugLabel" type="Label" parent="."]
+visible = false
+offset_left = -17.1429
+offset_top = -108.571
+offset_right = 22.8571
+offset_bottom = -85.5714
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "-"
+
+[node name="DebugLabel2" type="Label" parent="."]
+visible = false
+offset_left = -17.1429
+offset_top = -131.429
+offset_right = 22.8571
+offset_bottom = -105.429
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "-"
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="TimerTakeDamage" to="." method="_on_timer_take_damage_timeout"]
 [connection signal="timeout" from="TimerStaminaRegen" to="." method="_on_timer_stamina_regen_timeout"]
 [connection signal="timeout" from="TimerStaminaRegenStart" to="." method="_on_timer_stamina_regen_start_timeout"]
 [connection signal="timeout" from="TimerStun" to="." method="_on_timer_stun_timeout"]
-[connection signal="timeout" from="TimerKnockback" to="." method="_on_timer_knockback_timeout"]
 [connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]

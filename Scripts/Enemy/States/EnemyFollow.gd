@@ -51,6 +51,9 @@ func enter(prev_state: EnemyState) -> void:
 	_connect_areas()
 
 	# optional “threat anim” while following
+	await enemy.get_tree().physics_frame
+	_sync_overlap_flags()
+	
 	if melee_while_following:
 		_update_attack_animation()
 		if enemy.animation_player:
@@ -66,10 +69,12 @@ func exit() -> void:
 
 
 func physics_update(delta: float) -> EnemyState:
+	_sync_overlap_flags()
+	
 	if enemy == null:
 		return null
 
-	if enemy.hit and knockback_state:
+	if enemy.hit and knockback_state and enemy.in_circle:
 		return knockback_state
 	
 	if enemy.dead and dead_state:
@@ -144,6 +149,35 @@ func _update_attack_animation() -> void:
 
 	if enemy.animation_player and enemy.animation_player.current_animation != _attack_anim:
 		enemy.animation_player.play(_attack_anim)
+
+
+func _sync_overlap_flags() -> void:
+	# Make sure areas exist
+	var detection := detection_area
+	if detection == null and enemy.has_node("DetectionArea"):
+		detection = enemy.get_node("DetectionArea") as Area2D
+
+	var attack := attack_area
+	if attack == null and enemy.has_node("AttackArea"):
+		attack = enemy.get_node("AttackArea") as Area2D
+
+	# If your areas use monitoring (default), this works:
+	if detection:
+		player_in_detection_range = detection.has_overlapping_bodies() and _player_is_overlapping(detection)
+
+	if attack:
+		player_in_attack_range = attack.has_overlapping_bodies() and _player_is_overlapping(attack)
+
+	# if player left attack range, cancel delayed request
+	if not player_in_attack_range:
+		_attack_request_timer = -1.0
+
+
+func _player_is_overlapping(area: Area2D) -> bool:
+	for body in area.get_overlapping_bodies():
+		if body.is_in_group("Player"):
+			return true
+	return false
 
 
 func _connect_areas() -> void:

@@ -11,10 +11,12 @@ var stunned: bool = false
 var hit: bool = false
 var player: CharacterBody2D
 var isAttacking: bool = false
-var inCooldown = false
+var inCooldown: bool = false
 var facing_direction: Vector2 = Vector2.DOWN
 var in_knockback: bool = false
 var _hp_regen_buffer: float = 0.0
+var in_circle: bool = false
+
 
 @export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
 @export_category("Light Sensitivity")
@@ -48,7 +50,8 @@ var vision_mode: int = VisionMode.MOVE_DIRECTION
 @onready var detection_area: Area2D = $DetectionArea
 @onready var attack_area: Area2D = $AttackArea
 @onready var collision_shape: CollisionShape2D = $TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D
-
+@onready var debug_label: Label = $DebugLabel
+@onready var debug_label_2: Label = $DebugLabel2
 
 func _ready() -> void:
 	# Global player tracking
@@ -80,8 +83,11 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	debug_label.text = str(state_machine.current_state)
+	debug_label_2.text = str(inCooldown)
+
 	# Stamina regen management
-	if current_stamina >= MAX_STAMINA - 0.01:
+	if current_stamina >= MAX_STAMINA:
 		current_stamina = MAX_STAMINA
 		if not timer_stamina_regen.is_stopped():
 			timer_stamina_regen.stop()
@@ -136,12 +142,11 @@ func update_health(amount: int) -> void:
 	health_bar.value = current_health
 
 func take_hit(hurtbox: Hurtbox) -> void:
+	hit = true
 	take_damage(hurtbox.damage)
 
 
 func take_damage(damage: int) -> void:
-	hit = true
-	
 	if timer_take_damage.is_stopped() and not dead:
 		sword_hit_audio.play()
 		update_health(-damage)
@@ -150,7 +155,6 @@ func take_damage(damage: int) -> void:
 
 
 func is_light_sensitive() -> bool:
-	# Use groups OR per-enemy toggle. This lets you mark special enemies as immune later.
 	# If you prefer pure groups, just return is_in_group("light_sensitive")
 	return light_sensitive
 
@@ -240,6 +244,7 @@ func _on_timer_take_damage_timeout() -> void:
 		dead = true
 		# States (Wander/Follow/Knockback/Stun) see dead == true and transition to EnemyDead.
 	shader_color(1.0, 1.0, 1.0, 1.0, 0.0)
+	hit = false
 	timer_take_damage.stop()
 
 
@@ -272,14 +277,6 @@ func _on_timer_stamina_regen_start_timeout() -> void:
 func _on_timer_stun_timeout() -> void:
 	stunned = false
 	timer_stun.stop()
-
-
-#func _on_timer_knockback_timeout() -> void:
-#	# After knockback finishes, if stun timer isn't already running, start it
-#	if timer_stun.is_stopped():
-#		stunned = true
-#		timer_stun.start(0.2)
-#	timer_knockback.stop()
 
 
 func _on_player_spawned(p: CharacterBody2D) -> void:
