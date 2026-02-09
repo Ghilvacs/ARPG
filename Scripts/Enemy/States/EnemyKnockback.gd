@@ -54,8 +54,12 @@ func update(delta: float) -> EnemyState:
 	if (_knockback_finished or knockback_time >= knockback_duration) and stun_state:
 		enemy.hit = false
 #		enemy.velocity = Vector2.ZERO
-		enemy.apply_stun(0.0)
-		return stun_state
+		if not enemy.in_circle:
+			enemy.apply_stun(0.0)
+			return stun_state
+		else:
+			enemy.apply_stun(0.2)
+			return stun_state
 
 	return null
 

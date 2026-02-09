@@ -1,7 +1,7 @@
 class_name StateDashAttackCharge
 extends PlayerState
 
-@export var dash_attack_stamina_cost: float = 20.0
+@export var dash_attack_stamina_cost: float = 50.0
 @export var dash_attack_hold_time: float = 0.2
 @export var dash_buildup_zoom: Vector2 = Vector2(7.0, 7.0)
 @export var dash_zoom_in_time: float = 0.5

@@ -69,7 +69,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	print(exposure)
 	if input_locked:
 		velocity = Vector2.ZERO
 		move_and_slide()

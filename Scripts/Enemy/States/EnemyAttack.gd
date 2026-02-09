@@ -1,6 +1,8 @@
 extends EnemyState
 class_name EnemyAttack
 
+@export var stamina_cost: float = 5.0
+
 @export_category("State Transitions")
 @export var follow_state: EnemyState
 @export var knockback_state: EnemyState
@@ -33,8 +35,8 @@ enum Phase { PREPARE, LUNGE, RECOVER }
 var _phase: int = Phase.PREPARE
 var _t: float = 0.0
 
-var _lunge_dir := Vector2.ZERO
-var _recover_dir := Vector2.ZERO
+var _lunge_direction := Vector2.ZERO
+var _recover_direction := Vector2.ZERO
 
 
 func enter(_prev: EnemyState) -> void:
@@ -55,7 +57,7 @@ func enter(_prev: EnemyState) -> void:
 	_phase = Phase.PREPARE
 	_t = prepare_time
 
-	_snapshot_dirs()
+	_snapshot_directions()
 
 
 func exit() -> void:
@@ -66,7 +68,7 @@ func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
-	if enemy.hit and knockback_state:
+	if enemy.hit and knockback_state and enemy.in_circle:
 		return knockback_state
 	
 	if enemy.dead and dead_state:
@@ -93,7 +95,7 @@ func physics_update(delta: float) -> EnemyState:
 				_phase = Phase.LUNGE
 				_t = lunge_duration
 				if not lunge_lock_direction:
-					_snapshot_dirs()
+					_snapshot_directions()
 
 		Phase.LUNGE:
 			_apply_lunge(delta)
@@ -115,11 +117,11 @@ func physics_update(delta: float) -> EnemyState:
 
 
 func _apply_lunge(delta: float) -> void:
-	if _lunge_dir == Vector2.ZERO:
+	if _lunge_direction == Vector2.ZERO:
 		enemy.velocity = Vector2.ZERO
 		return
 
-	enemy.velocity = _lunge_dir * lunge_speed
+	enemy.velocity = _lunge_direction * lunge_speed
 	if lunge_drag > 0.0:
 		enemy.velocity = enemy.velocity.move_toward(Vector2.ZERO, lunge_drag * delta)
 
@@ -128,27 +130,27 @@ func _apply_recovery(delta: float) -> void:
 	if _player_valid():
 		var desired := player.global_position - enemy.global_position
 		if desired.length() > 0.001:
-			_recover_dir = _recover_dir.lerp(desired.normalized(), recover_turn_lerp * delta)
+			_recover_direction = _recover_direction.lerp(desired.normalized(), recover_turn_lerp * delta)
 
-	enemy.velocity = _recover_dir * recover_move_speed
+	enemy.velocity = _recover_direction * recover_move_speed
 
 
-func _snapshot_dirs() -> void:
+func _snapshot_directions() -> void:
 	if not _player_valid():
-		_lunge_dir = Vector2.ZERO
-		_recover_dir = Vector2.ZERO
+		_lunge_direction = Vector2.ZERO
+		_recover_direction = Vector2.ZERO
 		return
 
-	var dir := player.global_position - enemy.global_position
-	_lunge_dir = dir.normalized() if dir.length() > 0.001 else Vector2.ZERO
-	_recover_dir = _lunge_dir
+	var direction := player.global_position - enemy.global_position
+	_lunge_direction = direction.normalized() if direction.length() > 0.001 else Vector2.ZERO
+	_recover_direction = _lunge_direction
 
 
 func _start_attack_timer_if_present() -> void:
 	if enemy.has_node("TimerAttack"):
-		var t := enemy.get_node("TimerAttack") as Timer
-		if t and t.is_stopped():
-			t.start()
+		var timer := enemy.get_node("TimerAttack") as Timer
+		if timer and timer.is_stopped():
+			timer.start()
 
 
 func _player_valid() -> bool:
