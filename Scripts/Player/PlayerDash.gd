@@ -2,6 +2,7 @@ class_name StateDash extends PlayerState
 
 @export var dash_distance: float = 20.0
 @export var dash_duration: float = 0.1
+@export var stamina_cost: float = 10.0
 
 @onready var idle: PlayerState = $"../Idle"
 @onready var walk: PlayerState = $"../Walk"
@@ -13,9 +14,9 @@ var dash_velocity: Vector2
 
 func enter():
 	player.isAttacking = false
-	player.consume_stamina(1)
+	player.consume_stamina(stamina_cost)
 
-	player.hitbox_collision_shape.disabled = true  # <- this is often the culprit
+#	player.hitbox_collision_shape.disabled = true  # <- this is often the culprit
 
 	player.dashed = true
 	effect_timer = 0.0

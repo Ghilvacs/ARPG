@@ -1,7 +1,7 @@
 class_name StateAttackCombo
 extends PlayerState
 
-@export var stamina_cost: float = 5.0
+@export var stamina_cost: float = 20.0
 @export var attack_distance: float = 8.0
 @export var attack_duration: float = 0.1
 @export var combo_window_time: float = 0.25

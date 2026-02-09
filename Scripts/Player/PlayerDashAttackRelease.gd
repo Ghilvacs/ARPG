@@ -1,7 +1,7 @@
 class_name StateDashAttackRelease
 extends PlayerState
 
-@export var dash_attack_stamina_cost: float = 20.0
+@export var dash_attack_stamina_cost: float = 50.0
 @export var dash_distance: float = 60.0
 @export var dash_duration: float = 0.12
 
