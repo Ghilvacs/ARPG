@@ -18,7 +18,7 @@ class_name EnemyAttack
 
 @export_category("Phases")
 @export var prepare_time: float = 0.25
-@export var lunge_speed: float = 220.0
+@export var lunge_speed: float = 350.0
 @export var lunge_duration: float = 0.12
 @export var recover_time: float = 0.38
 @export var recover_move_speed: float = 10.0
@@ -29,6 +29,11 @@ class_name EnemyAttack
 @export var lunge_stop_after: bool = true
 @export var lunge_drag: float = 0.0
 
+@export_category("Poison release")
+@export var poison_cloud_scene: PackedScene
+@export var poison_spawn_step: float = 10.0
+@export var poison_cloud_length: float = 14.0
+
 var player: CharacterBody2D
 
 enum Phase { PREPARE, LUNGE, RECOVER }
@@ -37,16 +42,16 @@ var _t: float = 0.0
 
 var _lunge_direction := Vector2.ZERO
 var _recover_direction := Vector2.ZERO
+var last_poison_position: Vector2
 
 
 func enter(_prev: EnemyState) -> void:
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
-
 	enemy.isAttacking = true
 
 	# play anim once
 	if enemy.animation_player:
-		enemy.animation_player.play(attack_animation)
+		enemy.animation_player.play(enemy.attack_animation)
 
 	# start cooldown NOW (one attack = one cooldown)
 	if requires_cooldown and (cooldown_flag_name in enemy):
@@ -55,7 +60,7 @@ func enter(_prev: EnemyState) -> void:
 
 	# init phases
 	_phase = Phase.PREPARE
-	_t = prepare_time
+	_t = enemy.prepare_time
 
 	_snapshot_directions()
 
@@ -68,7 +73,7 @@ func physics_update(delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 
-	if enemy.hit and knockback_state and enemy.in_circle:
+	if enemy.hit and knockback_state and enemy.can_be_knocked_back:
 		return knockback_state
 	
 	if enemy.dead and dead_state:
@@ -94,7 +99,8 @@ func physics_update(delta: float) -> EnemyState:
 			if _t <= 0.0:
 				_phase = Phase.LUNGE
 				_t = lunge_duration
-				if not lunge_lock_direction:
+				last_poison_position = enemy.global_position
+				if not lunge_lock_direction: 
 					_snapshot_directions()
 
 		Phase.LUNGE:
@@ -102,12 +108,14 @@ func physics_update(delta: float) -> EnemyState:
 			_t -= delta
 			if _t <= 0.0:
 				_phase = Phase.RECOVER
-				_t = recover_time
+				_t = enemy.recover_time
 				if lunge_stop_after:
 					enemy.velocity = Vector2.ZERO
+			update_lunge_poison()
 
 		Phase.RECOVER:
 			_apply_recovery(delta)
+			update_lunge_poison()
 			_t -= delta
 			if _t <= 0.0:
 				enemy.isAttacking = false
@@ -121,9 +129,33 @@ func _apply_lunge(delta: float) -> void:
 		enemy.velocity = Vector2.ZERO
 		return
 
-	enemy.velocity = _lunge_direction * lunge_speed
+	enemy.velocity = _lunge_direction * enemy.lunge_speed
 	if lunge_drag > 0.0:
 		enemy.velocity = enemy.velocity.move_toward(Vector2.ZERO, lunge_drag * delta)
+
+
+func update_lunge_poison() -> void:
+	var current_position: Vector2 = enemy.global_position
+	var distance: float = last_poison_position.distance_to(current_position)
+	
+	if distance < poison_spawn_step:
+		return
+	
+	var direction: Vector2 = (last_poison_position.direction_to(current_position)).normalized()
+	var steps: int = int(distance / poison_spawn_step)
+	
+	for step in range(1, steps + 1):
+		var position := last_poison_position + direction * poison_spawn_step * step
+		spawn_poison_cloud(position, direction)
+	
+	last_poison_position = current_position
+
+
+func spawn_poison_cloud(position: Vector2, direction: Vector2) -> void:
+	var poison_cloud := poison_cloud_scene.instantiate()
+	get_tree().current_scene.add_child(poison_cloud)
+	poison_cloud.global_position = position
+	poison_cloud.rotation = direction.angle()
 
 
 func _apply_recovery(delta: float) -> void:

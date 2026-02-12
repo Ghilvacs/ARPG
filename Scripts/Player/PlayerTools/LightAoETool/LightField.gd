@@ -65,6 +65,7 @@ func _get_actor_root(node: Node) -> Node:
 func _apply_enter_effects(body: Node) -> void:
 	if body.is_in_group("Enemy"):
 		body.in_circle = true
+		body.can_be_knocked_back = true
 		if body.has_method("is_light_sensitive") and body.call("is_light_sensitive"):
 			if body.has_method("apply_stun"):
 				body.call("apply_stun", 2.0)
@@ -73,6 +74,7 @@ func _apply_enter_effects(body: Node) -> void:
 func _apply_exit_effects(body: Node) -> void:
 	if body.is_in_group("Enemy"):
 		body.in_circle = false
+		body.can_be_knocked_back = false
 
 
 func _apply_continuous_effects(delta: float) -> void:
@@ -85,7 +87,7 @@ func _apply_continuous_effects(delta: float) -> void:
 		# Enemies: stronger regen & more pressure at higher phases
 		if node.is_in_group("Enemy"):
 			if node.has_method("apply_regen"):
-				var regen_per_sec := 0.4
+				var regen_per_sec := 0.2
 				node.call("apply_regen", regen_per_sec * delta)
 
 			if node.has_method("set_field_phase"):

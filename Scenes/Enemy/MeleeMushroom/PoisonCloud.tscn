@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsuya8s42apyg"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy/MeleeMushroom/PoisonCloud.gd" id="1_r0svp"]
+[ext_resource type="Texture2D" uid="uid://bp4ryai1epp2j" path="res://Assets/MichaelAssets/items.png" id="2_2cnsl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_veukj"]
+atlas = ExtResource("2_2cnsl")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_t1pdp"]
+radius = 16.0
+height = 32.0
+
+[node name="PoisonCloud" type="Node2D"]
+z_index = 1
+y_sort_enabled = true
+script = ExtResource("1_r0svp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_veukj")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_t1pdp")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -37,7 +37,7 @@ func physics_update(_delta: float) -> EnemyState:
 	if enemy == null:
 		return null
 	
-	if enemy.hit and knockback_state and enemy.in_circle:
+	if enemy.hit and knockback_state and enemy.can_be_knocked_back:
 		return knockback_state
 	
 	if enemy.dead and dead_state:
