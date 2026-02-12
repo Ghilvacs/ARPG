@@ -16,6 +16,10 @@ var facing_direction: Vector2 = Vector2.DOWN
 var in_knockback: bool = false
 var _hp_regen_buffer: float = 0.0
 var in_circle: bool = false
+var lunge_speed: float = 350.0
+var prepare_time: float = 0.3
+var recover_time: float = 0.8
+var attack_animation: String = "attack"
 
 
 @export_range(-180.0, 180.0) var vision_rotation_offset_deg: float = 0.0
@@ -23,12 +27,23 @@ var in_circle: bool = false
 @export var light_sensitive: bool = true
 @export var stun_immunity_when_attacking: bool = false # optional rule
 
+@export_category("Behaviors")
+@export var can_be_knocked_back: bool = false
+
+
 enum VisionMode {
 	MOVE_DIRECTION,
 	LOOK_AT_PLAYER
 }
 
+enum HealthState {
+	HIGH,
+	MEDIUM,
+	LOW
+}
+
 var vision_mode: int = VisionMode.MOVE_DIRECTION
+var health_state: int = HealthState.HIGH 
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: EnemyStateMachine = $StateMachine
@@ -83,9 +98,9 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	debug_label.text = str(state_machine.current_state)
-	debug_label_2.text = str(inCooldown)
-
+	debug_label.text = str(can_be_knocked_back)
+	debug_label_2.text = str(health_state)
+	
 	# Stamina regen management
 	if current_stamina >= MAX_STAMINA:
 		current_stamina = MAX_STAMINA
@@ -129,6 +144,8 @@ func _physics_process(_delta: float) -> void:
 		elif velocity.x > 0.0:
 			sprite.flip_h = true
 	
+	_update_health_state()
+	_update_behaviors()
 	_update_vision_cones()
 	move_and_slide()
 
@@ -201,6 +218,37 @@ func shader_color(
 		shader_mat.set_shader_parameter('g', g)
 		shader_mat.set_shader_parameter('b', b)
 		shader_mat.set_shader_parameter('mix_color', mix_color)
+
+
+func _update_health_state() -> void:
+	if current_health >= 4:
+		health_state = HealthState.HIGH
+	elif current_health <= 3 && current_health >= 2:
+		health_state = HealthState.MEDIUM
+	else:
+		health_state = HealthState.LOW
+
+
+func _update_behaviors() -> void:
+	match health_state:
+		HealthState.HIGH:
+			can_be_knocked_back = false
+			lunge_speed = 350.0
+			prepare_time = 0.3
+			recover_time = 0.8
+			attack_animation = "attack"
+		HealthState.MEDIUM:
+			can_be_knocked_back = true
+			lunge_speed = 350.0
+			prepare_time = 0.3
+			recover_time = 1.0
+			attack_animation = "attack_medium"
+		HealthState.LOW:
+			can_be_knocked_back = true
+			lunge_speed = 150.0
+			prepare_time = 0.5
+			recover_time = 1.5
+			attack_animation = "attack_low"
 
 
 func _update_vision_cones() -> void:

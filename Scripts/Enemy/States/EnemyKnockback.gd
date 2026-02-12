@@ -15,6 +15,8 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 func enter(_prev_state: EnemyState) -> void:
 	enemy.hit = false
 	enemy.in_knockback = true
+	enemy.isAttacking = false
+	enemy.inCooldown = true
 	player = get_tree().get_first_node_in_group("Player") as CharacterBody2D
 	knockback_time = 0.0
 	_knockback_finished = false

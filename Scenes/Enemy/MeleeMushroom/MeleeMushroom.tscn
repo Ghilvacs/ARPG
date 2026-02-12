@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://dmbyfr52cbw3a"]
+[gd_scene load_steps=88 format=3 uid="uid://dmbyfr52cbw3a"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy/MeleeMushroom/MeleeMushroom.gd" id="1_8ditj"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="1_sce35"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://Scripts/General/Hitbox/Hitbox.gd" id="12_7f1nk"]
 [ext_resource type="Texture2D" uid="uid://cn8p116js2bii" path="res://Assets/light.png" id="13_bnwde"]
 [ext_resource type="Script" path="res://Scripts/Enemy/States/EnemyAttack.gd" id="13_p48vk"]
+[ext_resource type="PackedScene" uid="uid://dsuya8s42apyg" path="res://Scenes/Enemy/MeleeMushroom/PoisonCloud.tscn" id="14_g04l6"]
 [ext_resource type="Script" path="res://Scripts/General/Hurtbox/Hurtbox.gd" id="14_wgdgd"]
 [ext_resource type="AudioStream" uid="uid://c6tu0rlhdlxi5" path="res://Assets/SFX/swordhit.mp3" id="15_33d1h"]
 [ext_resource type="PackedScene" uid="uid://cng6qu26gskpd" path="res://Scenes/Enemy/TorchGoblin/TorchWooshAudio/TorchWooshAudio.tscn" id="16_lep7n"]
@@ -59,7 +60,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_lep1j"]
 resource_name = "attack"
-length = 1.45
+length = 1.25
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -68,7 +69,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.35, 0.4, 0.45, 0.65, 0.8, 1, 1.15, 1.3, 1.45),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.35, 0.4, 0.45, 0.6, 0.75, 0.9, 1, 1.1, 1.25),
 "transitions": PackedFloat32Array(1.03526, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [2, 8, 10, 26, 4, 11, 12, 13, 14, 26, 2, 8, 10, 15, 16]
@@ -137,6 +138,92 @@ tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_veors"]
+resource_name = "attack_low"
+length = 2.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.6, 0.65, 0.8, 1, 1.3, 1.55, 1.85, 2.15),
+"transitions": PackedFloat32Array(1.03526, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 8, 10, 26, 4, 11, 12, 13, 14, 26, 2, 8, 10, 15, 16]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchWooshAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_torch"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5, 0.65),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_v7o4h"]
+resource_name = "attack_medium"
+length = 1.45
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.35, 0.4, 0.45, 0.6, 0.75, 0.95, 1.1, 1.3, 1.45),
+"transitions": PackedFloat32Array(1.03526, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 8, 10, 26, 4, 11, 12, 13, 14, 26, 2, 8, 10, 15, 16]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorchWooshAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_torch"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TorchPivot/TorchAttackPoint/TorchArea/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3, 0.45),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -239,6 +326,8 @@ _data = {
 "RESET": SubResource("Animation_54xf7"),
 "attack": SubResource("Animation_lep1j"),
 "attack_down": SubResource("Animation_jn0ld"),
+"attack_low": SubResource("Animation_veors"),
+"attack_medium": SubResource("Animation_v7o4h"),
 "attack_up": SubResource("Animation_4ct7l"),
 "death": SubResource("Animation_8bemg"),
 "idle": SubResource("Animation_llqhb"),
@@ -727,10 +816,10 @@ knockback_state = NodePath("../Knockback")
 stun_state = NodePath("../Stun")
 dead_state = NodePath("../Dead")
 prepare_time = 0.3
-lunge_speed = 350.0
 lunge_duration = 0.15
-recover_time = 1.0
+recover_time = 0.8
 lunge_stop_after = false
+poison_cloud_scene = ExtResource("14_g04l6")
 
 [node name="Knockback" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "dead_state")]
 script = ExtResource("11_qb3xp")
