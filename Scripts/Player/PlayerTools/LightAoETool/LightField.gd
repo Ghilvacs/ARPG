@@ -6,6 +6,9 @@ signal depleted(field_position: Vector2)
 @export var active_time: float = 5.0
 @export var area_path: NodePath = ^"Area2D"
 
+@export_category("Journal Entry")
+@export var journal_entry_drain: JournalEntry
+
 var _inside := {} # instance_id -> Node
 
 @onready var area: Area2D = get_node(area_path) as Area2D
@@ -24,6 +27,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if active_time <= 0.0:
 		emit_signal("depleted")
+		if journal_entry_drain:
+			JournalManager.unlock_entry(journal_entry_drain)
 		queue_free()
 		
 		return

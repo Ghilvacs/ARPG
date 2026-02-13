@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=3 uid="uid://dqus222up43m0"]
+[gd_scene load_steps=121 format=3 uid="uid://dqus222up43m0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fxp67"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/player_damage.gdshader" id="2_vf3pe"]
@@ -38,6 +38,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerInteractionsHost.gd" id="34_yafd7"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerTools/AoCPlacementController.gd" id="37_l74xj"]
 [ext_resource type="PackedScene" uid="uid://c66dcf4yam8y" path="res://Scenes/Player/PlayerTools/LightAoETool/LightField.tscn" id="38_0ylas"]
+[ext_resource type="Resource" uid="uid://cguqckxnsy7s1" path="res://Data/JournalData/JournalEntries/LightCircleToolFirstUse.tres" id="39_nd5yq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qqql"]
 shader = ExtResource("2_vf3pe")
@@ -1806,6 +1807,7 @@ debug_color = Color(0, 0.65098, 0.105882, 0.419608)
 [node name="AoCPlacementController" type="Node2D" parent="AoCManager"]
 script = ExtResource("37_l74xj")
 circle_scene = ExtResource("38_0ylas")
+journal_entry_on_use = ExtResource("39_nd5yq")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
