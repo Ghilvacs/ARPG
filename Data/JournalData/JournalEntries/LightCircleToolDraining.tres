@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="JournalEntry" load_steps=3 format=3 uid="uid://dpaqiglwxdsu7"]
+
+[ext_resource type="Script" path="res://Scripts/Data/JournalEntry.gd" id="1_pig7v"]
+[ext_resource type="Resource" uid="uid://bmnm7b0k12mge" path="res://Data/JournalData/JournalTopics/LightCircleTool.tres" id="1_qju3k"]
+
+[resource]
+script = ExtResource("1_pig7v")
+parent_topic = ExtResource("1_qju3k")
+title = "Sun Radiation Draining"
+description = "This tool seems to release captured sun radiation. dawmdawwdwadawiodhawdwaduibwadbawdbwadbwahwab d wad wad wad wad wad w dwaih dwad hwa dhawd hnw dwahnd awhnd wa hdnajw daw dwaj dioajw dioa jdai dojaw iawo jwai jad ijwa dijaw oidjawd jawd wad jawi djawd ioawd jawid ojwad jwa diawjd awijd awod jawodi jawodi jwad oiawjd awid jawoidwajd iawjd waiodj awiodj awio d awio awio jaw ioawj awoi jaw oiawj aio jawoi jawio jaw ioaw aiwojawio wa aio aio a iaj oaiwd awio ja. dwaj diawj ioa j. wj jawdiwjdawoijdawidjwidjwidjawdijawdiojawdoaijdaiowdjawdijwadijawdijwadiawjdiawjdawjdawdjawdjawdjwadjawdjawdjawdijwadawjdiowadj owiadjawo idjwaoj waodj oawj o jdwia jdwaoi djawo jaw oijd awoij dio jdawoi djwaio djaw iodjawio djawiod jawid jawodi jwad iojawd iojwad iojwad oiwajaowi jjwajdiowajdawdjdjawdojawdiawjdoiwjdawodjwaoidjwadjwadjawdoajwdoajwdawoijdwaoi."

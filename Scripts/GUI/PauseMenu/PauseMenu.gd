@@ -15,13 +15,14 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
-		if !InventoryMenu.in_inventory:
+		if !InventoryMenu.in_inventory and !JournalMenu.in_journal:
 			if not is_paused:
 				show_pause_menu()
 			else:
 				hide_pause_menu()
 		else:
 			InventoryMenu.hide_inventory_menu()
+			JournalMenu.hide_journal()
 		get_viewport().set_input_as_handled()
 
 

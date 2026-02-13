@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="JournalTopic" load_steps=2 format=3 uid="uid://bmnm7b0k12mge"]
+
+[ext_resource type="Script" path="res://Scripts/Data/JournalTopic.gd" id="1_vq8an"]
+
+[resource]
+script = ExtResource("1_vq8an")
+category = 2
+title = "Light Circle Tool"
+overview_text = ""

@@ -16,6 +16,9 @@ enum Phase { MAX, MEDIUM, LOW, DEPLETED }
 # Drain per second by phase (MAX drains fastest)
 @export var cost: float = 0.3
 
+@export_category("Journal Entries")
+@export var journal_entry_on_use: JournalEntry
+
 const WALL_LAYER := 1 << 2
 
 var placing: bool = false
@@ -121,8 +124,10 @@ func try_confirm() -> void:
 	# Replace ghost with the real field
 	ghost.queue_free()
 	ghost = null
-	
 	can_place = false
+	
+	if journal_entry_on_use:
+		JournalManager.unlock_entry(journal_entry_on_use)
 	
 	var field := circle_scene.instantiate() as Node2D
 	world.add_child(field)

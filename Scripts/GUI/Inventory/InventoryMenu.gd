@@ -27,6 +27,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func show_inventory_menu() -> void:
 	if PauseMenu.is_paused:
 		PauseMenu.hide_pause_menu()
+	if JournalMenu.in_journal:
+		JournalMenu.hide_journal()
 	visible = true
 	in_inventory = true
 	GlobalPlayerManager.player.set_input_locked(true)
