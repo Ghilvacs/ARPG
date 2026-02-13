@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbtjysfqtt3q8"]
+
+[ext_resource type="Script" path="res://Scripts/GUI/Journal/JournalUpdateOverlay.gd" id="1_alsdn"]
+
+[node name="JournalUpdateOverlay" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_alsdn")
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "New entry unlocked:"
+
+[node name="LabelEntryTitle" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.670588, 0.294118, 1)
+
+[node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press \"J\" to open Journal"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

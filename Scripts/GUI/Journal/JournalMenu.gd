@@ -40,19 +40,20 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("journal"):
-		if not in_journal:
+		if JournalManager.is_journal_update_overlay and JournalManager.last_unlocked_entry:
+			open_to_specific_entry(JournalManager.last_unlocked_entry)
+		elif not in_journal:
 			show_journal()
 		else:
 			hide_journal()
-			
+				
 		get_viewport().set_input_as_handled()
 
 
 func show_journal() -> void:
-	if PauseMenu.is_paused:
-		PauseMenu.hide_pause_menu()
-	if InventoryMenu.in_inventory:
-		InventoryMenu.hide_inventory_menu()
+	PauseMenu.hide_pause_menu()
+	InventoryMenu.hide_inventory_menu()
+	JournalUpdateOverlay.hide_journal_update_overlay()
 	visible = true
 	in_journal = true
 	GlobalPlayerManager.player.set_input_locked(true)
@@ -114,15 +115,27 @@ func select_topic(topic: JournalTopic) -> void:
 	overview_description_label.text = full_display_text
 
 
+func open_to_specific_entry(entry: JournalEntry) -> void:
+	if not in_journal:
+		show_journal()
+	
+	var parent_topic = entry.parent_topic
+	
+	if parent_topic:
+		show_category(parent_topic.category)
+		select_topic(parent_topic)
+		_highlight_entry(entry)
+
+
 func _highlight_entry(selected_entry: JournalEntry) -> void:
 	var entries = JournalManager.get_entries_for_topic(current_topic)
 	var final_bbcode = ""
 	
 	for entry in entries:
 		if entry == selected_entry:
-			final_bbcode += "[color=#ffff00]" + entry.description + "[/color]\n\n"
+			final_bbcode += "[color=#ffab4b]" + entry.description + "[/color]\n\n"
 		else:
-			final_bbcode += "[color=#aaaaaa]" + entry.description + "[/color]\n\n"
+			final_bbcode += "[color=#ffffff]" + entry.description + "[/color]\n\n"
 	
 	overview_description_label.text = final_bbcode
 	

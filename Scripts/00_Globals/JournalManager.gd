@@ -3,6 +3,8 @@ extends Node
 var unlocked_entries: Array[JournalEntry] = []
 var discovered_clues: Array[ClueData] = []
 var solved_deductions: Array[DeductionData] = []
+var is_journal_update_overlay: bool = false 
+var last_unlocked_entry: JournalEntry = null
 
 signal journal_updated(entry: JournalEntry)
 signal clue_added(clue: ClueData)
@@ -31,9 +33,19 @@ func get_entries_for_topic(topic: JournalTopic) -> Array[JournalEntry]:
 
 func unlock_entry(entry: JournalEntry) -> void:
 	if not unlocked_entries.has(entry):
+		JournalUpdateOverlay.JournalUpdateOverlayShown.connect(turn_on_update_overlay)
+		JournalUpdateOverlay.JournalUpdateOverlayHidden.connect(turn_off_update_overlay)
 		unlocked_entries.append(entry)
+		last_unlocked_entry = entry
 		emit_signal("journal_updated")
-		print("Journal Entry Unlocked: " + entry.title)
+		JournalUpdateOverlay.show_journal_update_overlay(entry.title)
+
+
+func turn_on_update_overlay() -> void:
+	is_journal_update_overlay = true
+
+func turn_off_update_overlay() -> void:
+	is_journal_update_overlay = false
 
 
 func add_clue(clue: ClueData) -> void:

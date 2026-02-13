@@ -26,6 +26,7 @@ JournalManager="*res://Scripts/00_Globals/JournalManager.gd"
 PauseMenu="*res://Scenes/GUI/PauseMenu/PauseMenu.tscn"
 InventoryMenu="*res://Scenes/GUI/Inventory/InventoryMenu.tscn"
 JournalMenu="*res://Scenes/GUI/Journal/JournalMenu.tscn"
+JournalUpdateOverlay="*res://Scenes/GUI/Journal/JournalUpdateOverlay.tscn"
 
 [input]
 
